@@ -8,62 +8,68 @@
 import UIKit
 import NMapsMap
 
-class ViewController: UIViewController {
+class MapViewController: UIViewController {
 
-    var locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     var current: [Double] = [0, 0]
     var currentOverlay: Observable<[Double]> = Observable([0, 0])
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+ 
+        setLocationManager()
+        setMapView()
+    }
+}
+
+extension MapViewController {
+    // 위치를 받아오기 위한 메소드
+    private func setLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        
-        let mapView = NMFMapView(frame: view.frame)
-        
-        mapView.touchDelegate = self
-        
-        view.addSubview(mapView)
-        
-        let locationOverlay = mapView.locationOverlay
-        locationOverlay.hidden = false
         
         DispatchQueue.global().async {
             if CLLocationManager.locationServicesEnabled() {
                 self.locationManager.startUpdatingLocation()
             }
-            DispatchQueue.main.async {
-                // 네이버 지도 카메라 움직이기
-                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: self.current[0], lng: self.current[1]))
-                mapView.moveCamera(cameraUpdate)
-                
-                locationOverlay.location = NMGLatLng(lat: self.current[0], lng: self.current[1])
-            }
+        }
+    }
+    
+    private func setMapView() {
+        // 지도 표시
+        let mapView = NMFMapView(frame: view.frame)
+        mapView.touchDelegate = self
+        view.addSubview(mapView)
+        
+        // 사용자 위치 표시하는 오버레이
+        let locationOverlay = mapView.locationOverlay
+        locationOverlay.hidden = false
+        
+        DispatchQueue.main.async {
+            // 네이버 지도 카메라 움직이기
+            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: self.current[0], lng: self.current[1]))
+            mapView.moveCamera(cameraUpdate)
+            
+            locationOverlay.location = NMGLatLng(lat: self.current[0], lng: self.current[1])
         }
         
-        
-        
+        // 사용자 위치 표시하는 오버레이 위치변경을 위한 바인딩
         self.currentOverlay.bind { value in
             if let lat = self.currentOverlay.value?[0], let lng = self.currentOverlay.value?[1] {
-                print("Observable")
-                
-                print(lat, lng)
-                
                 DispatchQueue.main.async {
                     locationOverlay.location = NMGLatLng(lat: lat, lng: lng)
-
                 }
-                
             }
         }
+    }
+    
+    private func setMarker() {
         
-
     }
 }
 
-extension ViewController: CLLocationManagerDelegate {
+extension MapViewController: CLLocationManagerDelegate {
     // 위치 정보 계속 업데이트 -> 위도 경도 받아옴
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
@@ -72,9 +78,6 @@ extension ViewController: CLLocationManagerDelegate {
             
             currentOverlay.value?[0] = Double(location.coordinate.latitude)
             currentOverlay.value?[1] = Double(location.coordinate.longitude)
-            
-            
-            //print(current[0], current[1])
         }
     }
     
@@ -82,22 +85,13 @@ extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(#function, error)
     }
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        if manager.authorizationStatus == .notDetermined {
-            
-        } else {
-            
-        }
-    }
 }
 
-extension ViewController: NMFMapViewTouchDelegate {
+extension MapViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
         
         currentOverlay.value?[0] = latlng.lat
         currentOverlay.value?[1] = latlng.lng
         
-        print("\(latlng.lat), \(latlng.lng)")
     }
 }
