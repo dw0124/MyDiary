@@ -15,6 +15,7 @@
 		BED58F772A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BED58F752A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld */; };
 		BED58F792A9DF0E300B6C6A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BED58F782A9DF0E300B6C6A4 /* Assets.xcassets */; };
 		BED58F7C2A9DF0E300B6C6A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BED58F7A2A9DF0E300B6C6A4 /* LaunchScreen.storyboard */; };
+		BED58F872A9F1B9E00B6C6A4 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F862A9F1B9E00B6C6A4 /* Observable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		BED58F782A9DF0E300B6C6A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BED58F7B2A9DF0E300B6C6A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BED58F7D2A9DF0E300B6C6A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BED58F862A9F1B9E00B6C6A4 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 		BED58F6B2A9DF0E200B6C6A4 /* MyDiary */ = {
 			isa = PBXGroup;
 			children = (
+				BED58F852A9F1B9400B6C6A4 /* Shared */,
 				BED58F842A9DF12E00B6C6A4 /* Controllers */,
 				BED58F702A9DF0E200B6C6A4 /* ViewController.swift */,
 				BED58F832A9DF0F300B6C6A4 /* predefined */,
@@ -99,6 +102,14 @@
 			children = (
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		BED58F852A9F1B9400B6C6A4 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				BED58F862A9F1B9E00B6C6A4 /* Observable.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		CCEC1DE37EFDB2978A9B6024 /* Pods */ = {
@@ -226,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BED58F712A9DF0E200B6C6A4 /* ViewController.swift in Sources */,
+				BED58F872A9F1B9E00B6C6A4 /* Observable.swift in Sources */,
 				BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */,
 				BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */,
 				BED58F772A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld in Sources */,
