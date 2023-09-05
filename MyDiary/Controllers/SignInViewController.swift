@@ -11,18 +11,21 @@ import FirebaseAuth
 
 class SignInViewController: UIViewController {
 
+    let signInVM = SignInViewModel()
 
     let emailTextField = UITextField()
     let passwordTextField = UITextField()
     let signUpButton = UIButton()
+    let findMyPassword = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(self.navigationController != nil ? "true" : "false")
+        
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
-        // 배경 색상 설정
         view.backgroundColor = .white
         
         // 이메일 텍스트 필드 설정
@@ -43,9 +46,18 @@ class SignInViewController: UIViewController {
         signUpButton.layer.cornerRadius = 5
         signUpButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
         
+        // 비밀번호 찾기 버튼 설정
+        findMyPassword.setTitle("비밀번호 찾기", for: .normal)
+        findMyPassword.setTitleColor(.blue, for: .normal)
+        findMyPassword.backgroundColor = .white
+        findMyPassword.layer.cornerRadius = 5
+        findMyPassword.addTarget(self, action: #selector(presentResetPasswordVC), for: .touchUpInside)
+        
+        
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(signUpButton)
+        view.addSubview(findMyPassword)
         
         emailTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
@@ -65,27 +77,22 @@ class SignInViewController: UIViewController {
             make.trailing.equalTo(passwordTextField)
             make.height.equalTo(44) // 버튼의 높이 설정
         }
+        
+        findMyPassword.snp.makeConstraints { make in
+            make.top.equalTo(signUpButton.snp.bottom).offset(20)
+            make.leading.equalTo(emailTextField)
+        }
     }
 
     @objc func signIn() {
-        // 로그인 버튼이 눌렸을 때의 동작을 구현
-        // 예: Firebase 인증을 사용하여 사용자 로그인 처리
-        if let email = emailTextField.text, let password = passwordTextField.text {
-            FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { (auth, error) in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                
-                if auth != nil {
-                    print("로그인 성공")
-                    let mapViewController = MapViewController() // MyViewController는 대상 뷰 컨트롤러 클래스명
-                    
-                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)
-                }
-            }
-            
-        }
+        signInVM.signInWithEmail(email: emailTextField.text, password: passwordTextField.text)
+    }
+    
+    @objc func presentResetPasswordVC() {
+        print(#function)
+        let resetPasswordVC = ResetPasswordViewController()
+        
+        present(resetPasswordVC, animated: true)
     }
 }
 

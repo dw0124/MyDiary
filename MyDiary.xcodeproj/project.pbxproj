@@ -10,6 +10,9 @@
 		BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */; };
 		BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */; };
 		BE407D8D2AA4C49000A9A7A0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */; };
+		BE54FCDA2AA5A1C1003716B9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */; };
+		BE8113B22AA5AB1E00C8844E /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8113B12AA5AB1E00C8844E /* SignInViewModel.swift */; };
+		BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */; };
 		BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */; };
 		BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */; };
 		BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */; };
@@ -29,6 +32,9 @@
 		BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		BE8113B12AA5AB1E00C8844E /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		BED58F692A9DF0E200B6C6A4 /* MyDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +68,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BE54FCDB2AA5A920003716B9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BE54FCDC2AA5A960003716B9 /* VM */ = {
+			isa = PBXGroup;
+			children = (
+				BE8113B12AA5AB1E00C8844E /* SignInViewModel.swift */,
+			);
+			path = VM;
+			sourceTree = "<group>";
+		};
 		BED58F602A9DF0E200B6C6A4 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +105,8 @@
 		BED58F6B2A9DF0E200B6C6A4 /* MyDiary */ = {
 			isa = PBXGroup;
 			children = (
+				BE54FCDB2AA5A920003716B9 /* Models */,
+				BE54FCDC2AA5A960003716B9 /* VM */,
 				BED58F852A9F1B9400B6C6A4 /* Shared */,
 				BED58F842A9DF12E00B6C6A4 /* Controllers */,
 				BED58F832A9DF0F300B6C6A4 /* predefined */,
@@ -110,8 +133,10 @@
 			children = (
 				BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */,
 				BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */,
-				BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */,
+				BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */,
 				BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */,
+				BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */,
+				BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -252,9 +277,12 @@
 				BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */,
 				BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */,
 				BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */,
+				BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */,
 				BED58F872A9F1B9E00B6C6A4 /* Observable.swift in Sources */,
+				BE8113B22AA5AB1E00C8844E /* SignInViewModel.swift in Sources */,
 				BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */,
 				BE407D8D2AA4C49000A9A7A0 /* MainViewController.swift in Sources */,
+				BE54FCDA2AA5A1C1003716B9 /* ProfileViewController.swift in Sources */,
 				BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */,
 				BED58F772A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld in Sources */,
 			);
