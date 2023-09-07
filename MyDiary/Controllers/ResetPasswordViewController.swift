@@ -11,7 +11,7 @@ import SnapKit
 
 class ResetPasswordViewController: UIViewController {
     
-    let signInVM = SignInViewModel()
+    let firebaseAuthVM = FirebaseAuthViewModel()
     
     let emailTextField = UITextField()
     let resetPasswordButton = UIButton()
@@ -51,7 +51,7 @@ class ResetPasswordViewController: UIViewController {
     }
     
     @objc func resetPassword() {
-        signInVM.findPassword(email: emailTextField.text) { (result, message) in
+        firebaseAuthVM.findPassword(email: emailTextField.text) { (result, message) in
             self.showAlert(result: result, message: message)
         }
     }

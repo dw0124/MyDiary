@@ -11,6 +11,8 @@ import Foundation
 
 class SignUpViewController: UIViewController {
 
+    let firebaseAuthVM = FirebaseAuthViewModel()
+    
     let emailTextField = UITextField()
     let passwordTextField = UITextField()
     let signUpButton = UIButton()
@@ -67,9 +69,7 @@ class SignUpViewController: UIViewController {
     }
 
     @objc func signUp() {
-        // 회원가입 버튼이 눌렸을 때의 동작을 구현
-        // 예: Firebase 인증을 사용하여 사용자 회원가입 처리
-        // 대상 화면의 뷰 컨트롤러를 생성
+        firebaseAuthVM.signUpWithEmail(email: emailTextField.text, password: passwordTextField.text)
     }
 }
 

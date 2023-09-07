@@ -21,21 +21,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
+        //로그인 정보를 확인하고 로그인이 되어있으면 메인VC, 없으면 로그인VC를 보여줌
         if let user = Auth.auth().currentUser {
             print("User Info : ",user)
-            let mapViewController = MapViewController()
-            
+            let mapViewController = DiaryTabBarController()
+
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)
         } else {
             let signInViewController = SignInViewController()
-            
+
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(signInViewController, animated: false)
         }
         
+        
+//        let mainViewController = SignInViewController()
+//        let navigationController = UINavigationController(rootViewController: mainViewController)
+//        window?.rootViewController = navigationController
         
         guard let _ = (scene as? UIWindowScene) else { return }
     }
