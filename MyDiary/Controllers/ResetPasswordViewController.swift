@@ -51,8 +51,8 @@ class ResetPasswordViewController: UIViewController {
     }
     
     @objc func resetPassword() {
-        firebaseAuthVM.findPassword(email: emailTextField.text) { (result, message) in
-            self.showAlert(result: result, message: message)
+        firebaseAuthVM.findPassword(email: emailTextField.text) { (resultBool, message) in
+            self.showAlert(result: resultBool, message: message)
         }
     }
     

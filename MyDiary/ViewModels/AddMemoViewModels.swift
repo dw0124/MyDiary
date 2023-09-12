@@ -17,22 +17,26 @@ class AddMemoViewModel {
     var title: String = ""
     var content: String = ""
     
-    func saveMemo() {
+    func saveMemo(completion: @escaping (Bool, String) -> Void) {
+        var message = ""
+        
         saveImageToStorage { imageUrlArray in
-            print("#1")
             let databaseRef = Database.database().reference()
             guard let currentUser = Auth.auth().currentUser else {
-                print("#2")
                 return
             }
-            let memoData: [String: Any] = ["imageURL": imageUrlArray, "title": self.title, "content": self.content]
-            print("#3")
+            let createTime = self.generateUniqueKey()
+            let memoData: [String: Any] = ["createTime": createTime, "imageURL": imageUrlArray, "title": self.title, "content": self.content]
             // Realtime Database에 저장
-            databaseRef.child("users").child(currentUser.uid).child("memos").child(self.generateUniqueKey()).setValue(memoData) { (error, ref) in
-                if let error = error {
+            databaseRef.child("users").child(currentUser.uid).child("memos").child(createTime).setValue(memoData) { (error, ref) in
+                if let error = error as? NSError {
+                    
                     print("메모 데이터 저장 오류: \(error.localizedDescription)")
+                    completion(false, error.localizedDescription)
                 } else {
                     print("메모 데이터 저장 성공")
+                    message = "저장을 완료했습니다."
+                    completion(true, message)
                 }
             }
         }

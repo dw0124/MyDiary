@@ -112,10 +112,30 @@ class AddMemoViewController: UIViewController {
         }
     }
     
+    // 저장이 오류 또는 완료되었다는 메시지를 보여주기위한 Alert창
+    func showAlert(result: Bool, message: String) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            alertController.dismiss(animated: true, completion: nil)
+            
+            if result == true {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     @objc func saveMemo() {
         self.addMemoVM.title = titleTextField.text ?? ""
         self.addMemoVM.content = contentTextView.text ?? ""
-        self.addMemoVM.saveMemo()
+        
+        LoadingIndicator.showLoading(withText: "저장 중")
+        self.addMemoVM.saveMemo() { (resultBool, message) in
+            self.showAlert(result: resultBool, message: message)
+            LoadingIndicator.removeLoading()
+        }
     }
     
     @objc func selectImage() {

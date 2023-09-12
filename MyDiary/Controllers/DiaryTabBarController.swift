@@ -11,7 +11,7 @@ import Foundation
 class DiaryTabBarController: UITabBarController {
     
     let mapVC = MapViewController()
-    let memoVC: UINavigationController = UINavigationController(rootViewController: ProfileViewController())
+    let memoVC: UINavigationController = UINavigationController(rootViewController: DiaryListViewController())
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -11,9 +11,14 @@
 		BE2F3A102AA8747000F9BF65 /* DiaryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A0F2AA8747000F9BF65 /* DiaryTabBarController.swift */; };
 		BE2F3A122AA8769900F9BF65 /* AddMemoViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A112AA8769900F9BF65 /* AddMemoViewModels.swift */; };
 		BE2F3A152AA9A11200F9BF65 /* PreviewImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */; };
+		BE2F3A172AAEDA1100F9BF65 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */; };
+		BE2F3A192AAF113F00F9BF65 /* DiaryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A182AAF113F00F9BF65 /* DiaryListViewModel.swift */; };
+		BE2F3A1B2AAF167000F9BF65 /* DiaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A1A2AAF167000F9BF65 /* DiaryItem.swift */; };
+		BE2F3A1D2AB0488C00F9BF65 /* DiaryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A1C2AB0488C00F9BF65 /* DiaryListCell.swift */; };
+		BE2F3A1F2AB04A9E00F9BF65 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */; };
 		BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */; };
 		BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */; };
-		BE407D8D2AA4C49000A9A7A0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */; };
+		BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */; };
 		BE54FCDA2AA5A1C1003716B9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */; };
 		BE8113B22AA5AB1E00C8844E /* FirebaseAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8113B12AA5AB1E00C8844E /* FirebaseAuthViewModel.swift */; };
 		BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */; };
@@ -37,9 +42,14 @@
 		BE2F3A0F2AA8747000F9BF65 /* DiaryTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryTabBarController.swift; sourceTree = "<group>"; };
 		BE2F3A112AA8769900F9BF65 /* AddMemoViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemoViewModels.swift; sourceTree = "<group>"; };
 		BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImageCell.swift; sourceTree = "<group>"; };
+		BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
+		BE2F3A182AAF113F00F9BF65 /* DiaryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListViewModel.swift; sourceTree = "<group>"; };
+		BE2F3A1A2AAF167000F9BF65 /* DiaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryItem.swift; sourceTree = "<group>"; };
+		BE2F3A1C2AB0488C00F9BF65 /* DiaryListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListCell.swift; sourceTree = "<group>"; };
+		BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListViewController.swift; sourceTree = "<group>"; };
 		BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		BE8113B12AA5AB1E00C8844E /* FirebaseAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthViewModel.swift; sourceTree = "<group>"; };
 		BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */,
+				BE2F3A1C2AB0488C00F9BF65 /* DiaryListCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -87,6 +98,7 @@
 		BE54FCDB2AA5A920003716B9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				BE2F3A1A2AAF167000F9BF65 /* DiaryItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -96,6 +108,7 @@
 			children = (
 				BE8113B12AA5AB1E00C8844E /* FirebaseAuthViewModel.swift */,
 				BE2F3A112AA8769900F9BF65 /* AddMemoViewModels.swift */,
+				BE2F3A182AAF113F00F9BF65 /* DiaryListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -152,7 +165,7 @@
 				BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */,
 				BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */,
 				BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */,
-				BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */,
+				BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */,
 				BE2F3A0D2AA86F1100F9BF65 /* AddMemoViewController.swift */,
 				BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */,
 				BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */,
@@ -165,6 +178,8 @@
 			isa = PBXGroup;
 			children = (
 				BED58F862A9F1B9E00B6C6A4 /* Observable.swift */,
+				BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */,
+				BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -295,17 +310,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE2F3A0E2AA86F1100F9BF65 /* AddMemoViewController.swift in Sources */,
+				BE2F3A1B2AAF167000F9BF65 /* DiaryItem.swift in Sources */,
 				BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */,
 				BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */,
 				BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */,
 				BE2F3A152AA9A11200F9BF65 /* PreviewImageCell.swift in Sources */,
 				BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */,
 				BED58F872A9F1B9E00B6C6A4 /* Observable.swift in Sources */,
+				BE2F3A1D2AB0488C00F9BF65 /* DiaryListCell.swift in Sources */,
+				BE2F3A192AAF113F00F9BF65 /* DiaryListViewModel.swift in Sources */,
 				BE2F3A102AA8747000F9BF65 /* DiaryTabBarController.swift in Sources */,
 				BE8113B22AA5AB1E00C8844E /* FirebaseAuthViewModel.swift in Sources */,
+				BE2F3A1F2AB04A9E00F9BF65 /* ImageCacheManager.swift in Sources */,
 				BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */,
-				BE407D8D2AA4C49000A9A7A0 /* MainViewController.swift in Sources */,
+				BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */,
 				BE2F3A122AA8769900F9BF65 /* AddMemoViewModels.swift in Sources */,
+				BE2F3A172AAEDA1100F9BF65 /* LoadingIndicator.swift in Sources */,
 				BE54FCDA2AA5A1C1003716B9 /* ProfileViewController.swift in Sources */,
 				BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */,
 				BED58F772A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld in Sources */,
