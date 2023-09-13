@@ -63,38 +63,6 @@ class DiaryListViewController: UIViewController {
             self.colleciontView.reloadData()
         }
     }
-    
-    static func getLayout() -> UICollectionViewCompositionalLayout {
-        
-        let layout = UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
-            
-            // item
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-            
-            // group
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/3),
-                heightDimension: .fractionalWidth(1/3)
-            )
-            
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-            
-            // section
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-            section.orthogonalScrollingBehavior = .continuous
-            
-            return section
-        }
-        layout.configuration.scrollDirection = .vertical
-        return layout
-        
-    }
 }
 
 extension DiaryListViewController: UICollectionViewDataSource {
@@ -121,5 +89,9 @@ extension DiaryListViewController: UICollectionViewDataSource {
 }
 
 extension DiaryListViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let DiaryDetailVC = DiaryDetailViewController()
+        DiaryDetailVC.diaryDetailVM.diaryList.value = diaryListVM.diaryList.value?[indexPath.item]
+        navigationController?.pushViewController(DiaryDetailVC, animated: true)
+    }
 }
