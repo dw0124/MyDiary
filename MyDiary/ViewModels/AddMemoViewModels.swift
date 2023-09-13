@@ -17,6 +17,7 @@ class AddMemoViewModel {
     var title: String = ""
     var content: String = ""
     
+    /// Firebase Realtime DB에 일기 저장하는 메소드 / completion: 성공 여부, 메시지를 전달
     func saveMemo(completion: @escaping (Bool, String) -> Void) {
         var message = ""
         
@@ -42,6 +43,7 @@ class AddMemoViewModel {
         }
     }
     
+    /// Firebase Storage에 이미지를 저장하는 메소드 / completion: 이미지 경로를 배열에 담아서 전달
     func saveImageToStorage(completion: @escaping ([String]) -> Void) {
         // Firebase Storage 참조 가져오기
         var imageUrlArray: [String] = []
@@ -74,7 +76,8 @@ class AddMemoViewModel {
             }
         }
     }
-            
+           
+    /// 날짜와 시간을 합쳐서 유일키로 만들기 위한 메소드
     func generateUniqueKey() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss" // 날짜 및 시간 형식 설정

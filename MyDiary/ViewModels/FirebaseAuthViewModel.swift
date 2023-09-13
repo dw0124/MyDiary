@@ -11,6 +11,7 @@ import FirebaseDatabase
 
 class FirebaseAuthViewModel {
     
+    /// 로그인 메소드 - 로그인 성공시 화면 전환
     func signInWithEmail(email: String?, password: String?) {
         if let email = email, let password = password {
             FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { (auth, error) in
@@ -21,7 +22,6 @@ class FirebaseAuthViewModel {
                 
                 if auth != nil {
                     print("로그인 성공")
-                    //let mapViewController = MapViewController() // MyViewController는 대상 뷰 컨트롤러 클래스명
                     let mapViewController = DiaryTabBarController()
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)
                 }
@@ -29,6 +29,7 @@ class FirebaseAuthViewModel {
         }
     }
     
+    /// 회원가입을 위한 메소드 Firebase Auth와 Realtime DB에 유저 정보 저장
     func signUpWithEmail(email: String?, password: String?) {
         if let email = email, let password = password {
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
@@ -36,9 +37,7 @@ class FirebaseAuthViewModel {
                     print(error)
                     return
                 }
-                print("#1")
                 
-                // 사용자가 등록되면 authResult에 사용자 정보가 포함됩니다.
                 if let user = authResult?.user {
                     // 사용자 고유 ID
                     let userID = user.uid
@@ -62,6 +61,7 @@ class FirebaseAuthViewModel {
         }
     }
     
+    /// 비밀번호 재설정 메일을 보내기 위한 메소드
     func findPassword(email: String?, completion: @escaping (Bool, String) -> ()) {
         if let email = email {
             Auth.auth().sendPasswordReset(withEmail: email) { error in

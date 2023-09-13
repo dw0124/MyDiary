@@ -14,6 +14,7 @@ class DiaryListViewModel {
     
     var diaryList: Observable<[DiaryItem]> = Observable([])
     
+    /// 일기 목록 불러오는 메소드
     func getDiaryListData() {
         let ref = Database.database().reference()
         guard let currentUser = Auth.auth().currentUser else { return }
@@ -30,6 +31,7 @@ class DiaryListViewModel {
         }
     }
     
+    /// firebase storage에서 이미지 데이터 불러오는 메소드
     func getDiaryImage(storagePath: String, completion: @escaping (Data) -> Void) {
         let storage = Storage.storage()
         let storageRef = storage.reference(forURL: storagePath)

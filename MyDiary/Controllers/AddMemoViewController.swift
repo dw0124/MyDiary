@@ -13,7 +13,7 @@ class AddMemoViewController: UIViewController {
     
     let addMemoVM = AddMemoViewModel()
     
-    let addPreviewImagesButton: UIButton = {
+    lazy var addPreviewImagesButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("추가", for: .normal)
         button.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
