@@ -9,6 +9,8 @@ import UIKit
 import NMapsMap
 
 class MapViewController: UIViewController {
+    
+    let mapVM = MapViewModel()
 
     let locationManager = CLLocationManager()
     var current: [Double] = [0, 0]
@@ -16,9 +18,24 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let rightButton = UIBarButtonItem(
+            image: UIImage(systemName: "plus"),
+            style: .plain,
+            target: self,
+            action: #selector(addButtonTapped) // 버튼을 탭했을 때 실행할 메서드
+        )
  
+        self.navigationItem.rightBarButtonItem = rightButton
+        
         setLocationManager()
         setMapView()
+        setMarker()
+    }
+    
+    @objc func addButtonTapped() {
+        NotificationCenter.default.post(name: Notification.Name("addAddress"), object: nil, userInfo: ["address": self.mapVM.selectedAddressStr])
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -76,6 +93,8 @@ extension MapViewController: CLLocationManagerDelegate {
             current[0] = Double(location.coordinate.latitude)
             current[1] = Double(location.coordinate.longitude)
             
+            print(current[1], current[0])
+            
             currentOverlay.value?[0] = Double(location.coordinate.latitude)
             currentOverlay.value?[1] = Double(location.coordinate.longitude)
         }
@@ -89,6 +108,8 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
+        print(latlng.lng, latlng.lat)
+        mapVM.reverseGeocoding(lat: latlng.lng, lng: latlng.lat)
         
         currentOverlay.value?[0] = latlng.lat
         currentOverlay.value?[1] = latlng.lng
