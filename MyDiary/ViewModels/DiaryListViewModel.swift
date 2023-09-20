@@ -32,7 +32,12 @@ class DiaryListViewModel {
     }
     
     /// firebase storage에서 이미지 데이터 불러오는 메소드
-    func getDiaryImage(storagePath: String, completion: @escaping (Data) -> Void) {
+    func getDiaryImage(storagePath: String, completion: @escaping (Data?) -> Void) {
+        if storagePath == "" {
+            completion(nil)
+            return
+        }
+        
         let storage = Storage.storage()
         let storageRef = storage.reference(forURL: storagePath)
         storageRef.getData(maxSize: Int64(100 * 1024 * 1024)){ (data, error) in
@@ -46,5 +51,30 @@ class DiaryListViewModel {
         }
     }
     
-    
+    /// firebase realtime DB에서 index에 해당하는 일기를 삭제하는 메소드
+    func removeDiaryAtIndex(index: Int) {
+        // 데이터 경로를 위한 키 - diary의 createTime이 키
+        guard let createTime = diaryList.value?[index].createTime else { return }
+        
+        // realtime DB에서 데이터 삭제
+        let ref = Database.database().reference()
+        guard let currentUser = Auth.auth().currentUser else { return }
+        ref.child("users/\(currentUser.uid)/memos/\(createTime)").removeValue() { error, result in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        // Storage에서 이미지 삭제
+        guard let storagePath = diaryList.value?[index].imageURL else { return }
+        storagePath.forEach { imagePath in
+            let storage = Storage.storage()
+            let storageRef = storage.reference(forURL: imagePath)
+            storageRef.delete { error in
+              if let error = error {
+                  print(error.localizedDescription)
+              }
+            }
+        }
+        diaryList.value?.remove(at: index)
+    }
 }

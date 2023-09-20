@@ -36,9 +36,17 @@ class DiaryListViewController: UIViewController {
         return collectionView
     }()
     
+    @objc func addDirayList(_ notification: Notification) {
+        if let diaryItem = notification.userInfo?["diaryItem"] as? DiaryItem {
+            diaryListVM.diaryList.value?.insert(diaryItem, at: 0)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // AddMemoViewController에서 데이터를 추가하면 collectionView로 추가하기 위해서 사용
+        NotificationCenter.default.addObserver(self, selector: #selector(addDirayList(_:)), name: Notification.Name("addDiaryItem"), object: nil)
         
         view.backgroundColor = .white
         
@@ -75,9 +83,9 @@ extension DiaryListViewController: UICollectionViewDataSource {
             return UICollectionViewCell() }
     
         if let previewImageUrl = diaryListVM.diaryList.value?[indexPath.item].imageURL.first {
-            diaryListVM.getDiaryImage(storagePath: previewImageUrl) { data in
+            ImageCacheManager.shared.loadImageFromStorage(storagePath: previewImageUrl) { image in
                 DispatchQueue.main.async {
-                    cell.imageView.image = UIImage(data: data)
+                    cell.imageView.image = image
                 }
             }
         } else {
@@ -90,8 +98,9 @@ extension DiaryListViewController: UICollectionViewDataSource {
 
 extension DiaryListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let DiaryDetailVC = DiaryDetailViewController()
-        DiaryDetailVC.diaryDetailVM.diaryList.value = diaryListVM.diaryList.value?[indexPath.item]
-        navigationController?.pushViewController(DiaryDetailVC, animated: true)
+        let diaryDetailVC = DiaryDetailViewController()
+        diaryDetailVC.diaryDetailVM.diaryList.value = diaryListVM.diaryList.value?[indexPath.item]
+        navigationController?.pushViewController(diaryDetailVC, animated: true)
     }
 }
+

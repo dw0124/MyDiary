@@ -1,16 +1,16 @@
 //
-//  DiaryListCell.swift
+//  DiaryDetailImageCell.swift
 //  MyDiary
 //
-//  Created by 김두원 on 2023/09/12.
+//  Created by 김두원 on 2023/09/19.
 //
 
 import UIKit
 import Foundation
 import SnapKit
 
-class DiaryListCell: UICollectionViewCell {
-    static let identifier = "diaryListCell"
+class DiaryDetailImageCell: UICollectionViewCell {
+    static let identifier = "DiaryDetailImageCell"
     
     // 이미지를 표시할 이미지 뷰
     let imageView: UIImageView = {

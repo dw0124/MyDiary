@@ -25,7 +25,7 @@ class DiaryDetailViewController: UIViewController {
         flowLayout.itemSize = CGSize(width: itemWidth, height: itemHeight)
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.register(DiaryListCell.self, forCellWithReuseIdentifier: DiaryListCell.identifier)
+        collectionView.register(DiaryDetailImageCell.self, forCellWithReuseIdentifier: DiaryDetailImageCell.identifier)
         collectionView.backgroundColor = .white
         collectionView.isPagingEnabled = true
         collectionView.decelerationRate = .fast
@@ -33,19 +33,35 @@ class DiaryDetailViewController: UIViewController {
         return collectionView
     }()
     
+    let contentLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .justified
+        label.numberOfLines = 0
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .green
+        view.backgroundColor = .white
         
         colleciontView.dataSource = self
         colleciontView.delegate = self
+        colleciontView.prefetchDataSource = self
         
         view.addSubview(colleciontView)
+        view.addSubview(contentLabel)
         
         colleciontView.snp.makeConstraints {
             $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(colleciontView.snp.width).multipliedBy(1.0/1.0)
+        }
+        
+        contentLabel.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(colleciontView.snp.bottom).offset(16)
         }
         
         setBinding()
@@ -54,6 +70,7 @@ class DiaryDetailViewController: UIViewController {
     private func setBinding() {
         diaryDetailVM.diaryList.bind { diaryItem in
             self.colleciontView.reloadData()
+            self.contentLabel.text = diaryItem?.content
         }
     }
 }
@@ -64,23 +81,40 @@ extension DiaryDetailViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryListCell.identifier, for: indexPath) as? DiaryListCell else {
-            return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryDetailImageCell.identifier, for: indexPath) as? DiaryDetailImageCell else { return UICollectionViewCell() }
     
-        if let imageURL = diaryDetailVM.diaryList.value?.imageURL[indexPath.item] {
-            diaryDetailVM.getDiaryImage(storagePath: imageURL) { data in
-                DispatchQueue.main.async {
-                    cell.imageView.image = UIImage(data: data)
+        if cell.imageView.image == nil {
+            if let imageURL = diaryDetailVM.diaryList.value?.imageURL[indexPath.item] {
+                ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURL) { image in
+                    DispatchQueue.main.async {
+                        cell.imageView.image = image
+                    }
                 }
+            } else {
+                cell.imageView.image = nil
             }
-        } else {
-            cell.imageView.image = nil
         }
         
         return cell
     }
+
+    
+}
+
+extension DiaryDetailViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            if let imageURL = diaryDetailVM.diaryList.value?.imageURL[indexPath.item]  {
+                ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURL) { image in }
+            }
+        }
+    }
 }
 
 extension DiaryDetailViewController: UICollectionViewDelegate {
- 
+    
+}
+
+extension DiaryDetailViewController {
+    //self.navigationController?.navigationItem.leftBarButtonItem
 }
