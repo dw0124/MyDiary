@@ -173,6 +173,7 @@ class AddMemoViewController: UIViewController {
     }
     
     @objc func saveMemo() {
+        self.addMemoVM.address = addressLabel.text ?? ""
         self.addMemoVM.title = titleTextField.text ?? ""
         self.addMemoVM.content = contentTextView.text ?? ""
         
@@ -187,6 +188,10 @@ class AddMemoViewController: UIViewController {
     @objc func setAddress(_ notification: Notification) {
         if let address = notification.userInfo?["address"] as? String {
             self.addressLabel.text = address
+        }
+        if let lat = notification.userInfo?["lat"] as? Double, let lng = notification.userInfo?["lng"] as? Double {
+            addMemoVM.lat = lat
+            addMemoVM.lng = lng
         }
     }
     

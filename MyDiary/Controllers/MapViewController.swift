@@ -11,10 +11,18 @@ import NMapsMap
 class MapViewController: UIViewController {
     
     let mapVM = MapViewModel()
-
-    let locationManager = CLLocationManager()
+    
     var current: [Double] = [0, 0]
-    var currentOverlay: Observable<[Double]> = Observable([0, 0])
+
+    var mapView1: NMFMapView = {
+        let view = NMFMapView()
+        let locationOverlay = view.locationOverlay
+        
+        
+        return view
+    }()
+    
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,11 +38,16 @@ class MapViewController: UIViewController {
         
         setLocationManager()
         setMapView()
-        setMarker()
     }
     
     @objc func addButtonTapped() {
-        NotificationCenter.default.post(name: Notification.Name("addAddress"), object: nil, userInfo: ["address": self.mapVM.selectedAddressStr])
+        let userInfo: [String: Any] = [
+            "address": mapVM.selectedAddressStr,
+            "lat": mapVM.lat,
+            "lng": mapVM.lng
+        ]
+        
+        NotificationCenter.default.post(name: Notification.Name("addAddress"), object: nil, userInfo: userInfo)
         self.navigationController?.popViewController(animated: true)
     }
 }
@@ -63,21 +76,22 @@ extension MapViewController {
         let locationOverlay = mapView.locationOverlay
         locationOverlay.hidden = false
         
-        DispatchQueue.main.async {
-            // 네이버 지도 카메라 움직이기
-            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: self.current[0], lng: self.current[1]))
-            mapView.moveCamera(cameraUpdate)
-            
-            locationOverlay.location = NMGLatLng(lat: self.current[0], lng: self.current[1])
-        }
-        
         // 사용자 위치 표시하는 오버레이 위치변경을 위한 바인딩
-        self.currentOverlay.bind { value in
-            if let lat = self.currentOverlay.value?[0], let lng = self.currentOverlay.value?[1] {
+        mapVM.currentLocation.bind { location in
+            if let lat = location?[0], let lng = location?[1] {
                 DispatchQueue.main.async {
                     locationOverlay.location = NMGLatLng(lat: lat, lng: lng)
                 }
             }
+        }
+   
+        DispatchQueue.main.async {
+            // 네이버 지도 카메라 움직이기
+            let nmgLatLng = NMGLatLng(lat: self.current[0], lng: self.current[1])
+            let cameraUpdate = NMFCameraUpdate(scrollTo: nmgLatLng)
+            mapView.moveCamera(cameraUpdate)
+            
+            locationOverlay.location = nmgLatLng
         }
     }
     
@@ -93,10 +107,8 @@ extension MapViewController: CLLocationManagerDelegate {
             current[0] = Double(location.coordinate.latitude)
             current[1] = Double(location.coordinate.longitude)
             
-            print(current[1], current[0])
-            
-            currentOverlay.value?[0] = Double(location.coordinate.latitude)
-            currentOverlay.value?[1] = Double(location.coordinate.longitude)
+            mapVM.currentLocation.value?[0] = Double(location.coordinate.latitude)
+            mapVM.currentLocation.value?[1] = Double(location.coordinate.longitude)
         }
     }
     
@@ -108,11 +120,9 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        print(latlng.lng, latlng.lat)
+        // revser geocoding으로 주소 정보 받아옴
+        mapVM.lat = latlng.lat
+        mapVM.lng = latlng.lng
         mapVM.reverseGeocoding(lat: latlng.lng, lng: latlng.lat)
-        
-        currentOverlay.value?[0] = latlng.lat
-        currentOverlay.value?[1] = latlng.lng
-        
     }
 }

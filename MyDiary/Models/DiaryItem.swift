@@ -12,6 +12,8 @@ struct DiaryItem: Codable {
     let createTime: String
     let imageURL: [String]
     let title: String
+    let lat: Double?
+    let lng: Double?
 }
 
 struct DiaryData: Codable {

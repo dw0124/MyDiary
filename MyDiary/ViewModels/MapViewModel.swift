@@ -10,6 +10,9 @@ import Alamofire
 
 class MapViewModel {
     
+    var currentLocation: Observable<[Double]> = Observable([0, 0])
+    var lat: Double = 0
+    var lng: Double = 0
     var address: Address?
     var selectedAddressStr: String = ""
     

@@ -15,7 +15,11 @@ class AddMemoViewModel {
     
     var diaryItem: DiaryItem?
     
+    var address: String = ""
+    var lat: Double = 0
+    var lng: Double = 0
     var images: Observable<[UIImage]> = Observable([])
+    var imagesSorted: Observable<[Int: UIImage]> = Observable([:])
     var title: String = ""
     var content: String = ""
     
@@ -23,8 +27,9 @@ class AddMemoViewModel {
     func saveMemo(completion: @escaping (Bool, String) -> Void) {
         var message = ""
         
-        // content를 입력하지 않았을때 ""를 넘김
-        content = (content == "내용을 입력하세요" ? "" : content)
+        // 입력된 값이 없으면 ""을 저장
+        address = address == "선택된 위치 없음" ? "" : address
+        content = content == "내용을 입력하세요" ? "" : content
         
         saveImageToStorage { imageUrlArray in
             
@@ -35,7 +40,15 @@ class AddMemoViewModel {
                 return
             }
             let createTime = self.generateUniqueKey()
-            let memoData: [String: Any] = ["createTime": createTime, "imageURL": imageUrlArr, "title": self.title, "content": self.content]
+            let memoData: [String: Any] = [
+                "createTime": createTime,
+                "address": self.address,
+                "lat": self.lat,
+                "lng": self.lng,
+                "imageURL": imageUrlArr,
+                "title": self.title,
+                "content": self.content
+            ]
             // Realtime Database에 저장
             databaseRef.child("users").child(currentUser.uid).child("memos").child(createTime).setValue(memoData) { (error, ref) in
                 if let error = error as? NSError {
@@ -47,7 +60,14 @@ class AddMemoViewModel {
                     message = "저장을 완료했습니다."
                     
                     // alert를 통해서 성공했음을 알리고 DiaryListVC에서 collectionView item으로 추가하기 위함
-                    self.diaryItem = DiaryItem(content: self.content, createTime: createTime, imageURL: imageUrlArr, title: self.title)
+                    self.diaryItem = DiaryItem(
+                        content: self.content,
+                        createTime: createTime,
+                        imageURL: imageUrlArr,
+                        title: self.title,
+                        lat: self.lat,
+                        lng: self.lng
+                    )
                     
                     completion(true, message)
                 }
@@ -63,7 +83,7 @@ class AddMemoViewModel {
         }
         
         // Firebase Storage 참조 가져오기
-        var imageUrlArray: [String] = []
+        var imageUrlArray: [Int:String] = [:]
         let storageRef = Storage.storage().reference()
         
         guard let currentUser = Auth.auth().currentUser else { return }
@@ -82,10 +102,14 @@ class AddMemoViewModel {
                         } else {
                             // 업로드가 성공한 경우 처리
                             print("이미지 업로드 성공")
-                            imageUrlArray.append("\(imageRef)")
+                            imageUrlArray.updateValue("\(imageRef)", forKey: index)
                             
+                            // index를 순서로 정렬한 배열을 completion으로 전달
+                            let sortedImageUrlArray = imageUrlArray.sorted { $0.key < $1.key }.map { $0.value }
+                            
+                            // 선택된 이미지의 개수와 storage에 저장하는 이미지의 개수가 같은지 확인
                             if imageUrlArray.count == imageArray.count {
-                                completion(imageUrlArray)
+                                completion(sortedImageUrlArray)
                             }
                         }
                     }
