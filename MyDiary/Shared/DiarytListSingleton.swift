@@ -1,8 +1,8 @@
 //
-//  DiaryListViewModel.swift
+//  DiarytListSingleton.swift
 //  MyDiary
 //
-//  Created by 김두원 on 2023/09/11.
+//  Created by 김두원 on 2023/09/25.
 //
 
 import Foundation
@@ -10,16 +10,17 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
-class DiaryListViewModel {
+class DiaryListSingleton {
+    
+    private init() { getDiaryListData() }
+    
+    static let shared = DiaryListSingleton()
     
     var diaryList: Observable<[DiaryItem]> = Observable([])
     
-    init() {
-        getDiaryListData()
-    }
-    
     /// 일기 목록 불러오는 메소드
     func getDiaryListData() {
+        print(#function)
         let ref = Database.database().reference()
         guard let currentUser = Auth.auth().currentUser else { return }
         
@@ -81,4 +82,5 @@ class DiaryListViewModel {
         }
         diaryList.value?.remove(at: index)
     }
+    
 }

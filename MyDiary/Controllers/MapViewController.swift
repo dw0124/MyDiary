@@ -12,15 +12,11 @@ class MapViewController: UIViewController {
     
     let mapVM = MapViewModel()
     
+    // 맵뷰 실행시 카메라 위치를 현재 좌표로 옮기기 위한 배열
     var current: [Double] = [0, 0]
 
-    var mapView1: NMFMapView = {
-        let view = NMFMapView()
-        let locationOverlay = view.locationOverlay
-        
-        
-        return view
-    }()
+    var mapView: NMFMapView!
+    var locationOverlay:  NMFLocationOverlay!
     
     let locationManager = CLLocationManager()
     
@@ -38,6 +34,8 @@ class MapViewController: UIViewController {
         
         setLocationManager()
         setMapView()
+        setMarker()
+        setBinding()
     }
     
     @objc func addButtonTapped() {
@@ -53,6 +51,7 @@ class MapViewController: UIViewController {
 }
 
 extension MapViewController {
+    
     // 위치를 받아오기 위한 메소드
     private func setLocationManager() {
         locationManager.delegate = self
@@ -68,35 +67,82 @@ extension MapViewController {
     
     private func setMapView() {
         // 지도 표시
-        let mapView = NMFMapView(frame: view.frame)
+        mapView = NMFMapView(frame: view.frame)
         mapView.touchDelegate = self
         view.addSubview(mapView)
         
         // 사용자 위치 표시하는 오버레이
-        let locationOverlay = mapView.locationOverlay
+        locationOverlay = mapView.locationOverlay
         locationOverlay.hidden = false
-        
-        // 사용자 위치 표시하는 오버레이 위치변경을 위한 바인딩
-        mapVM.currentLocation.bind { location in
-            if let lat = location?[0], let lng = location?[1] {
-                DispatchQueue.main.async {
-                    locationOverlay.location = NMGLatLng(lat: lat, lng: lng)
-                }
-            }
-        }
    
         DispatchQueue.main.async {
             // 네이버 지도 카메라 움직이기
             let nmgLatLng = NMGLatLng(lat: self.current[0], lng: self.current[1])
             let cameraUpdate = NMFCameraUpdate(scrollTo: nmgLatLng)
-            mapView.moveCamera(cameraUpdate)
+            self.mapView.moveCamera(cameraUpdate)
             
-            locationOverlay.location = nmgLatLng
+            self.locationOverlay.location = nmgLatLng
         }
     }
     
     private func setMarker() {
+        let diaryListSingleton = DiaryListSingleton.shared
         
+        diaryListSingleton.diaryList.bind { diaryList in
+            diaryList?.forEach { diaryItem in
+                
+                guard let lat = diaryItem.lat, let lng = diaryItem.lng else { return }
+                guard let imageURL = diaryItem.imageURL?.first else { return }
+                
+                // 마커로 표시할 이미지를 위한 ImageMarkerView
+                // -> toImage()를 사용해서 UIView를 이미지로 만들어서 마커 이미지에 적용
+                let imageMarkerView = ImageMarkerView()
+                self.view.addSubview(imageMarkerView)
+                imageMarkerView.snp.makeConstraints {
+                    $0.leading.equalToSuperview().offset(-50)
+                    $0.top.equalToSuperview().offset(-100)
+                    $0.width.equalTo(44)
+                    $0.height.equalTo(64)
+                }
+                
+                ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURL) { image in
+                    DispatchQueue.main.async {
+                        imageMarkerView.imgView.image = image
+                        DispatchQueue.main.async {
+                            let postion = NMGLatLng(lat: lat, lng: lng)
+                            
+                            // ImageMarkerView를 이미지로 사용
+                            let markerImage = imageMarkerView.toImage()
+                            let marker = NMFMarker(position: postion)
+                            marker.width = 44
+                            marker.height = 64
+                            marker.iconImage = NMFOverlayImage(image: markerImage)
+                            
+                            // 마커를 터치했을때 실행되는 클로저
+                            marker.touchHandler = { (overlay: NMFOverlay) -> Bool in
+                                print(diaryItem.createTime)
+                                return true
+                            }
+                            
+                            marker.mapView = self.mapView
+                            
+                            imageMarkerView.removeFromSuperview()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func setBinding() {
+        // 사용자 위치 표시하는 오버레이 위치변경을 위한 바인딩
+        mapVM.currentLocation.bind { location in
+            if let lat = location?[0], let lng = location?[1] {
+                DispatchQueue.main.async {
+                    self.locationOverlay.location = NMGLatLng(lat: lat, lng: lng)
+                }
+            }
+        }
     }
 }
 
@@ -120,9 +166,21 @@ extension MapViewController: CLLocationManagerDelegate {
 
 extension MapViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
+        
+        print("???")
+        
         // revser geocoding으로 주소 정보 받아옴
         mapVM.lat = latlng.lat
         mapVM.lng = latlng.lng
         mapVM.reverseGeocoding(lat: latlng.lng, lng: latlng.lat)
+    }
+}
+
+
+extension UIImage {
+    func resized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
     }
 }

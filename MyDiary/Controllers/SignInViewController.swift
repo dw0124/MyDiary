@@ -22,8 +22,6 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(self.navigationController != nil ? "true" : "false")
-        
         emailTextField.delegate = self
         passwordTextField.delegate = self
         

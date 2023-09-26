@@ -40,8 +40,10 @@ class MapViewModel {
                 
                 if address.results[0].name == "admcode" {
                     self.selectedAddressStr = "\(address.results[0].region.area1.name + " " + address.results[0].region.area2.name + " " + address.results[0].region.area3.name + " " + address.results[0].region.area4.name)"
-                } else {
+                } else if address.results[0].name == "roadaddr" {
                     self.selectedAddressStr = "\(address.results[1].region.area1.name + " " + address.results[1].region.area2.name + " " + address.results[1].region.area3.name + " " + address.results[1].region.area4.name + " " + (address.results[0].land?.addition0.value ?? ""))"
+                } else {
+                    self.selectedAddressStr = "선택된 지역에 대한 정보가 없습니다."
                 }
             case .failure:
                 print(response.error.debugDescription)

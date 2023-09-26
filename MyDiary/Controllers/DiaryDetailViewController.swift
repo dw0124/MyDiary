@@ -77,14 +77,14 @@ class DiaryDetailViewController: UIViewController {
 
 extension DiaryDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return diaryDetailVM.diaryList.value?.imageURL.count ?? 0
+        return diaryDetailVM.diaryList.value?.imageURL?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryDetailImageCell.identifier, for: indexPath) as? DiaryDetailImageCell else { return UICollectionViewCell() }
     
         if cell.imageView.image == nil {
-            if let imageURL = diaryDetailVM.diaryList.value?.imageURL[indexPath.item] {
+            if let imageURL = diaryDetailVM.diaryList.value?.imageURL?[indexPath.item] {
                 ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURL) { image in
                     DispatchQueue.main.async {
                         cell.imageView.image = image
@@ -104,7 +104,7 @@ extension DiaryDetailViewController: UICollectionViewDataSource {
 extension DiaryDetailViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            if let imageURL = diaryDetailVM.diaryList.value?.imageURL[indexPath.item]  {
+            if let imageURL = diaryDetailVM.diaryList.value?.imageURL?[indexPath.item]  {
                 ImageCacheManager.shared.loadImageFromStorage(storagePath: imageURL) { image in }
             }
         }

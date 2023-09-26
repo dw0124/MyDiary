@@ -11,7 +11,9 @@ import SnapKit
 
 class DiaryListViewController: UIViewController {
     
-    let diaryListVM = DiaryListViewModel()
+    //let diaryListVM = DiaryListViewModel()
+    
+    let diaryListSingleton = DiaryListSingleton.shared
     
     let colleciontView: UICollectionView = {
         
@@ -32,13 +34,12 @@ class DiaryListViewController: UIViewController {
         collectionView.register(DiaryListCell.self, forCellWithReuseIdentifier: DiaryListCell.identifier)
         collectionView.backgroundColor = .white
 
-        
         return collectionView
     }()
     
     @objc func addDirayList(_ notification: Notification) {
         if let diaryItem = notification.userInfo?["diaryItem"] as? DiaryItem {
-            diaryListVM.diaryList.value?.insert(diaryItem, at: 0)
+            //diaryListVM.diaryList.value?.insert(diaryItem, at: 0)
         }
     }
     
@@ -61,12 +62,10 @@ class DiaryListViewController: UIViewController {
         }
         
         setBinding()
-        
-        diaryListVM.getDiaryListData()
     }
     
     func setBinding() {
-        diaryListVM.diaryList.bind { diaryItemArr in
+        diaryListSingleton.diaryList.bind { diaryItemArr in
             print(#function)
             self.colleciontView.reloadData()
         }
@@ -75,14 +74,14 @@ class DiaryListViewController: UIViewController {
 
 extension DiaryListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return diaryListVM.diaryList.value?.count ?? 0
+        return diaryListSingleton.diaryList.value?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryListCell.identifier, for: indexPath) as? DiaryListCell else {
             return UICollectionViewCell() }
     
-        if let previewImageUrl = diaryListVM.diaryList.value?[indexPath.item].imageURL.first {
+        if let previewImageUrl = diaryListSingleton.diaryList.value?[indexPath.item].imageURL?.first {
             ImageCacheManager.shared.loadImageFromStorage(storagePath: previewImageUrl) { image in
                 DispatchQueue.main.async {
                     cell.imageView.image = image
@@ -99,7 +98,8 @@ extension DiaryListViewController: UICollectionViewDataSource {
 extension DiaryListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let diaryDetailVC = DiaryDetailViewController()
-        diaryDetailVC.diaryDetailVM.diaryList.value = diaryListVM.diaryList.value?[indexPath.item]
+        //diaryDetailVC.diaryDetailVM.diaryList.value = diaryListVM.diaryList.value?[indexPath.item]
+        diaryDetailVC.diaryDetailVM.diaryList.value = diaryListSingleton.diaryList.value?[indexPath.item]
         navigationController?.pushViewController(diaryDetailVC, animated: true)
     }
 }

@@ -164,7 +164,8 @@ class AddMemoViewController: UIViewController {
             
             if result == true {
                 // collectionView로 추가한 데이터 표시하기 위해 notification으로 DiaryListViewController로 데이터 전달
-                NotificationCenter.default.post(name: Notification.Name("addDiaryItem"), object: nil, userInfo: ["diaryItem": self.addMemoVM.diaryItem!])
+                //NotificationCenter.default.post(name: Notification.Name("addDiaryItem"), object: nil, userInfo: ["diaryItem": self.addMemoVM.diaryItem!])
+                DiaryListSingleton.shared.diaryList.value?.insert(self.addMemoVM.diaryItem!, at: 0)
                 self.navigationController?.popViewController(animated: true)
             }
         }

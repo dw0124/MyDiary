@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //로그인 정보를 확인하고 로그인이 되어있으면 메인VC, 없으면 로그인VC를 보여줌
         if let user = Auth.auth().currentUser {
-            print("User Info : ",user)
+            
             let mapViewController = DiaryTabBarController()
 
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)

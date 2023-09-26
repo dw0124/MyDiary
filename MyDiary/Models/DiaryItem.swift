@@ -8,10 +8,10 @@
 import Foundation
 
 struct DiaryItem: Codable {
-    let content: String
+    let content: String?
     let createTime: String
-    let imageURL: [String]
-    let title: String
+    let imageURL: [String]?
+    let title: String?
     let lat: Double?
     let lng: Double?
 }

@@ -21,6 +21,8 @@
 		BE2F3A252AB457F900F9BF65 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A242AB457F900F9BF65 /* MapViewModel.swift */; };
 		BE2F3A272AB49BAD00F9BF65 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A262AB49BAD00F9BF65 /* Address.swift */; };
 		BE2F3A292AB98BD800F9BF65 /* DiaryDetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */; };
+		BE2F3A2B2AC17C9E00F9BF65 /* DiarytListSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */; };
+		BE2F3A2D2AC1A7AA00F9BF65 /* ImageMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */; };
 		BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */; };
 		BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */; };
 		BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */; };
@@ -57,6 +59,8 @@
 		BE2F3A242AB457F900F9BF65 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		BE2F3A262AB49BAD00F9BF65 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailImageCell.swift; sourceTree = "<group>"; };
+		BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarytListSingleton.swift; sourceTree = "<group>"; };
+		BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMarkerView.swift; sourceTree = "<group>"; };
 		BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 				BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */,
 				BE2F3A1C2AB0488C00F9BF65 /* DiaryListCell.swift */,
 				BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */,
+				BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -195,6 +200,7 @@
 				BED58F862A9F1B9E00B6C6A4 /* Observable.swift */,
 				BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */,
 				BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */,
+				BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -328,6 +334,7 @@
 				BE2F3A1B2AAF167000F9BF65 /* DiaryItem.swift in Sources */,
 				BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */,
 				BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */,
+				BE2F3A2D2AC1A7AA00F9BF65 /* ImageMarkerView.swift in Sources */,
 				BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */,
 				BE2F3A152AA9A11200F9BF65 /* PreviewImageCell.swift in Sources */,
 				BE2F3A272AB49BAD00F9BF65 /* Address.swift in Sources */,
@@ -342,6 +349,7 @@
 				BE2F3A1F2AB04A9E00F9BF65 /* ImageCacheManager.swift in Sources */,
 				BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */,
 				BE2F3A232AB18B8A00F9BF65 /* DiaryDetailViewModel.swift in Sources */,
+				BE2F3A2B2AC17C9E00F9BF65 /* DiarytListSingleton.swift in Sources */,
 				BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */,
 				BE2F3A122AA8769900F9BF65 /* AddMemoViewModels.swift in Sources */,
 				BE2F3A172AAEDA1100F9BF65 /* LoadingIndicator.swift in Sources */,
