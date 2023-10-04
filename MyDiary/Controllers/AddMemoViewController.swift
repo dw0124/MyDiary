@@ -13,19 +13,15 @@ class AddMemoViewController: UIViewController {
     
     let addMemoVM = AddMemoViewModel()
     
-    lazy var addAddressButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("추가", for: .normal)
-        button.addTarget(self, action: #selector(selectAddress), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var addPreviewImagesButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("추가", for: .normal)
-        button.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
-        return button
-    }()
+    // UI 요소 정의
+    let textViewPlaceHolder = "내용을 입력하세요"   // UITextViewDelegate를 통해서 contentTextView의 placeholder처럼 사용
+    lazy var addAddressButton = UIButton()
+    lazy var addPreviewImagesButton = UIButton()
+    var addressLabel = UILabel()
+    var titleTextField = UITextField()
+    var contentTextView = UITextView()
+    var addressStackView = UIStackView()
+    var imageStackView = UIStackView()
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -37,51 +33,8 @@ class AddMemoViewController: UIViewController {
         
         collectionView.backgroundColor = .white
         collectionView.showsVerticalScrollIndicator = false
-
+        
         return collectionView
-    }()
-    
-    // UI 요소 정의
-    let addressLabel: UILabel = {
-        let label = UILabel()
-        label.text = "선택된 위치 없음"
-        return label
-    }()
-    
-    let titleTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "제목을 입력하세요"
-        textField.borderStyle = .roundedRect
-        return textField
-    }()
-    
-    let textViewPlaceHolder = "내용을 입력하세요"
-    lazy var contentTextView: UITextView = {
-        let textView = UITextView()
-        textView.text = textViewPlaceHolder
-        textView.layer.borderWidth = 0.2
-        textView.layer.borderColor = UIColor.lightGray.cgColor
-        textView.layer.cornerRadius = 8.0
-        textView.textColor = .lightGray
-        textView.font = UIFont.systemFont(ofSize: 16)
-        return textView
-    }()
-    
-    private let addressStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 16
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        return stackView
-    }()
-    
-    private let imageStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 16
-        stackView.alignment = .center
-        return stackView
     }()
     
     // MARK: - viewDidLoad
@@ -91,70 +44,17 @@ class AddMemoViewController: UIViewController {
         // 지도에서 위치를 선택하고 완료를 누르면 notification을 통해서 위치를 받아옴
         NotificationCenter.default.addObserver(self, selector: #selector(setAddress(_:)), name: Notification.Name("addAddress"), object: nil)
         
-        // 오른쪽 상단에 저장 버튼 추가
-        let rightButton = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(saveMemo))
-        self.navigationItem.rightBarButtonItem = rightButton
+        setupUI()
+        setupLayout()
+        setBinding()
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        contentTextView.delegate = self
-        
-        view.backgroundColor = .white
-        
-        addMemoVM.images.bind { image in
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
-        
-        addAddressButton.snp.makeConstraints { make in
-            make.width.height.equalTo(32)
-        }
-        
-        view.addSubview(addressStackView)
-        addressStackView.addArrangedSubview(addAddressButton)
-        addressStackView.addArrangedSubview(addressLabel)
-        
-        view.addSubview(imageStackView)
-        imageStackView.addArrangedSubview(addPreviewImagesButton)
-        imageStackView.addArrangedSubview(collectionView)
-        
-        view.addSubview(titleTextField)
-        view.addSubview(contentTextView)
-        
-        addressStackView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-        }
-        
-        // 스택 뷰 위치 설정
-        imageStackView.snp.makeConstraints { make in
-            //make.top.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalTo(addressStackView.snp.bottom).offset(16)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
-        }
-        
-        // collectionView 높이 설정
-        collectionView.snp.makeConstraints { make in
-            make.height.equalTo(72)
-        }
-        
-        // 제목 입력 텍스트 필드
-        titleTextField.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom).offset(8)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
-        }
-        
-        // 내용 입력 텍스트 뷰 위치 설정
-        contentTextView.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(8)
-            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-        }
-        
-        
+        setupDelegate()
     }
-    
+}
+
+// MARK: - 일기 저장 관련
+extension AddMemoViewController {
+        
     // 저장이 오류 또는 완료되었다는 메시지를 보여주기위한 Alert창
     func showAlert(result: Bool, message: String) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -163,8 +63,6 @@ class AddMemoViewController: UIViewController {
             alertController.dismiss(animated: true, completion: nil)
             
             if result == true {
-                // collectionView로 추가한 데이터 표시하기 위해 notification으로 DiaryListViewController로 데이터 전달
-                //NotificationCenter.default.post(name: Notification.Name("addDiaryItem"), object: nil, userInfo: ["diaryItem": self.addMemoVM.diaryItem!])
                 DiaryListSingleton.shared.diaryList.value?.insert(self.addMemoVM.diaryItem!, at: 0)
                 self.navigationController?.popViewController(animated: true)
             }
@@ -173,6 +71,13 @@ class AddMemoViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    // MapViewController를 열고 지도에서 위치를 선택하기 위한 메소드
+    @objc func selectAddress() {
+        let mapVC = MapViewController()
+        self.navigationController?.pushViewController(mapVC, animated: true)
+    }
+    
+    // 일기를 저장하는 메소드
     @objc func saveMemo() {
         self.addMemoVM.address = addressLabel.text ?? ""
         self.addMemoVM.title = titleTextField.text ?? ""
@@ -196,30 +101,6 @@ class AddMemoViewController: UIViewController {
         }
     }
     
-    @objc func selectImage() {
-        requestPHPhotoLibraryAuthorization {
-        }
-        self.showImagePicker()
-    }
-    
-    @objc func selectAddress() {
-        let mapVC = MapViewController()
-        self.navigationController?.pushViewController(mapVC, animated: true)
-    }
-    
-    func requestPHPhotoLibraryAuthorization(completion: @escaping () -> Void) {
-        PHPhotoLibrary.requestAuthorization(for: .readWrite) { (status) in
-            switch status {
-            case .limited:
-                completion()
-            case .authorized:
-                completion()
-            default:
-                break
-            }
-        }
-    }
-    
     // 이미지 피커 열기
     func showImagePicker() {
         DispatchQueue.main.async {
@@ -235,10 +116,158 @@ class AddMemoViewController: UIViewController {
             self.present(picker, animated: true)
         }
     }
+    
+    @objc func selectImage() {
+        requestPHPhotoLibraryAuthorization {
+        }
+        self.showImagePicker()
+    }
+    
+    func requestPHPhotoLibraryAuthorization(completion: @escaping () -> Void) {
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { (status) in
+            switch status {
+            case .limited:
+                completion()
+            case .authorized:
+                completion()
+            default:
+                break
+            }
+        }
+    }
 
 }
 
+// MARK: - UI 관련
+extension AddMemoViewController {
+    private func setupDelegate() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        contentTextView.delegate = self
+    }
+    
+    private func setupUI() {
+        // 오른쪽 상단에 저장 버튼 추가
+        let rightButton = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(saveMemo))
+        self.navigationItem.rightBarButtonItem = rightButton
+        
+        view.backgroundColor = .white
+        
+        addAddressButton = {
+            let button = UIButton(type: .system)
+            button.setTitle("추가", for: .normal)
+            button.addTarget(self, action: #selector(selectAddress), for: .touchUpInside)
+            return button
+        }()
+        
+        addPreviewImagesButton = {
+           let button = UIButton(type: .system)
+           button.setTitle("추가", for: .normal)
+           button.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
+           return button
+       }()
+        
+        addressLabel = {
+            let label = UILabel()
+            label.text = "선택된 위치 없음"
+            return label
+        }()
+        
+        titleTextField = {
+            let textField = UITextField()
+            textField.placeholder = "제목을 입력하세요"
+            textField.borderStyle = .roundedRect
+            return textField
+        }()
+        
+        //let textViewPlaceHolder = "내용을 입력하세요"
+        contentTextView = {
+            let textView = UITextView()
+            textView.text = textViewPlaceHolder
+            textView.layer.borderWidth = 0.2
+            textView.layer.borderColor = UIColor.lightGray.cgColor
+            textView.layer.cornerRadius = 8.0
+            textView.textColor = .lightGray
+            textView.font = UIFont.systemFont(ofSize: 16)
+            return textView
+        }()
+        
+        addressStackView = {
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.spacing = 16
+            stackView.alignment = .center
+            stackView.distribution = .fill
+            return stackView
+        }()
+        
+        imageStackView = {
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.spacing = 16
+            stackView.alignment = .center
+            return stackView
+        }()
+    }
 
+    private func setupLayout() {
+        view.addSubview(addressStackView)
+        addressStackView.addArrangedSubview(addAddressButton)
+        addressStackView.addArrangedSubview(addressLabel)
+        
+        view.addSubview(imageStackView)
+        imageStackView.addArrangedSubview(addPreviewImagesButton)
+        imageStackView.addArrangedSubview(collectionView)
+        
+        view.addSubview(titleTextField)
+        view.addSubview(contentTextView)
+        
+        // 지도 버튼 설정
+        addAddressButton.snp.makeConstraints { make in
+            make.width.height.equalTo(32)
+        }
+        
+        addressStackView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        }
+        
+        // 스택 뷰 위치 설정
+        imageStackView.snp.makeConstraints { make in
+            //make.top.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(addressStackView.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
+        
+        // collectionView 설정
+        collectionView.snp.makeConstraints { make in
+            make.height.equalTo(72)
+        }
+        
+        // 제목 입력 텍스트 필드
+        titleTextField.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
+        
+        // 내용 입력 텍스트 뷰 설정
+        contentTextView.snp.makeConstraints { make in
+            make.top.equalTo(titleTextField.snp.bottom).offset(8)
+            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
+    }
+    
+    func setBinding() {
+        addMemoVM.images.bind { image in
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+    }
+}
+
+// MARK: - PHPickerViewControllerDelegate
 extension AddMemoViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         // picker가 선택이 완료되면 화면 내리기
@@ -261,6 +290,7 @@ extension AddMemoViewController: PHPickerViewControllerDelegate {
     }
 }
     
+// MARK: - UICollectionViewDataSource
 extension AddMemoViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return addMemoVM.images.value?.count ?? 0
@@ -281,6 +311,7 @@ extension AddMemoViewController: UICollectionViewDataSource {
     
 }
 
+// MARK: - UICollectionViewDelegate
 extension AddMemoViewController: UICollectionViewDelegate {
     // 삭제 버튼을 눌렀을 때 호출되는 메서드
     @objc func deleteImage(_ sender: UIButton) {
@@ -290,6 +321,7 @@ extension AddMemoViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - UITextViewDelegate
 extension AddMemoViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == textViewPlaceHolder {

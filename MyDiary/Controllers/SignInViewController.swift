@@ -22,6 +22,34 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupUI()
+        setupLayout()
+    }
+}
+
+// MARK: - 로그인 관련
+extension SignInViewController {
+    @objc func signIn() {
+        firebaseAuthVM.signInWithEmail(email: emailTextField.text, password: passwordTextField.text)
+    }
+    
+    @objc func presentSignUpVC() {
+        let signUpVC = SignUpViewController()
+        
+        present(signUpVC, animated: true)
+    
+    }
+    
+    @objc func presentResetPasswordVC() {
+        let resetPasswordVC = ResetPasswordViewController()
+        
+        present(resetPasswordVC, animated: true)
+    }
+}
+
+// MARK: - UI 관련
+extension SignInViewController {
+    private func setupUI() {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
@@ -57,8 +85,9 @@ class SignInViewController: UIViewController {
         findMyPassword.backgroundColor = .white
         findMyPassword.layer.cornerRadius = 5
         findMyPassword.addTarget(self, action: #selector(presentResetPasswordVC), for: .touchUpInside)
-        
-        
+    }
+
+    private func setupLayout() {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(signInButton)
@@ -93,25 +122,6 @@ class SignInViewController: UIViewController {
             make.top.equalTo(signInButton.snp.bottom).offset(20)
             make.trailing.equalTo(emailTextField)
         }
-    }
-
-    @objc func signIn() {
-        firebaseAuthVM.signInWithEmail(email: emailTextField.text, password: passwordTextField.text)
-    }
-    
-    @objc func presentSignUpVC() {
-        print(#function)
-        let signUpVC = SignUpViewController()
-        
-        present(signUpVC, animated: true)
-    
-    }
-    
-    @objc func presentResetPasswordVC() {
-        print(#function)
-        let resetPasswordVC = ResetPasswordViewController()
-        
-        present(resetPasswordVC, animated: true)
     }
 }
 

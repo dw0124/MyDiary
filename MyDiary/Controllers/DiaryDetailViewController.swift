@@ -45,24 +45,8 @@ class DiaryDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
-        
-        colleciontView.dataSource = self
-        colleciontView.delegate = self
-        colleciontView.prefetchDataSource = self
-        
-        view.addSubview(colleciontView)
-        view.addSubview(contentLabel)
-        
-        colleciontView.snp.makeConstraints {
-            $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(colleciontView.snp.width).multipliedBy(1.0/1.0)
-        }
-        
-        contentLabel.snp.makeConstraints {
-            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.top.equalTo(colleciontView.snp.bottom).offset(16)
-        }
+        setupUI()
+        setupLayout()
         
         setBinding()
     }
@@ -75,6 +59,33 @@ class DiaryDetailViewController: UIViewController {
     }
 }
 
+// MARK: - UI 관련
+extension DiaryDetailViewController {
+    private func setupUI() {
+        view.backgroundColor = .white
+        
+        colleciontView.dataSource = self
+        colleciontView.delegate = self
+        colleciontView.prefetchDataSource = self
+    }
+
+    private func setupLayout() {
+        view.addSubview(colleciontView)
+        view.addSubview(contentLabel)
+        
+        colleciontView.snp.makeConstraints {
+            $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(colleciontView.snp.width).multipliedBy(1.0/1.0)
+        }
+        
+        contentLabel.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(colleciontView.snp.bottom).offset(16)
+        }
+    }
+}
+
+// MARK: - UICollectionViewDataSource
 extension DiaryDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return diaryDetailVM.diaryList.value?.imageURL?.count ?? 0
@@ -94,13 +105,11 @@ extension DiaryDetailViewController: UICollectionViewDataSource {
                 cell.imageView.image = nil
             }
         }
-        
         return cell
     }
-
-    
 }
 
+// MARK: - UICollectionViewDataSourcePrefetching
 extension DiaryDetailViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
@@ -111,10 +120,7 @@ extension DiaryDetailViewController: UICollectionViewDataSourcePrefetching {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension DiaryDetailViewController: UICollectionViewDelegate {
     
-}
-
-extension DiaryDetailViewController {
-    //self.navigationController?.navigationItem.leftBarButtonItem
 }

@@ -19,7 +19,15 @@ class SignUpViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupUI()
+        setupLayout()
+    }
+}
 
+// MARK: - UI 관련
+extension SignUpViewController {
+    private func setupUI() {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
@@ -43,7 +51,9 @@ class SignUpViewController: UIViewController {
         signUpButton.backgroundColor = .green
         signUpButton.layer.cornerRadius = 5
         signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
-        
+    }
+
+    private func setupLayout() {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(signUpButton)
@@ -67,8 +77,8 @@ class SignUpViewController: UIViewController {
             make.height.equalTo(44) // 버튼의 높이 설정
         }
     }
-
-    @objc func signUp() {
+    
+    @objc private func signUp() {
         firebaseAuthVM.signUpWithEmail(email: emailTextField.text, password: passwordTextField.text)
     }
 }

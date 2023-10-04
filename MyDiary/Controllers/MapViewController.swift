@@ -12,48 +12,34 @@ class MapViewController: UIViewController {
     
     let mapVM = MapViewModel()
     
-    // 맵뷰 실행시 카메라 위치를 현재 좌표로 옮기기 위한 배열
-    var current: [Double] = [0, 0]
-
     var mapView: NMFMapView!
-    var locationOverlay:  NMFLocationOverlay!
+    var locationOverlay: NMFLocationOverlay!
     
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupAddButton()
+        setupLocationManager()
+        setupMapView()
+        setupMarkers()
+        setupBinding()
+    }
+    
+    // 오른쪽 상단에 추가 버튼 설정
+    private func setupAddButton() {
         let rightButton = UIBarButtonItem(
             image: UIImage(systemName: "plus"),
             style: .plain,
             target: self,
-            action: #selector(addButtonTapped) // 버튼을 탭했을 때 실행할 메서드
+            action: #selector(addButtonTapped)
         )
- 
         self.navigationItem.rightBarButtonItem = rightButton
-        
-        setLocationManager()
-        setMapView()
-        setMarker()
-        setBinding()
     }
     
-    @objc func addButtonTapped() {
-        let userInfo: [String: Any] = [
-            "address": mapVM.selectedAddressStr,
-            "lat": mapVM.lat,
-            "lng": mapVM.lng
-        ]
-        
-        NotificationCenter.default.post(name: Notification.Name("addAddress"), object: nil, userInfo: userInfo)
-        self.navigationController?.popViewController(animated: true)
-    }
-}
-
-extension MapViewController {
-    
-    // 위치를 받아오기 위한 메소드
-    private func setLocationManager() {
+    // 위치 관리자 설정
+    private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -65,29 +51,31 @@ extension MapViewController {
         }
     }
     
-    private func setMapView() {
-        // 지도 표시
+    // 네이버 지도 설정
+    private func setupMapView() {
         mapView = NMFMapView(frame: view.frame)
         mapView.touchDelegate = self
         view.addSubview(mapView)
         
-        // 사용자 위치 표시하는 오버레이
         locationOverlay = mapView.locationOverlay
         locationOverlay.hidden = false
-   
-        DispatchQueue.main.async {
-            // 네이버 지도 카메라 움직이기
-            let nmgLatLng = NMGLatLng(lat: self.current[0], lng: self.current[1])
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let lat = self?.locationManager.location?.coordinate.latitude,
+                  let lng = self?.locationManager.location?.coordinate.longitude else { return }
+            let nmgLatLng = NMGLatLng(lat: lat, lng: lng)
             let cameraUpdate = NMFCameraUpdate(scrollTo: nmgLatLng)
-            self.mapView.moveCamera(cameraUpdate)
+            self?.mapView.moveCamera(cameraUpdate)
             
-            self.locationOverlay.location = nmgLatLng
+            self?.locationOverlay.location = nmgLatLng
         }
     }
     
-    private func setMarker() {
+    // 마커 표시를 위한 메소드
+    private func setupMarkers() {
         let diaryListSingleton = DiaryListSingleton.shared
         
+        // diaryList 바인딩을 통해 데이터가 바뀌면 마커를 표시
         diaryListSingleton.diaryList.bind { diaryList in
             diaryList?.forEach { diaryItem in
                 
@@ -109,10 +97,13 @@ extension MapViewController {
                     DispatchQueue.main.async {
                         imageMarkerView.imgView.image = image
                         DispatchQueue.main.async {
+                            // 마커 위치를 위한 상수
                             let postion = NMGLatLng(lat: lat, lng: lng)
                             
                             // ImageMarkerView를 이미지로 사용
                             let markerImage = imageMarkerView.toImage()
+                            
+                            // 마커 관련 설정
                             let marker = NMFMarker(position: postion)
                             marker.width = 44
                             marker.height = 64
@@ -124,6 +115,7 @@ extension MapViewController {
                                 return true
                             }
                             
+                            // 마커를 mapView에 추가
                             marker.mapView = self.mapView
                             
                             imageMarkerView.removeFromSuperview()
@@ -134,8 +126,8 @@ extension MapViewController {
         }
     }
     
-    private func setBinding() {
-        // 사용자 위치 표시하는 오버레이 위치변경을 위한 바인딩
+    // 바인딩 설정
+    private func setupBinding() {
         mapVM.currentLocation.bind { location in
             if let lat = location?[0], let lng = location?[1] {
                 DispatchQueue.main.async {
@@ -144,15 +136,25 @@ extension MapViewController {
             }
         }
     }
+    
+    // 추가 버튼 탭
+    @objc func addButtonTapped() {
+        let userInfo: [String: Any] = [
+            "address": mapVM.selectedAddressStr,
+            "lat": mapVM.lat,
+            "lng": mapVM.lng
+        ]
+        
+        NotificationCenter.default.post(name: Notification.Name("addAddress"), object: nil, userInfo: userInfo)
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
+// MARK: - CLLocationManagerDelegate: 위치관련 delegate
 extension MapViewController: CLLocationManagerDelegate {
     // 위치 정보 계속 업데이트 -> 위도 경도 받아옴
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            current[0] = Double(location.coordinate.latitude)
-            current[1] = Double(location.coordinate.longitude)
-            
             mapVM.currentLocation.value?[0] = Double(location.coordinate.latitude)
             mapVM.currentLocation.value?[1] = Double(location.coordinate.longitude)
         }
@@ -164,23 +166,11 @@ extension MapViewController: CLLocationManagerDelegate {
     }
 }
 
+// MARK: - NMFMapViewTouchDelegate: 네이버 지도 터치 관련 delegate
 extension MapViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        
-        print("???")
-        
-        // revser geocoding으로 주소 정보 받아옴
         mapVM.lat = latlng.lat
         mapVM.lng = latlng.lng
         mapVM.reverseGeocoding(lat: latlng.lng, lng: latlng.lat)
-    }
-}
-
-
-extension UIImage {
-    func resized(to size: CGSize) -> UIImage {
-        return UIGraphicsImageRenderer(size: size).image { _ in
-            draw(in: CGRect(origin: .zero, size: size))
-        }
     }
 }

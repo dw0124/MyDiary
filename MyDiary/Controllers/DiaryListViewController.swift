@@ -11,8 +11,6 @@ import SnapKit
 
 class DiaryListViewController: UIViewController {
     
-    //let diaryListVM = DiaryListViewModel()
-    
     let diaryListSingleton = DiaryListSingleton.shared
     
     let colleciontView: UICollectionView = {
@@ -37,33 +35,17 @@ class DiaryListViewController: UIViewController {
         return collectionView
     }()
     
-    @objc func addDirayList(_ notification: Notification) {
-        if let diaryItem = notification.userInfo?["diaryItem"] as? DiaryItem {
-            //diaryListVM.diaryList.value?.insert(diaryItem, at: 0)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // AddMemoViewController에서 데이터를 추가하면 collectionView로 추가하기 위해서 사용
-        NotificationCenter.default.addObserver(self, selector: #selector(addDirayList(_:)), name: Notification.Name("addDiaryItem"), object: nil)
-        
-        view.backgroundColor = .white
-        
-        colleciontView.delegate = self
-        colleciontView.dataSource = self
-        
-        view.addSubview(colleciontView)
-        
-        colleciontView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.bottom.trailing.equalToSuperview()
-        }
+
+        setupUI()
+        setupLayout()
         
         setBinding()
     }
-    
+}
+
+extension DiaryListViewController {
     func setBinding() {
         diaryListSingleton.diaryList.bind { diaryItemArr in
             print(#function)
@@ -72,6 +54,26 @@ class DiaryListViewController: UIViewController {
     }
 }
 
+// MARK: - UI 관련
+extension DiaryListViewController {
+    private func setupUI() {
+        view.backgroundColor = .white
+        
+        colleciontView.delegate = self
+        colleciontView.dataSource = self
+    }
+
+    private func setupLayout() {
+        view.addSubview(colleciontView)
+        
+        colleciontView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.bottom.trailing.equalToSuperview()
+        }
+    }
+}
+
+// MARK: - UICollectionViewDataSource
 extension DiaryListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return diaryListSingleton.diaryList.value?.count ?? 0
@@ -95,10 +97,10 @@ extension DiaryListViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension DiaryListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let diaryDetailVC = DiaryDetailViewController()
-        //diaryDetailVC.diaryDetailVM.diaryList.value = diaryListVM.diaryList.value?[indexPath.item]
         diaryDetailVC.diaryDetailVM.diaryList.value = diaryListSingleton.diaryList.value?[indexPath.item]
         navigationController?.pushViewController(diaryDetailVC, animated: true)
     }
