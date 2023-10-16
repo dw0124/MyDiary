@@ -15,6 +15,7 @@ class AddMemoViewModel {
     
     var diaryItem: DiaryItem?
     
+    var category: String = "없음"
     var address: String = ""
     var lat: Double = 0
     var lng: Double = 0
@@ -36,11 +37,13 @@ class AddMemoViewModel {
             let imageUrlArr = imageUrlArray ?? [""]
             
             let databaseRef = Database.database().reference()
-            guard let currentUser = Auth.auth().currentUser else {
-                return
-            }
+            guard let currentUser = Auth.auth().currentUser else { return }
+            
             let createTime = self.generateUniqueKey()
+            
+            // Realtime Database에 저장될 데이터 [key: value]
             let memoData: [String: Any] = [
+                "category": self.category,
                 "createTime": createTime,
                 "address": self.address,
                 "lat": self.lat,
@@ -61,6 +64,7 @@ class AddMemoViewModel {
                     
                     // alert를 통해서 성공했음을 알리고 DiaryListVC에서 collectionView item으로 추가하기 위함
                     self.diaryItem = DiaryItem(
+                        category: self.category,
                         content: self.content,
                         createTime: createTime,
                         imageURL: imageUrlArr,
@@ -104,7 +108,7 @@ class AddMemoViewModel {
                             print("이미지 업로드 성공")
                             imageUrlArray.updateValue("\(imageRef)", forKey: index)
                             
-                            // index를 순서로 정렬한 배열을 completion으로 전달
+                            // 이미지를 index를 순서로 정렬한 배열을 completion으로 전달
                             let sortedImageUrlArray = imageUrlArray.sorted { $0.key < $1.key }.map { $0.value }
                             
                             // 선택된 이미지의 개수와 storage에 저장하는 이미지의 개수가 같은지 확인

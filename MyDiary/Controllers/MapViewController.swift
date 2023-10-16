@@ -20,22 +20,10 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupAddButton()
         setupLocationManager()
         setupMapView()
         setupMarkers()
         setupBinding()
-    }
-    
-    // 오른쪽 상단에 추가 버튼 설정
-    private func setupAddButton() {
-        let rightButton = UIBarButtonItem(
-            image: UIImage(systemName: "plus"),
-            style: .plain,
-            target: self,
-            action: #selector(addButtonTapped)
-        )
-        self.navigationItem.rightBarButtonItem = rightButton
     }
     
     // 위치 관리자 설정
@@ -61,6 +49,7 @@ class MapViewController: UIViewController {
         locationOverlay.hidden = false
         
         DispatchQueue.main.async { [weak self] in
+            // 현재 위치로 mapView의 카메라를 이동
             guard let lat = self?.locationManager.location?.coordinate.latitude,
                   let lng = self?.locationManager.location?.coordinate.longitude else { return }
             let nmgLatLng = NMGLatLng(lat: lat, lng: lng)
@@ -136,18 +125,6 @@ class MapViewController: UIViewController {
             }
         }
     }
-    
-    // 추가 버튼 탭
-    @objc func addButtonTapped() {
-        let userInfo: [String: Any] = [
-            "address": mapVM.selectedAddressStr,
-            "lat": mapVM.lat,
-            "lng": mapVM.lng
-        ]
-        
-        NotificationCenter.default.post(name: Notification.Name("addAddress"), object: nil, userInfo: userInfo)
-        self.navigationController?.popViewController(animated: true)
-    }
 }
 
 // MARK: - CLLocationManagerDelegate: 위치관련 delegate
@@ -169,8 +146,8 @@ extension MapViewController: CLLocationManagerDelegate {
 // MARK: - NMFMapViewTouchDelegate: 네이버 지도 터치 관련 delegate
 extension MapViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        mapVM.lat = latlng.lat
-        mapVM.lng = latlng.lng
-        mapVM.reverseGeocoding(lat: latlng.lng, lng: latlng.lat)
+//        mapVM.lat = latlng.lat
+//        mapVM.lng = latlng.lng
+//        mapVM.reverseGeocoding(lat: latlng.lng, lng: latlng.lat)
     }
 }

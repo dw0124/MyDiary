@@ -23,6 +23,9 @@
 		BE2F3A292AB98BD800F9BF65 /* DiaryDetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */; };
 		BE2F3A2B2AC17C9E00F9BF65 /* DiarytListSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */; };
 		BE2F3A2D2AC1A7AA00F9BF65 /* ImageMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */; };
+		BE2F3A332ACD80D600F9BF65 /* MapSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A322ACD80D600F9BF65 /* MapSelectionViewController.swift */; };
+		BE2F3A352ACEE54B00F9BF65 /* DiaryListImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A342ACEE54B00F9BF65 /* DiaryListImageCell.swift */; };
+		BE2F3A372ACFFB1A00F9BF65 /* DiaryListMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A362ACFFB1A00F9BF65 /* DiaryListMenuHeaderView.swift */; };
 		BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */; };
 		BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */; };
 		BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */; };
@@ -61,6 +64,9 @@
 		BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailImageCell.swift; sourceTree = "<group>"; };
 		BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarytListSingleton.swift; sourceTree = "<group>"; };
 		BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMarkerView.swift; sourceTree = "<group>"; };
+		BE2F3A322ACD80D600F9BF65 /* MapSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSelectionViewController.swift; sourceTree = "<group>"; };
+		BE2F3A342ACEE54B00F9BF65 /* DiaryListImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListImageCell.swift; sourceTree = "<group>"; };
+		BE2F3A362ACFFB1A00F9BF65 /* DiaryListMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListMenuHeaderView.swift; sourceTree = "<group>"; };
 		BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListViewController.swift; sourceTree = "<group>"; };
@@ -104,9 +110,11 @@
 			isa = PBXGroup;
 			children = (
 				BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */,
-				BE2F3A1C2AB0488C00F9BF65 /* DiaryListCell.swift */,
 				BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */,
 				BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */,
+				BE2F3A1C2AB0488C00F9BF65 /* DiaryListCell.swift */,
+				BE2F3A342ACEE54B00F9BF65 /* DiaryListImageCell.swift */,
+				BE2F3A362ACFFB1A00F9BF65 /* DiaryListMenuHeaderView.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -187,6 +195,7 @@
 				BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */,
 				BE2F3A202AB1891900F9BF65 /* DiaryDetailViewController.swift */,
 				BE2F3A0D2AA86F1100F9BF65 /* AddMemoViewController.swift */,
+				BE2F3A322ACD80D600F9BF65 /* MapSelectionViewController.swift */,
 				BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */,
 				BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */,
 				BE2F3A0F2AA8747000F9BF65 /* DiaryTabBarController.swift */,
@@ -216,12 +225,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		BE92C7942AD6972B003CE796 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		BED58F682A9DF0E200B6C6A4 /* MyDiary */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BED58F802A9DF0E300B6C6A4 /* Build configuration list for PBXNativeTarget "MyDiary" */;
 			buildPhases = (
 				8B4052085548853785170884 /* [CP] Check Pods Manifest.lock */,
+				BE92C7942AD6972B003CE796 /* Headers */,
 				BED58F652A9DF0E200B6C6A4 /* Sources */,
 				BED58F662A9DF0E200B6C6A4 /* Frameworks */,
 				BED58F672A9DF0E200B6C6A4 /* Resources */,
@@ -308,7 +328,7 @@
 		};
 		C4808608588E417FFA2CE304 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -342,6 +362,7 @@
 				BED58F872A9F1B9E00B6C6A4 /* Observable.swift in Sources */,
 				BE2F3A1D2AB0488C00F9BF65 /* DiaryListCell.swift in Sources */,
 				BE2F3A192AAF113F00F9BF65 /* DiaryListViewModel.swift in Sources */,
+				BE2F3A332ACD80D600F9BF65 /* MapSelectionViewController.swift in Sources */,
 				BE2F3A212AB1891900F9BF65 /* DiaryDetailViewController.swift in Sources */,
 				BE2F3A252AB457F900F9BF65 /* MapViewModel.swift in Sources */,
 				BE2F3A102AA8747000F9BF65 /* DiaryTabBarController.swift in Sources */,
@@ -353,10 +374,12 @@
 				BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */,
 				BE2F3A122AA8769900F9BF65 /* AddMemoViewModels.swift in Sources */,
 				BE2F3A172AAEDA1100F9BF65 /* LoadingIndicator.swift in Sources */,
+				BE2F3A372ACFFB1A00F9BF65 /* DiaryListMenuHeaderView.swift in Sources */,
 				BE54FCDA2AA5A1C1003716B9 /* ProfileViewController.swift in Sources */,
 				BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */,
 				BE2F3A292AB98BD800F9BF65 /* DiaryDetailImageCell.swift in Sources */,
 				BED58F772A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld in Sources */,
+				BE2F3A352ACEE54B00F9BF65 /* DiaryListImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,8 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         //로그인 정보를 확인하고 로그인이 되어있으면 메인VC, 없으면 로그인VC를 보여줌
-        if let user = Auth.auth().currentUser {
-            
+        if let _ = Auth.auth().currentUser {
+
             let mapViewController = DiaryTabBarController()
 
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)
@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         
-//        let mainViewController = SignInViewController()
+//        let mainViewController = MapSelectionViewController()
 //        let navigationController = UINavigationController(rootViewController: mainViewController)
 //        window?.rootViewController = navigationController
         

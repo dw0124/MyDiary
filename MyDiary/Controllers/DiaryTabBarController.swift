@@ -29,12 +29,11 @@ class DiaryTabBarController: UITabBarController {
     }
     
     func setTabBar() {
-        // 2VC, 3VC, 4VC를 탭 바 아이템으로 설정합니다.
-        mapVC.tabBarItem = UITabBarItem(title: "2VC", image: UIImage(systemName: "circle.fill"), tag: 0)
-        memoVC.tabBarItem = UITabBarItem(title: "3VC", image: UIImage(systemName: "circle.fill"), tag: 1)
+        mapVC.tabBarItem = UITabBarItem(title: "지도", image: UIImage(systemName: "circle.fill"), tag: 0)
+        memoVC.tabBarItem = UITabBarItem(title: "일기", image: UIImage(systemName: "circle.fill"), tag: 1)
 
         // 탭 바 컨트롤러에 뷰 컨트롤러를 추가
-        viewControllers = [mapVC, memoVC]
+        viewControllers = [memoVC, mapVC]
     }
     
     @objc func pushMemoVC() {

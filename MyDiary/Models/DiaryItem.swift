@@ -8,6 +8,7 @@
 import Foundation
 
 struct DiaryItem: Codable {
+    let category: String?
     let content: String?
     let createTime: String
     let imageURL: [String]?

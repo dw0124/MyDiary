@@ -71,10 +71,10 @@ extension AddMemoViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    // MapViewController를 열고 지도에서 위치를 선택하기 위한 메소드
+    // MapSelectionViewController를 열고 지도에서 위치를 선택하기 위한 메소드
     @objc func selectAddress() {
-        let mapVC = MapViewController()
-        self.navigationController?.pushViewController(mapVC, animated: true)
+        let mapSelectionVC = MapSelectionViewController()
+        self.navigationController?.pushViewController(mapSelectionVC, animated: true)
     }
     
     // 일기를 저장하는 메소드
