@@ -23,7 +23,7 @@ class DiaryListViewController: UIViewController {
     var someView = UIView()
     var someViewButton = UIButton()
     
-    var filterView = UIView()
+    var filterView = DiaryListFilterView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,13 +57,18 @@ extension DiaryListViewController {
             let button = UIButton()
             button.setTitle("Centered Button", for: .normal)
             button.backgroundColor = .blue
-            button.addTarget(self, action: #selector(changeHeaderView), for: .touchUpInside)
+            button.addTarget(self, action: #selector(changeFilterView), for: .touchUpInside)
             return button
         }()
         
         filterView = {
-            let view = UIView()
-            view.backgroundColor = .green
+            let view = DiaryListFilterView()
+            view.categoryButton.addTarget(self, action: #selector(dropDownCategoryFilter), for: .touchUpInside)
+            view.dateSortButton.addTarget(self, action: #selector(dropDownDateSort), for: .touchUpInside)
+            view.applyButton.addTarget(self, action: #selector(applyFilter), for: .touchUpInside)
+            view.backgroundColor = .white
+            view.layer.borderWidth = 1.0
+            view.isHidden = true
             return view
         }()
         
@@ -71,7 +76,6 @@ extension DiaryListViewController {
             let collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeImageFlowLayout())
             collectionView.register(DiaryListImageCell.self, forCellWithReuseIdentifier: DiaryListImageCell.identifier)
             collectionView.register(DiaryListCell.self, forCellWithReuseIdentifier: DiaryListCell.identifier)
-            //collectionView.register(DiaryListMenuHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: DiaryListMenuHeaderView.identifier)
             collectionView.backgroundColor = .white
             return collectionView
         }()
@@ -122,7 +126,7 @@ extension DiaryListViewController {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.height.equalToSuperview()
-            $0.width.equalTo(50)
+            //$0.width.equalTo(50)
         }
     }
     
@@ -178,35 +182,87 @@ extension DiaryListViewController {
         colleciontView.collectionViewLayout.invalidateLayout()
     }
     
-    @objc private func changeHeaderView() {
+    @objc private func changeFilterView() {
         print(#function, filterViewCheck)
-        
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyyMMdd"
-//
-//        if let startDate = dateFormatter.date(from: "20231001"), let endDate = dateFormatter.date(from: "20231012") {
-//            diaryListSingleton.startDate = startDate
-//            diaryListSingleton.endDate = endDate
-//        }
-//
-//        diaryListSingleton.sortDesending = true
-//
-//        diaryListSingleton.filterAndSort(diaryList: diaryListSingleton.filteredDiaryList.value!)
         
         if filterViewCheck == false {
             self.filterView.snp.updateConstraints {
-                $0.height.equalTo(100)
+                $0.height.equalTo(168)
             }
-            filterViewCheck = true
         } else {
             self.filterView.snp.updateConstraints {
                 $0.height.equalTo(0)
             }
-            filterViewCheck = false
         }
+        
+        self.filterView.isHidden.toggle()
+        self.filterViewCheck.toggle()
+        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    // dropdown 버튼 - 카테고리 선택
+    @objc private func dropDownCategoryFilter() {
+        let dropDown = DropDown()
+
+        // The view to which the drop down will appear on
+        dropDown.anchorView = filterView.categoryButton // UIView or UIBarButtonItem
+
+        // The list of items to display. Can be changed dynamically
+        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+
+        // Action triggered on selection
+        dropDown.selectionAction = { (index: Int, item: String) in
+            print("Selected item: \(item) at index: \(index)")
+            self.filterView.categoryButton.label.text = item
+        }
+
+        // Will set a custom width instead of the anchor view width
+        //dropDownLeft.width = 200
+        //dropDown.width = 250
+
+        dropDown.direction = .bottom
+
+        dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
+
+        dropDown.cornerRadius = 15
+        
+        dropDown.show()
+    }
+    
+    // dropdown버튼 - 날짜 최신, 오래된 순
+    @objc private func dropDownDateSort() {
+        let dropDown = DropDown()
+
+        // The view to which the drop down will appear on
+        dropDown.anchorView = filterView.dateSortButton // UIView or UIBarButtonItem
+
+        // The list of items to display. Can be changed dynamically
+        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+
+        // Action triggered on selection
+        dropDown.selectionAction = { (index: Int, item: String) in
+            print("Selected item: \(item) at index: \(index)")
+            self.filterView.dateSortButton.label.text = item
+        }
+
+        // Will set a custom width instead of the anchor view width
+        //dropDownLeft.width = 200
+        //dropDown.width = 250
+
+        dropDown.direction = .bottom
+
+        dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
+
+        dropDown.cornerRadius = 15
+        
+        dropDown.show()
+    }
+    
+    @objc private func applyFilter() {
+        print(#function)
     }
 }
 
