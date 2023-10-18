@@ -24,7 +24,7 @@ class DropDownButton: UIButton {
         // Label 설정
         label.textAlignment = .left
         label.textColor = UIColor.black
-        label.text = ""
+        label.text = "카테고리 없음"
         label.tintColor = .black
         label.font = UIFont.systemFont(ofSize: 14)
         self.addSubview(label)

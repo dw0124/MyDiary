@@ -33,7 +33,7 @@ class DiaryListFilterView: UIView {
     }
     
     private func setup() {
-        categoryButton.label.text = "없음"
+        categoryButton.label.text = "카테고리 없음"
         //categoryButton.setTitle("없음", for: .normal)
         categoryButton.setTitleColor(.black, for: .normal)
         categoryButton.backgroundColor = .systemGray6
@@ -86,7 +86,7 @@ class DiaryListFilterView: UIView {
         filterStackView.axis = .horizontal
         filterStackView.alignment = .center
         filterStackView.distribution = .equalCentering
-        filterStackView.spacing = 0
+        filterStackView.spacing = 12
         
         filterStackView.addArrangedSubview(categoryButton)
         filterStackView.addArrangedSubview(dateSortButton)
@@ -118,11 +118,32 @@ class DiaryListFilterView: UIView {
         }
         
         categoryButton.snp.makeConstraints {
-            $0.width.equalTo(filterStackView.snp.width).multipliedBy(0.5)
+            //$0.width.equalTo(filterStackView.snp.width).multipliedBy(0.5)
+            $0.width.equalTo(150)
         }
 
         dateSortButton.snp.makeConstraints {
-            $0.width.equalTo(filterStackView.snp.width).multipliedBy(0.4)
+            //$0.width.equalTo(filterStackView.snp.width).multipliedBy(0.4)
+            $0.width.equalTo(100)
+        }
+        
+        applyButton.snp.makeConstraints {
+            $0.width.equalToSuperview()
+        }
+        
+        startDatePicker.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            //$0.width.equalTo(dateStackView.snp.width).multipliedBy(0.45)
+        }
+
+        endDatePicker.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            //$0.width.equalTo(dateStackView.snp.width).multipliedBy(0.45)
+        }
+        
+        dateStackView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            //$0.height.equalTo(filterStackView)
         }
         
         stackView.snp.makeConstraints {

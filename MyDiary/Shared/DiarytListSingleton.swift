@@ -23,8 +23,8 @@ class DiaryListSingleton {
     
     // 필터 + 정렬을 위한 변수
     var category: String?
-    var startDate: Date?
-    var endDate: Date?
+    var startDate: Date? = Date()
+    var endDate: Date? = Date()
     var sortDesending: Bool?
     
     /// 일기 목록 불러오는 메소드
@@ -97,8 +97,8 @@ class DiaryListSingleton {
 // MARK: - 필터 + 정렬
 extension DiaryListSingleton {
     // 필터 + 정렬하는 메소드
-    func filterAndSort(diaryList: [DiaryItem]) {
-        var diaryItemArr = diaryList
+    func filterAndSort() {
+        guard var diaryItemArr = diaryList.value else { return }
         
         if let category = category {
             diaryItemArr = filterByCategory(diaryList: diaryItemArr, category)
@@ -125,12 +125,14 @@ extension DiaryListSingleton {
     // 기간 선택 20xx.xx.xx - 20xx.xx.xx에 해당하는 데이터 필터링
     private func filterByDateRange(diaryList: [DiaryItem], _ start: Date, _ end: Date) -> [DiaryItem] {
         
-        let startDate: Date = min(start, end)
-        let endDate: Date = max(start, end)
+        var startDate: Date = min(start, end)
+        var endDate: Date = max(start, end)
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
         
+        startDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: startDate)!
+        endDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: endDate)!
         let endDatePlusDay = Calendar.current.date(byAdding: .day, value: 1, to: endDate) ?? endDate
         
         let filteredDiaryList = diaryList.filter { diary in
@@ -146,9 +148,9 @@ extension DiaryListSingleton {
     private func sortByDate(diaryList: [DiaryItem], _ desending: Bool) -> [DiaryItem] {
         let sortedDiaryList = diaryList.sorted {
             if desending == true {
-                return $0.createTime < $1.createTime
-            } else {
                 return $0.createTime > $1.createTime
+            } else {
+                return $0.createTime < $1.createTime
             }
         }
         return sortedDiaryList

@@ -66,6 +66,8 @@ extension DiaryListViewController {
             view.categoryButton.addTarget(self, action: #selector(dropDownCategoryFilter), for: .touchUpInside)
             view.dateSortButton.addTarget(self, action: #selector(dropDownDateSort), for: .touchUpInside)
             view.applyButton.addTarget(self, action: #selector(applyFilter), for: .touchUpInside)
+            view.startDatePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+            view.endDatePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
             view.backgroundColor = .white
             view.layer.borderWidth = 1.0
             view.isHidden = true
@@ -211,11 +213,14 @@ extension DiaryListViewController {
         dropDown.anchorView = filterView.categoryButton // UIView or UIBarButtonItem
 
         // The list of items to display. Can be changed dynamically
-        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+        //dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+        
+        dropDown.dataSource = CategorySingleton.shared.categoryList.value ?? ["카테고리 없음"]
 
         // Action triggered on selection
         dropDown.selectionAction = { (index: Int, item: String) in
             print("Selected item: \(item) at index: \(index)")
+            self.diaryListSingleton.category = item
             self.filterView.categoryButton.label.text = item
         }
 
@@ -232,6 +237,14 @@ extension DiaryListViewController {
         dropDown.show()
     }
     
+    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
+        if sender == filterView.startDatePicker {
+            diaryListSingleton.startDate = sender.date
+        } else {
+            diaryListSingleton.endDate = sender.date
+        }
+    }
+    
     // dropdown버튼 - 날짜 최신, 오래된 순
     @objc private func dropDownDateSort() {
         let dropDown = DropDown()
@@ -240,18 +253,14 @@ extension DiaryListViewController {
         dropDown.anchorView = filterView.dateSortButton // UIView or UIBarButtonItem
 
         // The list of items to display. Can be changed dynamically
-        dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+        dropDown.dataSource = ["최신 순", "오래된 순"]
 
         // Action triggered on selection
         dropDown.selectionAction = { (index: Int, item: String) in
             print("Selected item: \(item) at index: \(index)")
             self.filterView.dateSortButton.label.text = item
+            self.diaryListSingleton.sortDesending = index == 0 ? true : false
         }
-
-        // Will set a custom width instead of the anchor view width
-        //dropDownLeft.width = 200
-        //dropDown.width = 250
-
         dropDown.direction = .bottom
 
         dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
@@ -262,7 +271,7 @@ extension DiaryListViewController {
     }
     
     @objc private func applyFilter() {
-        print(#function)
+        diaryListSingleton.filterAndSort()
     }
 }
 

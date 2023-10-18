@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import PhotosUI
+import DropDown
 
 class AddMemoViewController: UIViewController {
     
@@ -15,6 +16,7 @@ class AddMemoViewController: UIViewController {
     
     // UI 요소 정의
     let textViewPlaceHolder = "내용을 입력하세요"   // UITextViewDelegate를 통해서 contentTextView의 placeholder처럼 사용
+    var categoryButton = DropDownButton()
     lazy var addAddressButton = UIButton()
     lazy var addPreviewImagesButton = UIButton()
     var addressLabel = UILabel()
@@ -54,7 +56,7 @@ class AddMemoViewController: UIViewController {
 
 // MARK: - 일기 저장 관련
 extension AddMemoViewController {
-        
+    
     // 저장이 오류 또는 완료되었다는 메시지를 보여주기위한 Alert창
     func showAlert(result: Bool, message: String) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -88,6 +90,27 @@ extension AddMemoViewController {
             self.showAlert(result: resultBool, message: message)
             LoadingIndicator.removeLoading()
         }
+    }
+    
+    // 카테고리 버튼 선택
+    @objc func setCategory() {
+        print(#function)
+        let dropDown = DropDown()
+        
+        dropDown.anchorView = categoryButton
+        dropDown.dataSource = CategorySingleton.shared.categoryList.value ?? ["카테고리 없음"]
+        
+        dropDown.selectionAction = { (index: Int, item: String) in
+            print("Selected item: \(item) at index: \(index)")
+            self.addMemoVM.category = item
+            self.categoryButton.label.text = item
+        }
+        
+        dropDown.direction = .bottom
+        dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
+        dropDown.cornerRadius = 15
+        
+        dropDown.show()
     }
     
     // 지도에서 위치를 선택하고 완료를 누르면 notification을 통해서 위치를 받아옴
@@ -135,7 +158,7 @@ extension AddMemoViewController {
             }
         }
     }
-
+    
 }
 
 // MARK: - UI 관련
@@ -153,19 +176,38 @@ extension AddMemoViewController {
         
         view.backgroundColor = .white
         
+        categoryButton = {
+            let button = DropDownButton()
+            button.label.text = "카테고리 없음"
+            button.setTitleColor(.black, for: .normal)
+            button.backgroundColor = .systemGray6
+            button.layer.cornerRadius = 10
+            button.layer.shadowOpacity = 0.5
+            button.layer.shadowColor = UIColor.black.cgColor
+            button.layer.shadowOffset = CGSize(width: 0, height: 0)
+            button.layer.shadowRadius = 1.0
+            button.layer.masksToBounds = false
+            button.addTarget(self, action: #selector(setCategory), for: .touchUpInside)
+            return button
+        }()
+        
         addAddressButton = {
             let button = UIButton(type: .system)
-            button.setTitle("추가", for: .normal)
+            //button.setTitle("추가", for: .normal)
+            button.setImage(UIImage(named: "add-location.png"), for: .normal)
             button.addTarget(self, action: #selector(selectAddress), for: .touchUpInside)
+            button.imageView?.contentMode = .scaleAspectFit
             return button
         }()
         
         addPreviewImagesButton = {
-           let button = UIButton(type: .system)
-           button.setTitle("추가", for: .normal)
-           button.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
-           return button
-       }()
+            let button = UIButton(type: .system)
+            //button.setTitle("추가", for: .normal)
+            button.setImage(UIImage(named: "picturePlus_32.png"), for: .normal)
+            button.imageView?.contentMode = .scaleAspectFit
+            button.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
+            return button
+        }()
         
         addressLabel = {
             let label = UILabel()
@@ -196,7 +238,7 @@ extension AddMemoViewController {
             let stackView = UIStackView()
             stackView.axis = .horizontal
             stackView.spacing = 16
-            stackView.alignment = .center
+            stackView.alignment = .leading
             stackView.distribution = .fill
             return stackView
         }()
@@ -205,45 +247,87 @@ extension AddMemoViewController {
             let stackView = UIStackView()
             stackView.axis = .horizontal
             stackView.spacing = 16
-            stackView.alignment = .center
+            stackView.alignment = .leading
             return stackView
         }()
     }
-
+    
     private func setupLayout() {
+        
+        let addressSeperatorView = UIView()
+        addressSeperatorView.backgroundColor = .gray
+        
+        let imageSeperatorView = UIView()
+        imageSeperatorView.backgroundColor = .gray
+        
+        view.addSubview(categoryButton)
+        
         view.addSubview(addressStackView)
         addressStackView.addArrangedSubview(addAddressButton)
+        addressStackView.addArrangedSubview(addressSeperatorView)
         addressStackView.addArrangedSubview(addressLabel)
         
         view.addSubview(imageStackView)
         imageStackView.addArrangedSubview(addPreviewImagesButton)
+        imageStackView.addArrangedSubview(imageSeperatorView)
         imageStackView.addArrangedSubview(collectionView)
         
         view.addSubview(titleTextField)
         view.addSubview(contentTextView)
+        
+        // 카테고리 버튼
+        categoryButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(12)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            //make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        }
+        
+        addressStackView.snp.makeConstraints { make in
+            //make.top.equalTo(view.safeAreaLayoutGuide)
+            //make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            //make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.top.equalTo(categoryButton.snp.bottom).offset(16)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        }
         
         // 지도 버튼 설정
         addAddressButton.snp.makeConstraints { make in
             make.width.height.equalTo(32)
         }
         
-        addressStackView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        addressSeperatorView.snp.makeConstraints { make in
+            make.width.equalTo(1)
+            make.height.equalToSuperview()
         }
         
-        // 스택 뷰 위치 설정
+        addressLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+        }
+        
+        // 이미지 스택 뷰 위치 설정
         imageStackView.snp.makeConstraints { make in
             //make.top.equalTo(view.safeAreaLayoutGuide)
             make.top.equalTo(addressStackView.snp.bottom).offset(16)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
         
+        addPreviewImagesButton.snp.makeConstraints { make in
+            make.height.equalToSuperview()
+            //make.centerY.equalToSuperview()
+        }
+        
+        imageSeperatorView.snp.makeConstraints { make in
+            make.width.equalTo(1)
+            make.height.equalTo(64)
+        }
+        
         // collectionView 설정
         collectionView.snp.makeConstraints { make in
             make.height.equalTo(72)
+            //make.centerY.equalToSuperview()
         }
+        
         
         // 제목 입력 텍스트 필드
         titleTextField.snp.makeConstraints { make in
@@ -289,7 +373,7 @@ extension AddMemoViewController: PHPickerViewControllerDelegate {
         }
     }
 }
-    
+
 // MARK: - UICollectionViewDataSource
 extension AddMemoViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

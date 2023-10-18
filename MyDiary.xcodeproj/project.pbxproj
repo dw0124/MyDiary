@@ -34,6 +34,8 @@
 		BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */; };
 		BE92C7982ADD12DB003CE796 /* DiaryListFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7972ADD12DB003CE796 /* DiaryListFilterView.swift */; };
 		BE92C79A2ADD5A7E003CE796 /* DropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */; };
+		BE92C79C2ADE5449003CE796 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */; };
+		BE92C79E2ADEBF1B003CE796 /* CategorySingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */; };
 		BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */; };
 		BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */; };
 		BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */; };
@@ -77,6 +79,8 @@
 		BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		BE92C7972ADD12DB003CE796 /* DiaryListFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListFilterView.swift; sourceTree = "<group>"; };
 		BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownButton.swift; sourceTree = "<group>"; };
+		BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySingleton.swift; sourceTree = "<group>"; };
 		BED58F692A9DF0E200B6C6A4 /* MyDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 				BE2F3A322ACD80D600F9BF65 /* MapSelectionViewController.swift */,
 				BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */,
 				BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */,
+				BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */,
 				BE2F3A0F2AA8747000F9BF65 /* DiaryTabBarController.swift */,
 			);
 			path = Controllers;
@@ -216,6 +221,7 @@
 				BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */,
 				BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */,
 				BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */,
+				BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -363,6 +369,7 @@
 				BE2F3A2D2AC1A7AA00F9BF65 /* ImageMarkerView.swift in Sources */,
 				BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */,
 				BE2F3A152AA9A11200F9BF65 /* PreviewImageCell.swift in Sources */,
+				BE92C79E2ADEBF1B003CE796 /* CategorySingleton.swift in Sources */,
 				BE2F3A272AB49BAD00F9BF65 /* Address.swift in Sources */,
 				BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */,
 				BED58F872A9F1B9E00B6C6A4 /* Observable.swift in Sources */,
@@ -387,6 +394,7 @@
 				BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */,
 				BE2F3A292AB98BD800F9BF65 /* DiaryDetailImageCell.swift in Sources */,
 				BED58F772A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld in Sources */,
+				BE92C79C2ADE5449003CE796 /* CategoryViewController.swift in Sources */,
 				BE2F3A352ACEE54B00F9BF65 /* DiaryListImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

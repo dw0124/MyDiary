@@ -12,6 +12,7 @@ class DiaryTabBarController: UITabBarController {
     
     let mapVC = MapViewController()
     let memoVC: UINavigationController = UINavigationController(rootViewController: DiaryListViewController())
+    let categoryVC = CategoryViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +31,13 @@ class DiaryTabBarController: UITabBarController {
     
     func setTabBar() {
         mapVC.tabBarItem = UITabBarItem(title: "지도", image: UIImage(systemName: "circle.fill"), tag: 0)
-        memoVC.tabBarItem = UITabBarItem(title: "일기", image: UIImage(systemName: "circle.fill"), tag: 1)
+        categoryVC.tabBarItem = UITabBarItem(title: "일기", image: UIImage(systemName: "circle.fill"), tag: 1)
+        memoVC.tabBarItem = UITabBarItem(title: "일기", image: UIImage(systemName: "circle.fill"), tag: 2)
+        
 
         // 탭 바 컨트롤러에 뷰 컨트롤러를 추가
-        viewControllers = [memoVC, mapVC]
+        //viewControllers = [memoVC, categoryVC, mapVC]
+        viewControllers = [categoryVC, memoVC, mapVC]
     }
     
     @objc func pushMemoVC() {

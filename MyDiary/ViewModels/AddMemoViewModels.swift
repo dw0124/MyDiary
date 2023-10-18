@@ -15,7 +15,7 @@ class AddMemoViewModel {
     
     var diaryItem: DiaryItem?
     
-    var category: String = "없음"
+    var category: String = "카테고리 없음"
     var address: String = ""
     var lat: Double = 0
     var lng: Double = 0
