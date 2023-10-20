@@ -17,6 +17,6 @@ struct DiaryItem: Codable {
     let lng: Double?
 }
 
-struct DiaryData: Codable {
+struct DiaryList: Codable {
     let diaryItems: [String: DiaryItem]
 }

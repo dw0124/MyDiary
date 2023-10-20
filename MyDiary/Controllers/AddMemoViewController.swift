@@ -98,7 +98,7 @@ extension AddMemoViewController {
         let dropDown = DropDown()
         
         dropDown.anchorView = categoryButton
-        dropDown.dataSource = CategorySingleton.shared.categoryList.value ?? ["카테고리 없음"]
+        dropDown.dataSource = CategorySingleton.shared.categoryList.value?.map { $0.category } ?? ["카테고리 없음"]
         
         dropDown.selectionAction = { (index: Int, item: String) in
             print("Selected item: \(item) at index: \(index)")

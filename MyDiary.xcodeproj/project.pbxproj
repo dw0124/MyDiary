@@ -36,6 +36,8 @@
 		BE92C79A2ADD5A7E003CE796 /* DropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */; };
 		BE92C79C2ADE5449003CE796 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */; };
 		BE92C79E2ADEBF1B003CE796 /* CategorySingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */; };
+		BE92C7A02AE16BE6003CE796 /* CategoryListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79F2AE16BE6003CE796 /* CategoryListTableViewCell.swift */; };
+		BE92C7A22AE253B7003CE796 /* CategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7A12AE253B7003CE796 /* CategoryItem.swift */; };
 		BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */; };
 		BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */; };
 		BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */; };
@@ -81,6 +83,8 @@
 		BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownButton.swift; sourceTree = "<group>"; };
 		BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySingleton.swift; sourceTree = "<group>"; };
+		BE92C79F2AE16BE6003CE796 /* CategoryListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListTableViewCell.swift; sourceTree = "<group>"; };
+		BE92C7A12AE253B7003CE796 /* CategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItem.swift; sourceTree = "<group>"; };
 		BED58F692A9DF0E200B6C6A4 /* MyDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 				BE2F3A342ACEE54B00F9BF65 /* DiaryListImageCell.swift */,
 				BE2F3A362ACFFB1A00F9BF65 /* DiaryListMenuHeaderView.swift */,
 				BE92C7972ADD12DB003CE796 /* DiaryListFilterView.swift */,
+				BE92C79F2AE16BE6003CE796 /* CategoryListTableViewCell.swift */,
 				BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */,
 			);
 			path = View;
@@ -134,6 +139,7 @@
 			children = (
 				BE2F3A1A2AAF167000F9BF65 /* DiaryItem.swift */,
 				BE2F3A262AB49BAD00F9BF65 /* Address.swift */,
+				BE92C7A12AE253B7003CE796 /* CategoryItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -366,6 +372,7 @@
 				BE2F3A1B2AAF167000F9BF65 /* DiaryItem.swift in Sources */,
 				BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */,
 				BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */,
+				BE92C7A02AE16BE6003CE796 /* CategoryListTableViewCell.swift in Sources */,
 				BE2F3A2D2AC1A7AA00F9BF65 /* ImageMarkerView.swift in Sources */,
 				BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */,
 				BE2F3A152AA9A11200F9BF65 /* PreviewImageCell.swift in Sources */,
@@ -383,6 +390,7 @@
 				BE2F3A1F2AB04A9E00F9BF65 /* ImageCacheManager.swift in Sources */,
 				BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */,
 				BE2F3A232AB18B8A00F9BF65 /* DiaryDetailViewModel.swift in Sources */,
+				BE92C7A22AE253B7003CE796 /* CategoryItem.swift in Sources */,
 				BE2F3A2B2AC17C9E00F9BF65 /* DiarytListSingleton.swift in Sources */,
 				BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */,
 				BE92C7982ADD12DB003CE796 /* DiaryListFilterView.swift in Sources */,

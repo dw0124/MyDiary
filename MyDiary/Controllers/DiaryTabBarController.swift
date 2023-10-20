@@ -12,17 +12,21 @@ class DiaryTabBarController: UITabBarController {
     
     let mapVC = MapViewController()
     let memoVC: UINavigationController = UINavigationController(rootViewController: DiaryListViewController())
-    let categoryVC = CategoryViewController()
+    let categoryVC: UINavigationController = UINavigationController(rootViewController: CategoryViewController())
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setNavigation()
         setTabBar()
+        
+        tabBar.backgroundColor = .systemGray6
+        tabBar.tintColor = .black
     }
     
     func setNavigation() {
         memoVC.navigationBar.topItem?.title = "메인"
+        categoryVC.navigationBar.topItem?.title = "카테고리"
         
         // 오른쪽 상단에 "plus" 버튼 추가
         let rightButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(pushMemoVC))
@@ -30,14 +34,13 @@ class DiaryTabBarController: UITabBarController {
     }
     
     func setTabBar() {
-        mapVC.tabBarItem = UITabBarItem(title: "지도", image: UIImage(systemName: "circle.fill"), tag: 0)
-        categoryVC.tabBarItem = UITabBarItem(title: "일기", image: UIImage(systemName: "circle.fill"), tag: 1)
-        memoVC.tabBarItem = UITabBarItem(title: "일기", image: UIImage(systemName: "circle.fill"), tag: 2)
+        mapVC.tabBarItem = UITabBarItem(title: "지도", image: UIImage(systemName: "map.fill"), tag: 0)
+        categoryVC.tabBarItem = UITabBarItem(title: "카테고리", image: UIImage(systemName: "list.bullet"), tag: 1)
+        memoVC.tabBarItem = UITabBarItem(title: "일기", image: UIImage(systemName: "text.book.closed.fill"), tag: 2)
         
 
         // 탭 바 컨트롤러에 뷰 컨트롤러를 추가
-        //viewControllers = [memoVC, categoryVC, mapVC]
-        viewControllers = [categoryVC, memoVC, mapVC]
+        viewControllers = [memoVC, categoryVC, mapVC]
     }
     
     @objc func pushMemoVC() {

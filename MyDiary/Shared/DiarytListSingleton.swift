@@ -22,6 +22,7 @@ class DiaryListSingleton {
     var filteredDiaryList: Observable<[DiaryItem]> = Observable([])
     
     // 필터 + 정렬을 위한 변수
+    var filterCheck: Bool = false // 사용자가 필터를 사용했는지 확인
     var category: String?
     var startDate: Date? = Date()
     var endDate: Date? = Date()
@@ -110,7 +111,14 @@ extension DiaryListSingleton {
             diaryItemArr = sortByDate(diaryList: diaryItemArr, sortDesending)
         }
         
-        self.filteredDiaryList.value = diaryItemArr
+        filteredDiaryList.value = diaryItemArr
+        filterCheck = true
+    }
+    
+    // 필터 초기화 - 전체 데이터 보여주기
+    func resetFilter() {
+        filteredDiaryList.value = diaryList.value
+        filterCheck = false
     }
     
     // 카테고리에 해당하는 데이터 필터링

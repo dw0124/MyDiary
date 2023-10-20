@@ -15,22 +15,19 @@ class CategorySingleton {
     
     static let shared = CategorySingleton()
     
-    var categoryList: Observable<[String]> = Observable(["카테고리 없음"])
+    //var categoryList: Observable<[String]> = Observable(["카테고리 없음"])
+    
+    var categoryList: Observable<[CategoryItem]> = Observable([CategoryItem(key: "0", category: "카테고리 없음")])
     
     func getCategoryList() {
         print(#function)
         let ref = Database.database().reference()
         guard let currentUser = Auth.auth().currentUser else { return }
         
-        ref.child("users/\(currentUser.uid)/categoryList").observeSingleEvent(of: .value) { snapshot,str  in
-            guard let snapData = snapshot.value as? [String : Any] else { return }
-            guard let data = try? JSONSerialization.data(withJSONObject: Array(snapData.values), options: []) else { return }
-            do {
-                let categoryList = try JSONDecoder().decode([String].self, from: data)
-                self.categoryList.value?.append(contentsOf: categoryList)
-                // = categoryList
-            } catch let error {
-                print("\(error.localizedDescription)")
+        ref.child("users/\(currentUser.uid)/categoryList").observeSingleEvent(of: .value) { (snapshot, str) in
+            guard let snapData = snapshot.value as? [String : String] else { return }
+            snapData.forEach { (key, value) in
+                self.categoryList.value?.append(CategoryItem(key: key, category: value))
             }
         }
     }
@@ -48,9 +45,32 @@ class CategorySingleton {
             if let error = error as? NSError {
                 print("카테고리 저장 오류: \(error.localizedDescription)")
             } else {
-                self.categoryList.value?.append(category)
+                //self.categoryList.value?.append(category)
+                self.categoryList.value?.append(CategoryItem(key: createTime, category: category))
             }
         }
+    }
+    
+    func deleteCategory(_ index: Int) {
+        let ref = Database.database().reference()
+        guard let currentUser = Auth.auth().currentUser else { return }
+        
+        // 삭제할 카테고리의 키
+        guard let key = categoryList.value?[index].key else { return }
+        
+        // 값으로 nil을 저장하면 데이터 삭제
+        let data: [String: Any?] = [key: nil]
+        
+        // Realtime Database에 저장
+        ref.child("users").child(currentUser.uid).child("categoryList").updateChildValues(data) { error,_ in
+            if let error = error {
+                print(error.localizedDescription, "카테고리 삭제중 오류가 발생하였습니다.")
+            } else {
+                // 현재 목록에서 삭제
+                self.categoryList.value?.remove(at: index)
+            }
+        }
+        
     }
     
     /// 날짜와 시간을 합쳐서 유일키로 만들기 위한 메소드

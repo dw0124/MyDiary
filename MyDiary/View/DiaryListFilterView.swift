@@ -15,6 +15,7 @@ class DiaryListFilterView: UIView {
     let categoryButton = DropDownButton()
     let dateSortButton = DropDownButton()
     let applyButton = UIButton()
+    let resetFilterButton = UIButton()
     
     let startDatePicker = UIDatePicker()
     let endDatePicker = UIDatePicker()
@@ -78,6 +79,16 @@ class DiaryListFilterView: UIView {
         applyButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         applyButton.layer.shadowRadius = 1.0
         applyButton.layer.masksToBounds = false
+        
+        resetFilterButton.setTitle("초기화", for: .normal)
+        resetFilterButton.setTitleColor(.black, for: .normal)
+        resetFilterButton.backgroundColor = .systemGray6
+        resetFilterButton.layer.cornerRadius = 10
+        resetFilterButton.layer.shadowOpacity = 0.5
+        resetFilterButton.layer.shadowColor = UIColor.black.cgColor
+        resetFilterButton.layer.shadowOffset = CGSize(width: 0, height: 0)
+        resetFilterButton.layer.shadowRadius = 1.0
+        resetFilterButton.layer.masksToBounds = false
     }
     
     private func setupLayout() {
@@ -101,6 +112,15 @@ class DiaryListFilterView: UIView {
         dateStackView.addArrangedSubview(slashView)
         dateStackView.addArrangedSubview(endDatePicker)
         
+        let applyButtonStackView = UIStackView()
+        applyButtonStackView.axis = .horizontal
+        applyButtonStackView.alignment = .center
+        applyButtonStackView.distribution = .fillEqually
+        applyButtonStackView.spacing = 12
+        
+        applyButtonStackView.addArrangedSubview(resetFilterButton)
+        applyButtonStackView.addArrangedSubview(applyButton)
+        
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -109,7 +129,7 @@ class DiaryListFilterView: UIView {
         
         stackView.addArrangedSubview(filterStackView)
         stackView.addArrangedSubview(dateStackView)
-        stackView.addArrangedSubview(applyButton)
+        stackView.addArrangedSubview(applyButtonStackView)
         
         addSubview(stackView)
         
@@ -124,21 +144,27 @@ class DiaryListFilterView: UIView {
 
         dateSortButton.snp.makeConstraints {
             //$0.width.equalTo(filterStackView.snp.width).multipliedBy(0.4)
-            $0.width.equalTo(100)
-        }
-        
-        applyButton.snp.makeConstraints {
-            $0.width.equalToSuperview()
+            $0.width.equalTo(120)
         }
         
         startDatePicker.snp.makeConstraints {
             $0.leading.equalToSuperview()
             //$0.width.equalTo(dateStackView.snp.width).multipliedBy(0.45)
+            //$0.height.equalTo(10)
         }
 
+        slashView.snp.makeConstraints {
+            $0.width.equalTo(8)
+            $0.height.equalTo(1)
+        }
+        
         endDatePicker.snp.makeConstraints {
             $0.trailing.equalToSuperview()
             //$0.width.equalTo(dateStackView.snp.width).multipliedBy(0.45)
+        }
+        
+        applyButtonStackView.snp.makeConstraints {
+            $0.width.equalToSuperview()
         }
         
         dateStackView.snp.makeConstraints {

@@ -36,7 +36,15 @@ class DiaryListViewController: UIViewController {
 
 extension DiaryListViewController {
     func setBinding() {
-        diaryListSingleton.filteredDiaryList.bind { diaryItemArr in
+        // diaryList(전체 리스트)가 변경되면 필터를 실행하고 filterDiaryList의 바인딩이 실행되면서 화면 재구성
+        diaryListSingleton.diaryList.bind { dirayList in
+            if self.diaryListSingleton.filterCheck == false {
+                self.resetFilter()
+            } else {
+                self.applyFilter()
+            }
+        }
+        diaryListSingleton.filteredDiaryList.bind { filtereddiaryList in
             self.colleciontView.reloadData()
         }
     }
@@ -66,6 +74,7 @@ extension DiaryListViewController {
             view.categoryButton.addTarget(self, action: #selector(dropDownCategoryFilter), for: .touchUpInside)
             view.dateSortButton.addTarget(self, action: #selector(dropDownDateSort), for: .touchUpInside)
             view.applyButton.addTarget(self, action: #selector(applyFilter), for: .touchUpInside)
+            view.resetFilterButton.addTarget(self, action: #selector(resetFilter), for: .touchUpInside)
             view.startDatePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
             view.endDatePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
             view.backgroundColor = .white
@@ -209,13 +218,9 @@ extension DiaryListViewController {
     @objc private func dropDownCategoryFilter() {
         let dropDown = DropDown()
 
-        // The view to which the drop down will appear on
-        dropDown.anchorView = filterView.categoryButton // UIView or UIBarButtonItem
+        dropDown.anchorView = filterView.categoryButton
 
-        // The list of items to display. Can be changed dynamically
-        //dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
-        
-        dropDown.dataSource = CategorySingleton.shared.categoryList.value ?? ["카테고리 없음"]
+        dropDown.dataSource = CategorySingleton.shared.categoryList.value?.map { $0.category } ?? ["카테고리 없음"]
 
         // Action triggered on selection
         dropDown.selectionAction = { (index: Int, item: String) in
@@ -223,15 +228,9 @@ extension DiaryListViewController {
             self.diaryListSingleton.category = item
             self.filterView.categoryButton.label.text = item
         }
-
-        // Will set a custom width instead of the anchor view width
-        //dropDownLeft.width = 200
-        //dropDown.width = 250
-
+        
         dropDown.direction = .bottom
-
         dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
-
         dropDown.cornerRadius = 15
         
         dropDown.show()
@@ -268,6 +267,10 @@ extension DiaryListViewController {
         dropDown.cornerRadius = 15
         
         dropDown.show()
+    }
+    
+    @objc private func resetFilter() {
+        diaryListSingleton.resetFilter()
     }
     
     @objc private func applyFilter() {

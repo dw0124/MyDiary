@@ -24,10 +24,12 @@ class CategoryViewController: UIViewController {
         view.backgroundColor = .white
         
         categoryTextField.placeholder = "새로 추가할 카테고리를 입력하세요."
+        categoryTableView.register(CategoryListTableViewCell.self, forCellReuseIdentifier: CategoryListTableViewCell.identifier)
+        categoryTableView.isUserInteractionEnabled = true
         
         let addButton = UIButton()
         addButton.setTitle("추가", for: .normal)
-        addButton.backgroundColor = .blue
+        addButton.setTitleColor(.systemBlue, for: .normal)
         addButton.addTarget(self, action: #selector(addCategory), for: .touchUpInside)
         
         view.addSubview(categoryTextField)
@@ -71,6 +73,23 @@ class CategoryViewController: UIViewController {
             self.categoryTableView.reloadData()
         }
     }
+    
+    @objc private func deleteCategory(_ sender: UIButton) {
+        print(#function, sender.tag)
+        
+        guard let cateogryName = categorySingleton.categoryList.value?[sender.tag].category else { return }
+        
+        let alertController = UIAlertController(title: "카테고리 삭제", message: "'\(cateogryName)' 삭제 하시겠습니까?", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            alertController.dismiss(animated: true, completion: {
+                self.categorySingleton.deleteCategory(sender.tag)
+            })
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: - UITableView
@@ -80,8 +99,13 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell") ?? UITableViewCell(style: .default, reuseIdentifier: "CategoryCell")
-        cell.textLabel?.text = categorySingleton.categoryList.value?[indexPath.row]
+        guard let cell = categoryTableView.dequeueReusableCell(withIdentifier: CategoryListTableViewCell.identifier) as? CategoryListTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.categoryLabel.text = categorySingleton.categoryList.value?[indexPath.row].category
+        cell.deleteButton.tag = indexPath.row
+        cell.deleteButton.addTarget(self, action: #selector(deleteCategory(_:)), for: .touchUpInside)
+
         return cell
     }
 }
@@ -90,6 +114,6 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
 extension CategoryViewController: UITextFieldDelegate {
     // 텍스트 필드에 입력한 카테고리가 존재하는지 확인하기 위한 역할
     func textFieldDidEndEditing(_ textField: UITextField) {
-        print(categorySingleton.categoryList.value?.contains(textField.text ?? ""))
+        //print(categorySingleton.categoryList.value?.contains(textField.text ?? ""))
     }
 }
