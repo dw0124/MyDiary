@@ -18,7 +18,6 @@ class DiaryListViewController: UIViewController {
     var colleciontView: UICollectionView!
     
     var filterViewCheck = false
-    var headerViewHeight = 40.0
     
     var someView = UIView()
     var someViewButton = UIButton()
@@ -194,8 +193,6 @@ extension DiaryListViewController {
     }
     
     @objc private func changeFilterView() {
-        print(#function, filterViewCheck)
-        
         if filterViewCheck == false {
             self.filterView.snp.updateConstraints {
                 $0.height.equalTo(168)

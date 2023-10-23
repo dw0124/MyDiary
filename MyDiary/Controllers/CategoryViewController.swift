@@ -14,6 +14,8 @@ class CategoryViewController: UIViewController {
     let categorySingleton = CategorySingleton.shared
     
     let categoryTextField = UITextField()
+    let addButton = UIButton()
+    
     let categoryTableView = UITableView()
     
     override func viewDidLoad() {
@@ -23,28 +25,35 @@ class CategoryViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        categoryTextField.addTarget(self, action: #selector(enableAddCategoryButton), for: .editingChanged)
+        
         categoryTextField.placeholder = "새로 추가할 카테고리를 입력하세요."
+        categoryTextField.clearButtonMode = .whileEditing
         categoryTableView.register(CategoryListTableViewCell.self, forCellReuseIdentifier: CategoryListTableViewCell.identifier)
         categoryTableView.isUserInteractionEnabled = true
         
-        let addButton = UIButton()
         addButton.setTitle("추가", for: .normal)
-        addButton.setTitleColor(.systemBlue, for: .normal)
+        addButton.setTitleColor(.systemGray, for: .normal)
+        addButton.tintColor = .systemGray
         addButton.addTarget(self, action: #selector(addCategory), for: .touchUpInside)
         
-        view.addSubview(categoryTextField)
-        view.addSubview(categoryTableView)
-        view.addSubview(addButton)
+        let stackView = {
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.spacing = 6
+            return stackView
+        }()
         
-        categoryTextField.snp.makeConstraints {
+        stackView.addArrangedSubview(categoryTextField)
+        stackView.addArrangedSubview(addButton)
+        
+        view.addSubview(stackView)
+        view.addSubview(categoryTableView)
+        
+        stackView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
-        }
-        
-        addButton.snp.makeConstraints {
-            $0.centerY.equalTo(categoryTextField)
-            $0.trailing.equalTo(categoryTextField)
         }
         
         categoryTableView.snp.makeConstraints {
@@ -59,11 +68,31 @@ class CategoryViewController: UIViewController {
         categoryTableView.dataSource = self
     }
     
+    @objc func enableAddCategoryButton() {
+        if categoryTextField.text == "" {
+            addButton.setTitleColor(.systemGray, for: .normal)
+            addButton.tintColor = .systemGray
+            addButton.isUserInteractionEnabled = false
+        } else {
+            addButton.setTitleColor(.systemBlue, for: .normal)
+            addButton.tintColor = .systemBlue
+            addButton.isUserInteractionEnabled = true
+        }
+    }
+    
     @objc func addCategory() {
         if let categoryName = categoryTextField.text, !categoryName.isEmpty {
+            // 카테고리 추가
             categorySingleton.addCategory(categoryName)
             
+            // 텍스트 필드 초기화
             categoryTextField.text = ""
+            
+            // 버튼 비활성화
+            addButton.setTitleColor(.systemGray, for: .normal)
+            addButton.tintColor = .systemGray
+            addButton.isUserInteractionEnabled = false
+            
             categoryTableView.reloadData()
         }
     }

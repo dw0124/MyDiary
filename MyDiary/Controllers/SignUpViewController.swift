@@ -38,6 +38,8 @@ extension SignUpViewController {
         emailTextField.placeholder = "이메일"
         emailTextField.borderStyle = .roundedRect
         emailTextField.autocapitalizationType = .none
+        emailTextField.clearButtonMode = .whileEditing
+        emailTextField.addTarget(self, action: #selector(enableSignUpButton), for: .editingChanged)
         
         // 비밀번호 텍스트 필드 설정
         passwordTextField.placeholder = "비밀번호"
@@ -45,11 +47,14 @@ extension SignUpViewController {
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textContentType = .password
         passwordTextField.autocapitalizationType = .none
+        passwordTextField.clearButtonMode = .whileEditing
+        passwordTextField.addTarget(self, action: #selector(enableSignUpButton), for: .editingChanged)
         
         // 회원가입 버튼 설정
         signUpButton.setTitle("회원가입", for: .normal)
-        signUpButton.backgroundColor = .green
+        signUpButton.backgroundColor = .systemGray
         signUpButton.layer.cornerRadius = 5
+        signUpButton.isUserInteractionEnabled = false
         signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
     }
 
@@ -80,6 +85,16 @@ extension SignUpViewController {
     
     @objc private func signUp() {
         firebaseAuthVM.signUpWithEmail(email: emailTextField.text, password: passwordTextField.text)
+    }
+    
+    @objc private func enableSignUpButton() {
+        if passwordTextField.text == "" || emailTextField.text == "" {
+            signUpButton.backgroundColor = .systemGray
+            signUpButton.isUserInteractionEnabled = false
+        } else {
+            signUpButton.backgroundColor = .systemBlue
+            signUpButton.isUserInteractionEnabled = true
+        }
     }
 }
 

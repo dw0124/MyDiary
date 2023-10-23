@@ -29,6 +29,17 @@ class SignInViewController: UIViewController {
 
 // MARK: - 로그인 관련
 extension SignInViewController {
+    // 이메일과 비밀번호 텍스트 필드를 확인하여 로그인 버튼 비활성화
+    @objc func enableSigninButton() {
+        if passwordTextField.text == "" || emailTextField.text == "" {
+            signInButton.backgroundColor = .systemGray
+            signInButton.isUserInteractionEnabled = false
+        } else {
+            signInButton.backgroundColor = .systemBlue
+            signInButton.isUserInteractionEnabled = true
+        }
+    }
+    
     @objc func signIn() {
         firebaseAuthVM.signInWithEmail(email: emailTextField.text, password: passwordTextField.text)
     }
@@ -59,6 +70,8 @@ extension SignInViewController {
         emailTextField.placeholder = "이메일"
         emailTextField.borderStyle = .roundedRect
         emailTextField.autocapitalizationType = .none
+        emailTextField.clearButtonMode = .whileEditing
+        emailTextField.addTarget(self, action: #selector(enableSigninButton), for: .editingChanged)
         
         // 비밀번호 텍스트 필드 설정
         passwordTextField.placeholder = "비밀번호"
@@ -66,15 +79,19 @@ extension SignInViewController {
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textContentType = .password
         passwordTextField.autocapitalizationType = .none
+        passwordTextField.clearButtonMode = .whileEditing
+        passwordTextField.addTarget(self, action: #selector(enableSigninButton), for: .editingChanged)
         
         // 로그인 버튼 설정
         signInButton.setTitle("로그인", for: .normal)
-        signInButton.backgroundColor = .blue
+        signInButton.backgroundColor = .systemGray
+        signInButton.isUserInteractionEnabled = false
         signInButton.layer.cornerRadius = 5
         signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
         
         // 회원가입 버튼 설정
         signUpButton.setTitle("회원가입", for: .normal)
+        signUpButton.setTitleColor(.blue, for: .normal)
         signUpButton.backgroundColor = .white
         signUpButton.layer.cornerRadius = 5
         signUpButton.addTarget(self, action: #selector(presentSignUpVC), for: .touchUpInside)

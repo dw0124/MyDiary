@@ -26,6 +26,16 @@ class ResetPasswordViewController: UIViewController {
 
 // MARK: - 비밀번호 초기화 관련
 extension ResetPasswordViewController {
+    @objc private func enableResetButton() {
+        if emailTextField.text == "" {
+            resetPasswordButton.backgroundColor = .systemGray
+            resetPasswordButton.isUserInteractionEnabled = false
+        } else {
+            resetPasswordButton.backgroundColor = .systemBlue
+            resetPasswordButton.isUserInteractionEnabled = true
+        }
+    }
+    
     @objc func resetPassword() {
         firebaseAuthVM.findPassword(email: emailTextField.text) { (resultBool, message) in
             self.showAlert(result: resultBool, message: message)
@@ -61,11 +71,14 @@ extension ResetPasswordViewController {
         emailTextField.placeholder = "이메일"
         emailTextField.borderStyle = .roundedRect
         emailTextField.autocapitalizationType = .none
+        emailTextField.clearButtonMode = .whileEditing
+        emailTextField.addTarget(self, action: #selector(enableResetButton), for: .editingChanged)
         
         // 비밀번호 찾기 버튼 설정
         resetPasswordButton.setTitle("비밀번호 찾기", for: .normal)
-        resetPasswordButton.backgroundColor = .blue
+        resetPasswordButton.backgroundColor = .systemGray
         resetPasswordButton.layer.cornerRadius = 5
+        resetPasswordButton.isUserInteractionEnabled = false
         resetPasswordButton.addTarget(self, action: #selector(resetPassword), for: .touchUpInside)
     }
 
