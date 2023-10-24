@@ -25,7 +25,7 @@ class DiaryTabBarController: UITabBarController {
     }
     
     func setNavigation() {
-        memoVC.navigationBar.topItem?.title = "메인"
+        memoVC.navigationBar.topItem?.title = "카테고리 없음"
         categoryVC.navigationBar.topItem?.title = "카테고리"
         
         // 오른쪽 상단에 "plus" 버튼 추가

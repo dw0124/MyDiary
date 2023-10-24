@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         
-//        let mainViewController = MapSelectionViewController()
+//        let mainViewController = SignInViewController()
 //        let navigationController = UINavigationController(rootViewController: mainViewController)
 //        window?.rootViewController = navigationController
         

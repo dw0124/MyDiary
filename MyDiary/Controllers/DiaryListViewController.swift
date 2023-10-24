@@ -56,14 +56,15 @@ extension DiaryListViewController {
         
         someView = {
             let view = UIView()
-            view.backgroundColor = .blue
+            view.backgroundColor = #colorLiteral(red: 0.9239165187, green: 0.9213962555, blue: 0.9468390346, alpha: 1)
             return view
         }()
         
         someViewButton = {
             let button = UIButton()
-            button.setTitle("Centered Button", for: .normal)
-            button.backgroundColor = .blue
+            button.setTitle("전체 / 최신 순", for: .normal)
+            button.setTitleColor(.black, for: .normal)
+            button.backgroundColor = nil
             button.addTarget(self, action: #selector(changeFilterView), for: .touchUpInside)
             return button
         }()
@@ -76,9 +77,9 @@ extension DiaryListViewController {
             view.resetFilterButton.addTarget(self, action: #selector(resetFilter), for: .touchUpInside)
             view.startDatePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
             view.endDatePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
-            view.backgroundColor = .white
-            view.layer.borderWidth = 1.0
-            view.isHidden = true
+            view.backgroundColor = #colorLiteral(red: 0.9239165187, green: 0.9213962555, blue: 0.9468390346, alpha: 1)
+            view.layer.borderWidth = 0.4
+            view.stackView.isHidden = true
             return view
         }()
         
@@ -104,21 +105,27 @@ extension DiaryListViewController {
     }
 
     private func setupLayout() {
-        view.addSubview(segmentControl)
         view.addSubview(colleciontView)
         view.addSubview(someView)
         view.addSubview(filterView)
+        someView.addSubview(segmentControl)
         someView.addSubview(someViewButton)
         
-        segmentControl.snp.makeConstraints {
+        someView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.trailing.equalToSuperview().offset(-12)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
         }
         
-        someView.snp.makeConstraints {
-            $0.top.equalTo(segmentControl.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(50)
+        segmentControl.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(12)
+        }
+        
+        someViewButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(12)
+            $0.height.equalToSuperview()
         }
         
         filterView.snp.makeConstraints {
@@ -131,13 +138,7 @@ extension DiaryListViewController {
             $0.top.equalTo(filterView.snp.bottom)
             $0.leading.bottom.trailing.equalToSuperview()
         }
-        
-        someViewButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.height.equalToSuperview()
-            //$0.width.equalTo(50)
-        }
+
     }
     
     private func makeImageFlowLayout() -> UICollectionViewFlowLayout {
@@ -192,23 +193,29 @@ extension DiaryListViewController {
         colleciontView.collectionViewLayout.invalidateLayout()
     }
     
+    // filterView 줄였다 늘렸다 하는 메소드
     @objc private func changeFilterView() {
         if filterViewCheck == false {
             self.filterView.snp.updateConstraints {
                 $0.height.equalTo(168)
             }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                self.filterView.stackView.isHidden = false
+            }
         } else {
             self.filterView.snp.updateConstraints {
                 $0.height.equalTo(0)
             }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.filterView.stackView.isHidden = true
+                self.view.layoutIfNeeded()
+            }
         }
-        
-        self.filterView.isHidden.toggle()
         self.filterViewCheck.toggle()
-        
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
     }
     
     // dropdown 버튼 - 카테고리 선택
@@ -268,10 +275,20 @@ extension DiaryListViewController {
     
     @objc private func resetFilter() {
         diaryListSingleton.resetFilter()
+        
+        self.someViewButton.setTitle("전체 / 최신 순", for: .normal)
     }
     
     @objc private func applyFilter() {
+        // 필터 적용
         diaryListSingleton.filterAndSort()
+        
+        // 네비게이션 타이틀 변경
+        self.navigationController?.navigationBar.topItem?.title = diaryListSingleton.category
+        
+        // 필터뷰 버튼 타이틀 변경
+        let filterButtonTitle = diaryListSingleton.makeFilterViewButtonTitle()
+        self.someViewButton.setTitle(filterButtonTitle, for: .normal)
     }
 }
 

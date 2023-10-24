@@ -21,6 +21,8 @@ class DiaryListFilterView: UIView {
     let endDatePicker = UIDatePicker()
     let slashView = UIView()
     
+    let stackView = UIStackView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -37,6 +39,7 @@ class DiaryListFilterView: UIView {
         categoryButton.label.text = "카테고리 없음"
         //categoryButton.setTitle("없음", for: .normal)
         categoryButton.setTitleColor(.black, for: .normal)
+        categoryButton.setTitleColor(.gray, for: .highlighted)
         categoryButton.backgroundColor = .systemGray6
         categoryButton.layer.cornerRadius = 10
         categoryButton.layer.shadowOpacity = 0.5
@@ -48,6 +51,7 @@ class DiaryListFilterView: UIView {
         dateSortButton.label.text = "최신 순"
         //dateSortButton.setTitle("최신 순", for: .normal)
         dateSortButton.setTitleColor(.black, for: .normal)
+        dateSortButton.setTitleColor(.gray, for: .highlighted)
         dateSortButton.backgroundColor = .systemGray6
         dateSortButton.layer.cornerRadius = 10
         dateSortButton.layer.shadowOpacity = 0.5
@@ -72,6 +76,7 @@ class DiaryListFilterView: UIView {
         
         applyButton.setTitle("적용하기", for: .normal)
         applyButton.setTitleColor(.black, for: .normal)
+        applyButton.setTitleColor(.gray, for: .highlighted)
         applyButton.backgroundColor = .systemGray6
         applyButton.layer.cornerRadius = 10
         applyButton.layer.shadowOpacity = 0.5
@@ -82,6 +87,7 @@ class DiaryListFilterView: UIView {
         
         resetFilterButton.setTitle("초기화", for: .normal)
         resetFilterButton.setTitleColor(.black, for: .normal)
+        resetFilterButton.setTitleColor(.gray, for: .highlighted)
         resetFilterButton.backgroundColor = .systemGray6
         resetFilterButton.layer.cornerRadius = 10
         resetFilterButton.layer.shadowOpacity = 0.5
@@ -121,7 +127,6 @@ class DiaryListFilterView: UIView {
         applyButtonStackView.addArrangedSubview(resetFilterButton)
         applyButtonStackView.addArrangedSubview(applyButton)
         
-        let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fillProportionally

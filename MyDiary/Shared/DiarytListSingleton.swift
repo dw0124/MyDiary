@@ -23,10 +23,10 @@ class DiaryListSingleton {
     
     // 필터 + 정렬을 위한 변수
     var filterCheck: Bool = false // 사용자가 필터를 사용했는지 확인
-    var category: String?
+    var category: String? = "카테고리 없음"
     var startDate: Date? = Date()
     var endDate: Date? = Date()
-    var sortDesending: Bool?
+    var sortDesending: Bool? = true
     
     /// 일기 목록 불러오는 메소드
     func getDiaryListData() {
@@ -162,5 +162,22 @@ extension DiaryListSingleton {
             }
         }
         return sortedDiaryList
+    }
+    
+    // 필터뷰 버튼에 들어갈 문자열
+    func makeFilterViewButtonTitle() -> String {
+        let startDate = startDate
+        let endDate = endDate
+        let sortDesending = sortDesending == true ? "최신 순" : "오래된 순"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yy.MM.dd"
+
+        let startDateString = dateFormatter.string(from: startDate!)
+        let endDateString = dateFormatter.string(from: endDate!)
+        
+        let filterButtonTitle = "\(startDateString) - \(endDateString) / \(sortDesending)"
+        
+        return filterButtonTitle
     }
 }
