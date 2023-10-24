@@ -24,6 +24,10 @@ class AddMemoViewController: UIViewController {
     var contentTextView = UITextView()
     var addressStackView = UIStackView()
     var imageStackView = UIStackView()
+    var totalStackView = UIStackView()
+    
+    // textView를 사용하면 delegate를 통해서 변경 - 키보드에 의해 가려지는것을 방지
+    var textViewDidEiditing = false
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -49,8 +53,16 @@ class AddMemoViewController: UIViewController {
         setupUI()
         setupLayout()
         setBinding()
-        
         setupDelegate()
+        
+        // 키보드에 의해서 가려지는 것을 방지하기 위한 notification
+        registerForKeyboardNotification()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        removeRegisterForKeyboardNotification()
     }
 }
 
@@ -94,14 +106,12 @@ extension AddMemoViewController {
     
     // 카테고리 버튼 선택
     @objc func setCategory() {
-        print(#function)
         let dropDown = DropDown()
         
         dropDown.anchorView = categoryButton
         dropDown.dataSource = CategorySingleton.shared.categoryList.value?.map { $0.category } ?? ["카테고리 없음"]
         
         dropDown.selectionAction = { (index: Int, item: String) in
-            print("Selected item: \(item) at index: \(index)")
             self.addMemoVM.category = item
             self.categoryButton.label.text = item
         }
@@ -239,7 +249,6 @@ extension AddMemoViewController {
             stackView.axis = .horizontal
             stackView.spacing = 16
             stackView.alignment = .leading
-            stackView.distribution = .fill
             return stackView
         }()
         
@@ -250,6 +259,24 @@ extension AddMemoViewController {
             stackView.alignment = .leading
             return stackView
         }()
+        
+        totalStackView = {
+            let stackView = UIStackView()
+            stackView.axis = .vertical
+            stackView.spacing = 16
+            stackView.alignment = .leading
+           return stackView
+        }()
+        
+        // titleTextField, contentTextView를 사용해서 키보드가 보여지면 상단에 완료 버튼 추가
+        let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0,  width: self.view.frame.size.width, height: 30))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem:    .flexibleSpace, target: nil, action: nil)
+        let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneBtnClicked))
+        toolbar.setItems([flexSpace, doneBtn], animated: false)
+        toolbar.sizeToFit()
+        
+        titleTextField.inputAccessoryView = toolbar
+        contentTextView.inputAccessoryView = toolbar
     }
     
     private func setupLayout() {
@@ -260,85 +287,74 @@ extension AddMemoViewController {
         let imageSeperatorView = UIView()
         imageSeperatorView.backgroundColor = .gray
         
-        view.addSubview(categoryButton)
-        
-        view.addSubview(addressStackView)
         addressStackView.addArrangedSubview(addAddressButton)
         addressStackView.addArrangedSubview(addressSeperatorView)
         addressStackView.addArrangedSubview(addressLabel)
         
-        view.addSubview(imageStackView)
         imageStackView.addArrangedSubview(addPreviewImagesButton)
         imageStackView.addArrangedSubview(imageSeperatorView)
         imageStackView.addArrangedSubview(collectionView)
         
-        view.addSubview(titleTextField)
-        view.addSubview(contentTextView)
+        totalStackView.addArrangedSubview(categoryButton)
+        totalStackView.addArrangedSubview(addressStackView)
+        totalStackView.addArrangedSubview(imageStackView)
+        totalStackView.addArrangedSubview(titleTextField)
+        totalStackView.addArrangedSubview(contentTextView)
+        view.addSubview(totalStackView)
         
-        // 카테고리 버튼
-        categoryButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(12)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-            //make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        // addressStackView
+        addAddressButton.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.width.equalTo(addAddressButton.snp.height)
+            $0.centerY.equalToSuperview()
+        }
+
+        addressSeperatorView.snp.makeConstraints {
+            $0.width.equalTo(1)
+            $0.height.equalToSuperview()
         }
         
-        addressStackView.snp.makeConstraints { make in
-            //make.top.equalTo(view.safeAreaLayoutGuide)
-            //make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-            //make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.top.equalTo(categoryButton.snp.bottom).offset(16)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        addressLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
         }
         
-        // 지도 버튼 설정
-        addAddressButton.snp.makeConstraints { make in
-            make.width.height.equalTo(32)
+        addressStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
         }
         
-        addressSeperatorView.snp.makeConstraints { make in
-            make.width.equalTo(1)
-            make.height.equalToSuperview()
+        // imageStackView
+        addPreviewImagesButton.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.centerY.equalToSuperview()
+        }
+    
+        imageSeperatorView.snp.makeConstraints {
+            $0.width.equalTo(1)
+            $0.height.equalTo(64)
         }
         
-        addressLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+        collectionView.snp.makeConstraints {
+            $0.height.equalTo(72)
         }
         
-        // 이미지 스택 뷰 위치 설정
-        imageStackView.snp.makeConstraints { make in
-            //make.top.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalTo(addressStackView.snp.bottom).offset(16)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+        imageStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
         }
         
-        addPreviewImagesButton.snp.makeConstraints { make in
-            make.height.equalToSuperview()
-            //make.centerY.equalToSuperview()
+        // titleTextField
+        titleTextField.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
         }
         
-        imageSeperatorView.snp.makeConstraints { make in
-            make.width.equalTo(1)
-            make.height.equalTo(64)
+        // contentTextView
+        contentTextView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(300)
         }
         
-        // collectionView 설정
-        collectionView.snp.makeConstraints { make in
-            make.height.equalTo(72)
-            //make.centerY.equalToSuperview()
-        }
-        
-        
-        // 제목 입력 텍스트 필드
-        titleTextField.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom).offset(8)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
-        }
-        
-        // 내용 입력 텍스트 뷰 설정
-        contentTextView.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(8)
-            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+        totalStackView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(12)
+            $0.leading.trailing.equalToSuperview().inset(12)
         }
     }
     
@@ -408,13 +424,16 @@ extension AddMemoViewController: UICollectionViewDelegate {
 // MARK: - UITextViewDelegate
 extension AddMemoViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == textViewPlaceHolder {
-            textView.text = nil
-            textView.textColor = .black
+         if textView.text == textViewPlaceHolder {
+            textView.text = ""
+             textView.textColor = .black
         }
+        textViewDidEiditing = true
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        textViewDidEiditing = false
+        
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = textViewPlaceHolder
             textView.textColor = .lightGray
@@ -422,3 +441,46 @@ extension AddMemoViewController: UITextViewDelegate {
     }
 }
 
+// TextField, TextView가 키보드에 의해서 가려지는것을 방지
+extension AddMemoViewController {
+    // 키보드가 있을때 화면을 터치하면 내려감
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.view.endEditing(true)
+    }
+    
+    func registerForKeyboardNotification(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func removeRegisterForKeyboardNotification(){
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification){
+        self.view.frame.origin.y = 0
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification){
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+
+         if textViewDidEiditing == true {
+            keyboardAnimate(keyboardSize: keyboardSize, object: totalStackView)
+        }
+    }
+    
+    func keyboardAnimate(keyboardSize: CGRect ,object: AnyObject){
+        // 키보드의 minY가 textView의 maxY보다 작으면 가려짐
+        if keyboardSize.minY <= object.frame.maxY {
+            self.view.frame.origin.y = keyboardSize.minY - object.frame.maxY - 10
+        }
+    }
+    
+    @objc func doneBtnClicked() {
+        self.view.endEditing(true)
+        UIView.animate(withDuration: 0.1) {
+            self.view.frame.origin.y = 0
+        }
+    }
+}

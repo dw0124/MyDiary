@@ -54,6 +54,9 @@ extension DiaryListViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+        
         someView = {
             let view = UIView()
             view.backgroundColor = #colorLiteral(red: 0.9239165187, green: 0.9213962555, blue: 0.9468390346, alpha: 1)
