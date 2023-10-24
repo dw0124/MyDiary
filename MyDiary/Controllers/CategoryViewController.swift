@@ -26,7 +26,6 @@ class CategoryViewController: UIViewController {
         view.backgroundColor = .white
         
         categoryTextField.addTarget(self, action: #selector(enableAddCategoryButton), for: .editingChanged)
-        
         categoryTextField.placeholder = "새로 추가할 카테고리를 입력하세요."
         categoryTextField.clearButtonMode = .whileEditing
         categoryTableView.register(CategoryListTableViewCell.self, forCellReuseIdentifier: CategoryListTableViewCell.identifier)
@@ -81,19 +80,34 @@ class CategoryViewController: UIViewController {
     }
     
     @objc func addCategory() {
-        if let categoryName = categoryTextField.text, !categoryName.isEmpty {
-            // 카테고리 추가
-            categorySingleton.addCategory(categoryName)
-            
-            // 텍스트 필드 초기화
-            categoryTextField.text = ""
-            
-            // 버튼 비활성화
-            addButton.setTitleColor(.systemGray, for: .normal)
-            addButton.tintColor = .systemGray
-            addButton.isUserInteractionEnabled = false
-            
-            categoryTableView.reloadData()
+        let check = categorySingleton.categoryList.value?.contains(where: { categoryItem in
+            categoryItem.category == categoryTextField.text
+        }) ?? false
+        
+        if check {
+            let alertController = UIAlertController(title: nil, message: "이미 존재하는 카테고리입니다.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+                alertController.dismiss(animated: true, completion: {
+                    self.dismiss(animated: true, completion: nil)
+                })
+            }
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            if let categoryName = categoryTextField.text, !categoryName.isEmpty {
+                // 카테고리 추가
+                categorySingleton.addCategory(categoryName)
+                
+                // 텍스트 필드 초기화
+                categoryTextField.text = ""
+                
+                // 버튼 비활성화
+                addButton.setTitleColor(.systemGray, for: .normal)
+                addButton.tintColor = .systemGray
+                addButton.isUserInteractionEnabled = false
+                
+                categoryTableView.reloadData()
+            }
         }
     }
     
@@ -134,8 +148,12 @@ extension CategoryViewController: UITableViewDataSource, UITableViewDelegate {
         cell.categoryLabel.text = categorySingleton.categoryList.value?[indexPath.row].category
         cell.deleteButton.tag = indexPath.row
         cell.deleteButton.addTarget(self, action: #selector(deleteCategory(_:)), for: .touchUpInside)
-
+        cell.selectionStyle = .none
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 

@@ -62,7 +62,7 @@ class CategorySingleton {
         let data: [String: Any?] = [key: nil]
         
         // Realtime Database에 저장
-        ref.child("users").child(currentUser.uid).child("categoryList").updateChildValues(data) { error,_ in
+        ref.child("users").child(currentUser.uid).child("categoryList").updateChildValues(data as [AnyHashable : Any]) { error,_ in
             if let error = error {
                 print(error.localizedDescription, "카테고리 삭제중 오류가 발생하였습니다.")
             } else {

@@ -27,15 +27,16 @@ class CategoryListTableViewCell: UITableViewCell {
         return button
     }()
     
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 8
+        return stackView
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        let stackView: UIStackView = {
-            let stackView = UIStackView()
-            stackView.axis = .horizontal
-            stackView.alignment = .center
-            return stackView
-        }()
         
         stackView.addArrangedSubview(categoryLabel)
         stackView.addArrangedSubview(deleteButton)
@@ -53,8 +54,14 @@ class CategoryListTableViewCell: UITableViewCell {
         
         stackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(8)
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        //contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0))
     }
     
     required init?(coder: NSCoder) {
