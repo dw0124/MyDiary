@@ -66,9 +66,13 @@ extension DiaryListViewController {
         someViewButton = {
             let button = UIButton()
             button.setTitle("전체 / 최신 순", for: .normal)
+            button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+            button.setImage(UIImage(systemName: "chevron.up"), for: .selected)
+            button.tintColor = .black
             button.setTitleColor(.black, for: .normal)
             button.backgroundColor = nil
             button.addTarget(self, action: #selector(changeFilterView), for: .touchUpInside)
+            button.semanticContentAttribute = .forceRightToLeft
             return button
         }()
         
@@ -219,6 +223,7 @@ extension DiaryListViewController {
             }
         }
         self.filterViewCheck.toggle()
+        self.someViewButton.isSelected.toggle()
     }
     
     // dropdown 버튼 - 카테고리 선택
@@ -279,6 +284,7 @@ extension DiaryListViewController {
     @objc private func resetFilter() {
         diaryListSingleton.resetFilter()
         
+        self.navigationController?.navigationBar.topItem?.title = "카테고리 없음"
         self.someViewButton.setTitle("전체 / 최신 순", for: .normal)
     }
     

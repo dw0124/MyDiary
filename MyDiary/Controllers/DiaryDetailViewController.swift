@@ -13,47 +13,26 @@ class DiaryDetailViewController: UIViewController {
     
     let diaryDetailVM = DiaryDetailViewModel()
     
-    let colleciontView: UICollectionView = {
-        
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 0.0
-
-        let itemWidth = UIScreen.main.bounds.width
-        let itemHeight: CGFloat = itemWidth
-
-        flowLayout.itemSize = CGSize(width: itemWidth, height: itemHeight)
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.register(DiaryDetailImageCell.self, forCellWithReuseIdentifier: DiaryDetailImageCell.identifier)
-        collectionView.backgroundColor = .white
-        collectionView.isPagingEnabled = true
-        collectionView.decelerationRate = .fast
-
-        return collectionView
-    }()
+    let scrollView = UIScrollView()
     
-    let contentLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textAlignment = .justified
-        label.numberOfLines = 0
-        return label
-    }()
+    var colleciontView: UICollectionView!
+    var dateLabel = UILabel()
+    var titleLabel = UILabel()
+    var contentLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         setupLayout()
-        
         setBinding()
     }
     
     private func setBinding() {
         diaryDetailVM.diaryList.bind { diaryItem in
             self.colleciontView.reloadData()
+            self.dateLabel.text = diaryItem?.createTime
+            self.titleLabel.text = diaryItem?.title
             self.contentLabel.text = diaryItem?.content
         }
     }
@@ -64,23 +43,115 @@ extension DiaryDetailViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
+        // 네비게이션 오른쪽 버튼
+        let rightButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
+        let ok = UIAction(title: "수정",image: UIImage(systemName: "square.and.pencil"), handler: { _ in print("확인") })
+        let cancel = UIAction(title: "삭제", image: UIImage(systemName: "trash"), attributes: .destructive, handler: { _ in print("삭제") })
+        let buttonMenu = UIMenu(children: [ok, cancel])
+        rightButton.menu = buttonMenu
+        self.navigationItem.rightBarButtonItem = rightButton
+        
+        // scrollView
+        scrollView.showsVerticalScrollIndicator = false
+        
+        // collectionView
+        colleciontView = {
+            let flowLayout = UICollectionViewFlowLayout()
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.minimumLineSpacing = 0.0
+            let itemWidth = UIScreen.main.bounds.width// * 0.85
+            let itemHeight: CGFloat = itemWidth
+            flowLayout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+            
+            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+            collectionView.register(DiaryDetailImageCell.self, forCellWithReuseIdentifier: DiaryDetailImageCell.identifier)
+            collectionView.backgroundColor = .white
+            collectionView.isPagingEnabled = true
+            collectionView.decelerationRate = .fast
+            collectionView.showsHorizontalScrollIndicator = false
+            return collectionView
+        }()
+        
+        // dateLabel
+        dateLabel = {
+            let label = UILabel()
+            label.textColor = .black
+            label.font = UIFont.systemFont(ofSize: 12)
+            label.textAlignment = .justified
+            label.numberOfLines = 0
+            return label
+        }()
+        
+        // titelLabel
+        titleLabel = {
+            let label = UILabel()
+            label.textColor = .black
+            label.font = UIFont.systemFont(ofSize: 24)
+            label.textAlignment = .justified
+            label.numberOfLines = 0
+            return label
+        }()
+        
+        // contentLabel
+        contentLabel = {
+            let label = UILabel()
+            label.textColor = .black
+            label.font = UIFont.systemFont(ofSize: 16)
+            label.textAlignment = .justified
+            label.numberOfLines = 0
+            return label
+        }()
+        
         colleciontView.dataSource = self
         colleciontView.delegate = self
         colleciontView.prefetchDataSource = self
     }
 
     private func setupLayout() {
-        view.addSubview(colleciontView)
-        view.addSubview(contentLabel)
-        
-        colleciontView.snp.makeConstraints {
-            $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(colleciontView.snp.width).multipliedBy(1.0/1.0)
+        scrollView.addSubview(colleciontView)
+        scrollView.addSubview(dateLabel)
+        scrollView.addSubview(titleLabel)
+        scrollView.addSubview(contentLabel)
+        view.addSubview(scrollView)
+
+        scrollView.snp.makeConstraints {
+            //$0.top.equalTo(colleciontView.snp.bottom).inset(16)
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        
-        contentLabel.snp.makeConstraints {
-            $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+
+        if diaryDetailVM.diaryList.value?.imageURL == nil {
+            colleciontView.snp.makeConstraints {
+                $0.top.equalTo(scrollView)
+                $0.width.equalToSuperview()//.multipliedBy(0.85)
+                $0.height.equalTo(0)
+                $0.centerX.equalToSuperview()
+            }
+        } else {
+            colleciontView.snp.makeConstraints {
+                $0.top.equalTo(scrollView)
+                $0.width.equalToSuperview()//.multipliedBy(0.85)
+                $0.height.equalTo(colleciontView.snp.width)
+                $0.centerX.equalToSuperview()
+            }
+        }
+
+        dateLabel.snp.makeConstraints {
             $0.top.equalTo(colleciontView.snp.bottom).offset(16)
+            $0.width.equalToSuperview().multipliedBy(0.95)
+            $0.centerX.equalToSuperview()
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(dateLabel.snp.bottom)
+            $0.width.equalToSuperview().multipliedBy(0.95)
+            $0.centerX.equalToSuperview()
+        }
+
+        contentLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.width.equalToSuperview().multipliedBy(0.95)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
 }

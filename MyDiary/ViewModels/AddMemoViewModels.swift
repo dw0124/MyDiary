@@ -33,22 +33,19 @@ class AddMemoViewModel {
         content = content == "내용을 입력하세요" ? "" : content
         
         saveImageToStorage { imageUrlArray in
-            
-            let imageUrlArr = imageUrlArray ?? [""]
-            
             let databaseRef = Database.database().reference()
             guard let currentUser = Auth.auth().currentUser else { return }
             
             let createTime = self.generateUniqueKey()
             
             // Realtime Database에 저장될 데이터 [key: value]
-            let memoData: [String: Any] = [
+            let memoData: [String: Any?] = [
                 "category": self.category,
                 "createTime": createTime,
                 "address": self.address,
                 "lat": self.lat,
                 "lng": self.lng,
-                "imageURL": imageUrlArr,
+                "imageURL": imageUrlArray,
                 "title": self.title,
                 "content": self.content
             ]
@@ -67,7 +64,7 @@ class AddMemoViewModel {
                         category: self.category,
                         content: self.content,
                         createTime: createTime,
-                        imageURL: imageUrlArr,
+                        imageURL: imageUrlArray,
                         title: self.title,
                         lat: self.lat,
                         lng: self.lng
