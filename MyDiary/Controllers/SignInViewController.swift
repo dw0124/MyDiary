@@ -8,6 +8,9 @@
 import UIKit
 import SnapKit
 import FirebaseAuth
+import FirebaseCore
+import GoogleSignIn
+import KakaoSDKUser
 
 class SignInViewController: UIViewController {
 
@@ -18,6 +21,8 @@ class SignInViewController: UIViewController {
     let signInButton = UIButton()
     let signUpButton = UIButton()
     let findMyPassword = UIButton()
+    let googleSignInButton = GIDSignInButton()
+    let kakaoSignInButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +60,31 @@ extension SignInViewController {
         let resetPasswordVC = ResetPasswordViewController()
         
         present(resetPasswordVC, animated: true)
+    }
+    
+    // 구글 로그인
+    @objc func googleSignIn() {
+        firebaseAuthVM.googleSingIn(self)
+    }
+    
+    @objc func kakaoSignIn() {
+        firebaseAuthVM.kakaoSignIn()
+    }
+    
+    @objc func logout() {
+        UserApi.shared.logout {(error) in
+            if let error = error {
+                print(error)
+            }
+            else {
+                print("logout() success.")
+            }
+        }
+        
+        if Auth.auth().currentUser != nil {
+            do { try Auth.auth().signOut() }
+            catch { print(error) }
+        }
     }
 }
 
@@ -102,6 +132,13 @@ extension SignInViewController {
         findMyPassword.backgroundColor = .white
         findMyPassword.layer.cornerRadius = 5
         findMyPassword.addTarget(self, action: #selector(presentResetPasswordVC), for: .touchUpInside)
+        
+        // 구글 로그인 버튼 설정
+        googleSignInButton.addTarget(self, action: #selector(googleSignIn), for: .touchUpInside)
+        
+        // 카카오 로그인 버튼 설정
+        kakaoSignInButton.setImage(UIImage(named: "kakao_login_large_wide"), for: .normal)
+        kakaoSignInButton.addTarget(self, action: #selector(kakaoSignIn), for: .touchUpInside)
     }
 
     private func setupLayout() {
@@ -110,6 +147,8 @@ extension SignInViewController {
         view.addSubview(signInButton)
         view.addSubview(signUpButton)
         view.addSubview(findMyPassword)
+        view.addSubview(googleSignInButton)
+        view.addSubview(kakaoSignInButton)
         
         emailTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
@@ -138,6 +177,20 @@ extension SignInViewController {
         findMyPassword.snp.makeConstraints { make in
             make.top.equalTo(signInButton.snp.bottom).offset(20)
             make.trailing.equalTo(emailTextField)
+        }
+        
+        googleSignInButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(50)
+            $0.leading.equalTo(passwordTextField)
+            $0.trailing.equalTo(passwordTextField)
+            $0.height.equalTo(44)
+        }
+        
+        kakaoSignInButton.snp.makeConstraints {
+            $0.bottom.equalTo(googleSignInButton.snp.top).offset(-12)
+            $0.leading.equalTo(passwordTextField)
+            $0.trailing.equalTo(passwordTextField)
+            $0.height.equalTo(44)
         }
     }
 }
