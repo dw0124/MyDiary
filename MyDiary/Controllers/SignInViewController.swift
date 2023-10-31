@@ -10,7 +10,12 @@ import SnapKit
 import FirebaseAuth
 import FirebaseCore
 import GoogleSignIn
+
 import KakaoSDKUser
+import KakaoSDKAuth
+import KakaoSDKCommon
+
+import Alamofire
 
 class SignInViewController: UIViewController {
 
@@ -70,6 +75,7 @@ extension SignInViewController {
     @objc func kakaoSignIn() {
         firebaseAuthVM.kakaoSignIn()
     }
+    
     
     @objc func logout() {
         UserApi.shared.logout {(error) in

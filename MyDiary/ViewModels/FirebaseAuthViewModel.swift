@@ -6,12 +6,17 @@
 //
 
 import Foundation
+
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseCore
+
 import GoogleSignIn
+
 import KakaoSDKAuth
 import KakaoSDKUser
+
+import Alamofire
 
 class FirebaseAuthViewModel {
     
@@ -139,8 +144,10 @@ class FirebaseAuthViewModel {
                     print("loginWithKakaoTalk() success.")
                     
                     //do something
-                    if let _ = oauthToken {
-                        self.signUpWithKakao()
+                    if let oauthToken = oauthToken {
+                        //self.signUpWithKakao()
+                        
+                        self.requestKakao(accessToken: oauthToken.accessToken) //이 부분이 추가되었습니다.
                     }
                 }
             }
@@ -152,8 +159,10 @@ class FirebaseAuthViewModel {
                 }
                 else {
                     print("loginWithKakaoAccount() success.")
-                    if let _ = oauthToken {
-                        self.signUpWithKakao()
+                    if let oauthToken = oauthToken {
+                        //self.signUpWithKakao()
+                        
+                        self.requestKakao(accessToken: oauthToken.accessToken) //이 부분이 추가되었습니다.
                     }
                 }
             }
@@ -206,6 +215,41 @@ class FirebaseAuthViewModel {
                     }
                 }
             }
+        }
+    }
+    
+    func requestKakao(accessToken: String) {
+        let url = URL(string: String(format: "%@/verifyToken", Bundle.main.object(forInfoDictionaryKey: "VALIDATION_SERVER_URL") as! String))!
+        let parameters: [String: String] = ["token": accessToken]
+        let req = AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: ["Content-Type":"application/json", "Accept":"application/json"])
+        req.responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                print("success: requestKakao")
+                guard let object = value as? [String: Any] else {
+                    return
+                }
+                guard let firebaseToken = object["firebase_token"]  else { return }
+                self.signInToFirebaseWithToken(firebaseToken: firebaseToken as! String )
+            case .failure(let error):
+                print("error : requestkakao",error)
+            }
+            
+        }
+    }
+    
+    func signInToFirebaseWithToken(firebaseToken: String) {
+        Auth.auth().signIn(withCustomToken: firebaseToken) { ( result, error) in
+            guard let result = result else {
+                // result가 nil이면 인증 실패
+                print("Error signing in: \(error!)")
+                //self.delegate?.emailLogin(self, failedWithError: error!)
+                return
+            }
+            print("Signed in as user: \(result.user.uid)")
+            // 인증 성공했을 때의 동작
+            let mapViewController = DiaryTabBarController()
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)
         }
     }
     
