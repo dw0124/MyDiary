@@ -26,6 +26,10 @@ class AddMemoViewController: UIViewController {
     var imageStackView = UIStackView()
     var totalStackView = UIStackView()
     
+    // image picker를 통해서 선택할 수 있는 이미지의 갯수
+    var imageCount = 5
+    var selectedImageCount = 0
+    
     // textView를 사용하면 delegate를 통해서 변경 - 키보드에 의해 가려지는것을 방지
     var textViewDidEiditing = false
     
@@ -139,7 +143,7 @@ extension AddMemoViewController {
         DispatchQueue.main.async {
             
             var configuration = PHPickerConfiguration()
-            configuration.selectionLimit = 5
+            configuration.selectionLimit = self.imageCount - self.selectedImageCount
             configuration.filter = .images
             configuration.selection = .ordered
             
@@ -151,8 +155,19 @@ extension AddMemoViewController {
     }
     
     @objc func selectImage() {
-        requestPHPhotoLibraryAuthorization {
+        if selectedImageCount >= 5 {
+            let alertController = UIAlertController(title: nil, message: "이미지는 최대 5개까지 선택할 수 있습니다.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+                alertController.dismiss(animated: true, completion: {
+                    self.dismiss(animated: true, completion: nil)
+                })
+            }
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            return
         }
+        
+        requestPHPhotoLibraryAuthorization { }
         self.showImagePicker()
     }
     
@@ -373,6 +388,8 @@ extension AddMemoViewController: PHPickerViewControllerDelegate {
         // picker가 선택이 완료되면 화면 내리기
         picker.dismiss(animated: true)
         
+        selectedImageCount += results.count
+        
         for result in results {
             // Get all the images that you selected from the PHPickerViewController
             result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
@@ -415,9 +432,13 @@ extension AddMemoViewController: UICollectionViewDataSource {
 extension AddMemoViewController: UICollectionViewDelegate {
     // 삭제 버튼을 눌렀을 때 호출되는 메서드
     @objc func deleteImage(_ sender: UIButton) {
+        selectedImageCount -= 1
+        
         let index = sender.tag
         addMemoVM.images.value?.remove(at: index)
         collectionView.reloadData()
+        
+        print(selectedImageCount)
     }
 }
 
