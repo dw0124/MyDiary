@@ -109,6 +109,7 @@ extension DiaryListViewController {
         
         colleciontView.delegate = self
         colleciontView.dataSource = self
+        colleciontView.prefetchDataSource = self
     }
 
     private func setupLayout() {
@@ -341,3 +342,18 @@ extension DiaryListViewController: UICollectionViewDelegate {
     }
 }
 
+extension DiaryListViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard let diaryList = diaryListSingleton.filteredDiaryList.value else { return }
+        
+        for indexPath in indexPaths {
+            if segmentControl.selectedSegmentIndex == 0 {
+                guard let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryListImageCell.identifier, for: indexPath) as? DiaryListImageCell else { return }
+                imageCell.configure(with: diaryList[indexPath.item])
+            } else {
+                guard let listCell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryListCell.identifier, for: indexPath) as? DiaryListCell else { return }
+                listCell.configure(with: diaryList[indexPath.item])
+            }
+        }
+    }
+}

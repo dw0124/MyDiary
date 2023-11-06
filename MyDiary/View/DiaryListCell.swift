@@ -88,7 +88,10 @@ class DiaryListCell: UICollectionViewCell {
         if let previewImageUrl = diaryItem.imageURL?.first {
             ImageCacheManager.shared.loadImageFromStorage(storagePath: previewImageUrl) { image in
                 DispatchQueue.main.async {
-                    self.imageView.image = image
+                    if let image = image {
+                        let resizedImage = UIImage.resize(image: image, newWidth: self.imageView.frame.width)
+                        self.imageView.image = resizedImage
+                    }
                 }
             }
         } else {
