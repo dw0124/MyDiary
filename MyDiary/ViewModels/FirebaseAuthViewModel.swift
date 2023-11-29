@@ -147,7 +147,7 @@ class FirebaseAuthViewModel {
                     if let oauthToken = oauthToken {
                         //self.signUpWithKakao()
                         
-                        self.requestKakao(accessToken: oauthToken.accessToken) //이 부분이 추가되었습니다.
+                        //self.requestKakao(accessToken: oauthToken.accessToken) //이 부분이 추가되었습니다.
                     }
                 }
             }
@@ -160,9 +160,10 @@ class FirebaseAuthViewModel {
                 else {
                     print("loginWithKakaoAccount() success.")
                     if let oauthToken = oauthToken {
-                        //self.signUpWithKakao()
+                        self.signUpWithKakao()
                         
-                        self.requestKakao(accessToken: oauthToken.accessToken) //이 부분이 추가되었습니다.
+                        // 서버를 사용하여 토큰을 통한 로그인
+                        //self.requestKakao(accessToken: oauthToken.accessToken)
                     }
                 }
             }
@@ -211,6 +212,7 @@ class FirebaseAuthViewModel {
                             print("Error saving user data: \(error)")
                         } else {
                             print("User data saved successfully!")
+                            self.signInWithEmail(email: email, password: password)
                         }
                     }
                 }
@@ -218,6 +220,8 @@ class FirebaseAuthViewModel {
         }
     }
     
+    
+    /* 카카오 로그인 - 서버 사용
     func requestKakao(accessToken: String) {
         let url = URL(string: String(format: "%@/verifyToken", Bundle.main.object(forInfoDictionaryKey: "VALIDATION_SERVER_URL") as! String))!
         let parameters: [String: String] = ["token": accessToken]
@@ -252,5 +256,5 @@ class FirebaseAuthViewModel {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)
         }
     }
-    
+    */
 }
