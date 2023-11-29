@@ -41,4 +41,17 @@ class DiaryDetailImageCell: UICollectionViewCell {
         
         imageView.image = nil
     }
+    
+    func configure(with imageUrl: String) {
+        ImageCacheManager.shared.loadImageFromStorage(storagePath: imageUrl) { image in
+            DispatchQueue.main.async {
+                if let image = image {
+                    let resizedImage = UIImage.resize(image: image, newWidth: self.imageView.frame.width)
+                    self.imageView.image = resizedImage
+                } else {
+                    self.imageView.image = nil
+                }
+            }
+        }
+    }
 }

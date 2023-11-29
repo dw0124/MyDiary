@@ -28,6 +28,8 @@ class SignInViewController: UIViewController {
     let findMyPassword = UIButton()
     let googleSignInButton = GIDSignInButton()
     let kakaoSignInButton = UIButton()
+    
+    let testImageView = UIImageView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,23 +77,6 @@ extension SignInViewController {
     @objc func kakaoSignIn() {
         firebaseAuthVM.kakaoSignIn()
     }
-    
-    
-    @objc func logout() {
-        UserApi.shared.logout {(error) in
-            if let error = error {
-                print(error)
-            }
-            else {
-                print("logout() success.")
-            }
-        }
-        
-        if Auth.auth().currentUser != nil {
-            do { try Auth.auth().signOut() }
-            catch { print(error) }
-        }
-    }
 }
 
 // MARK: - UI 관련
@@ -127,14 +112,14 @@ extension SignInViewController {
         
         // 회원가입 버튼 설정
         signUpButton.setTitle("회원가입", for: .normal)
-        signUpButton.setTitleColor(.blue, for: .normal)
+        signUpButton.setTitleColor(.systemBlue, for: .normal)
         signUpButton.backgroundColor = .white
         signUpButton.layer.cornerRadius = 5
         signUpButton.addTarget(self, action: #selector(presentSignUpVC), for: .touchUpInside)
         
         // 비밀번호 찾기 버튼 설정
         findMyPassword.setTitle("비밀번호 찾기", for: .normal)
-        findMyPassword.setTitleColor(.blue, for: .normal)
+        findMyPassword.setTitleColor(.systemBlue, for: .normal)
         findMyPassword.backgroundColor = .white
         findMyPassword.layer.cornerRadius = 5
         findMyPassword.addTarget(self, action: #selector(presentResetPasswordVC), for: .touchUpInside)
@@ -143,8 +128,12 @@ extension SignInViewController {
         googleSignInButton.addTarget(self, action: #selector(googleSignIn), for: .touchUpInside)
         
         // 카카오 로그인 버튼 설정
-        kakaoSignInButton.setImage(UIImage(named: "kakao_login_large_wide"), for: .normal)
+        kakaoSignInButton.setImage(UIImage(named: "kakao_login_large_wide (1)"), for: .normal)
+        kakaoSignInButton.imageView?.contentMode = .scaleToFill
         kakaoSignInButton.addTarget(self, action: #selector(kakaoSignIn), for: .touchUpInside)
+        
+        // 테스트
+        testImageView.image = UIImage(named: "kakao_login_large_wide (1)")
     }
 
     private func setupLayout() {
@@ -155,6 +144,7 @@ extension SignInViewController {
         view.addSubview(findMyPassword)
         view.addSubview(googleSignInButton)
         view.addSubview(kakaoSignInButton)
+        view.addSubview(testImageView)
         
         emailTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
@@ -198,6 +188,17 @@ extension SignInViewController {
             $0.trailing.equalTo(passwordTextField)
             $0.height.equalTo(44)
         }
+        
+        kakaoSignInButton.imageView?.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+//        testImageView.snp.makeConstraints {
+//            $0.bottom.equalTo(kakaoSignInButton.snp.top).offset(-12)
+//            $0.leading.equalTo(passwordTextField)
+//            $0.trailing.equalTo(passwordTextField)
+//            $0.height.equalTo(44)
+//        }
     }
 }
 

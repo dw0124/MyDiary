@@ -69,8 +69,8 @@ class DiaryListSingleton {
     
     /// firebase realtime DB에서 index에 해당하는 일기를 삭제하는 메소드
     func removeDiaryAtIndex(index: Int) {
-        // 데이터 경로를 위한 키 - diary의 createTime이 키
-        guard let createTime = diaryList.value?[index].createTime else { return }
+        // 데이터 경로를 위한 키 - diary의 키는 createTime
+        guard let createTime = filteredDiaryList.value?[index].createTime else { return }
         
         // realtime DB에서 데이터 삭제
         let ref = Database.database().reference()
@@ -81,17 +81,23 @@ class DiaryListSingleton {
             }
         }
         // Storage에서 이미지 삭제
-        guard let storagePath = diaryList.value?[index].imageURL else { return }
-        storagePath.forEach { imagePath in
-            let storage = Storage.storage()
-            let storageRef = storage.reference(forURL: imagePath)
-            storageRef.delete { error in
-              if let error = error {
-                  print(error.localizedDescription)
-              }
+        if let storagePath = diaryList.value?[index].imageURL {
+            storagePath.forEach { imagePath in
+                let storage = Storage.storage()
+                let storageRef = storage.reference(forURL: imagePath)
+                storageRef.delete { error in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
             }
         }
-        diaryList.value?.remove(at: index)
+        
+        // filteredDiaryList에서 삭제
+        filteredDiaryList.value?.remove(at: index)
+
+        // diaryList에서 삭제
+        diaryList.value = diaryList.value?.filter { $0.createTime != createTime }
     }
 }
 
@@ -180,4 +186,8 @@ extension DiaryListSingleton {
         
         return filterButtonTitle
     }
+}
+
+extension Notification.Name {
+    static let DiaryListDidChangeNotification = Notification.Name("DiaryListDidChangeNotification")
 }

@@ -13,14 +13,18 @@ import FirebaseStorage
 
 class AddMemoViewModel {
     
-    var diaryItem: DiaryItem?
+    //var diaryItem: DiaryItem?
+    var diaryItem: Observable<DiaryItem> = Observable(nil)
+    
+    // 수정을 위한 키 - nil이면 추가 / 값이 있으면 수정
+    var createTime: String = ""
     
     var category: String = "카테고리 없음"
     var address: String = ""
     var lat: Double = 0
     var lng: Double = 0
     var images: Observable<[UIImage]> = Observable([])
-    var imagesSorted: Observable<[Int: UIImage]> = Observable([:])
+    //var imagesSorted: Observable<[Int: UIImage]> = Observable([:])
     var title: String = ""
     var content: String = ""
     
@@ -36,7 +40,9 @@ class AddMemoViewModel {
             let databaseRef = Database.database().reference()
             guard let currentUser = Auth.auth().currentUser else { return }
             
-            let createTime = self.generateUniqueKey()
+            //let createTime = self.generateUniqueKey()
+            
+            let createTime = self.createTime == "" ? self.generateUniqueKey() : self.createTime
             
             // Realtime Database에 저장될 데이터 [key: value]
             let memoData: [String: Any?] = [
@@ -59,8 +65,8 @@ class AddMemoViewModel {
                     print("메모 데이터 저장 성공")
                     message = "저장을 완료했습니다."
                     
-                    // alert를 통해서 성공했음을 알리고 DiaryListVC에서 collectionView item으로 추가하기 위함
-                    self.diaryItem = DiaryItem(
+                    // alert를 통해서 성공했음을 알리고 DiaryListVC에서 Diaryitem으로 추가하기 위함
+                    self.diaryItem.value = DiaryItem(
                         category: self.category,
                         content: self.content,
                         createTime: createTime,
@@ -69,6 +75,18 @@ class AddMemoViewModel {
                         lat: self.lat,
                         lng: self.lng
                     )
+                    
+                    if let index = DiaryListSingleton.shared.diaryList.value?.firstIndex(where: { $0.createTime == self.createTime }) {
+                        // 기존 데이터가 있으면 업데이트
+                        DiaryListSingleton.shared.diaryList.value?[index] = self.diaryItem.value!
+                    } else {
+                        // 기존 데이터가 없으면 새로 추가
+                        DiaryListSingleton.shared.diaryList.value?.insert(self.diaryItem.value!, at: 0)
+                    }
+                    
+                    let dataToSend: [String: Any] = ["item": self.diaryItem.value!]
+                    NotificationCenter.default.post(name: .MyCustomNotification, object: nil, userInfo: dataToSend)
+
                     
                     completion(true, message)
                 }
@@ -129,4 +147,8 @@ class AddMemoViewModel {
         
         return dateString
     }
+}
+
+extension Notification.Name {
+    static let MyCustomNotification = Notification.Name("MyCustomNotification")
 }

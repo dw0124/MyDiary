@@ -66,6 +66,7 @@ class AddMemoViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        //NotificationCenter.default.removeObserver(self, name: Notification.Name("addAddress"), object: nil)
         removeRegisterForKeyboardNotification()
     }
 }
@@ -81,7 +82,6 @@ extension AddMemoViewController {
             alertController.dismiss(animated: true, completion: nil)
             
             if result == true {
-                DiaryListSingleton.shared.diaryList.value?.insert(self.addMemoVM.diaryItem!, at: 0)
                 self.navigationController?.popViewController(animated: true)
             }
         }
@@ -374,6 +374,25 @@ extension AddMemoViewController {
     }
     
     func setBinding() {
+        addMemoVM.diaryItem.bind { [weak self] diaryItem in
+            guard let self = self else { return }
+            guard let diaryItem = diaryItem else { return }
+            categoryButton.label.text = diaryItem.category
+            titleTextField.text = diaryItem.title
+            contentTextView.text = diaryItem.content
+            contentTextView.textColor = .black
+            
+            if let imageUrlArray = diaryItem.imageURL {
+                imageUrlArray.forEach { imagUrl in
+                    ImageCacheManager.shared.loadImageFromStorage(storagePath: imagUrl) { [weak self] image in
+                        guard let image = image else { return }
+                        
+                        self?.addMemoVM.images.value?.append(image)
+                    }
+                }
+            }
+        }
+        
         addMemoVM.images.bind { image in
             DispatchQueue.main.async {
                 self.collectionView.reloadData()

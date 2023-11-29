@@ -15,6 +15,7 @@ class DiaryListImageCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        //imageView.backgroundColor = .none
         imageView.clipsToBounds = true
         imageView.backgroundColor = .lightGray
         return imageView
@@ -41,19 +42,16 @@ class DiaryListImageCell: UICollectionViewCell {
         imageView.image = nil
     }
     
-    func configure(with diaryItem: DiaryItem) {
-        
-        if let previewImageUrl = diaryItem.imageURL?.first {
-            ImageCacheManager.shared.loadImageFromStorage(storagePath: previewImageUrl) { image in
-                DispatchQueue.main.async {
-                    if let image = image {
-                        let resizedImage = UIImage.resize(image: image, newWidth: self.imageView.frame.width)
-                        self.imageView.image = resizedImage
-                    }
+    func configure(with imageUrl: String) {
+        ImageCacheManager.shared.loadImageFromStorage(storagePath: imageUrl) { image in
+            DispatchQueue.main.async {
+                if let image = image {
+                    let resizedImage = UIImage.resize(image: image, newWidth: self.imageView.frame.width)
+                    self.imageView.image = resizedImage
+                } else {
+                    self.imageView.image = nil
                 }
             }
-        } else {
-            imageView.image = nil
         }
     }
 }
