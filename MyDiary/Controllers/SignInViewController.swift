@@ -8,27 +8,91 @@
 import UIKit
 import SnapKit
 import FirebaseAuth
+import FirebaseCore
+import GoogleSignIn
+
+import KakaoSDKUser
+import KakaoSDKAuth
+import KakaoSDKCommon
+
+import Alamofire
 
 class SignInViewController: UIViewController {
 
+    let firebaseAuthVM = FirebaseAuthViewModel()
 
     let emailTextField = UITextField()
     let passwordTextField = UITextField()
+    let signInButton = UIButton()
     let signUpButton = UIButton()
+    let findMyPassword = UIButton()
+    let googleSignInButton = GIDSignInButton()
+    let kakaoSignInButton = UIButton()
+    
+    let testImageView = UIImageView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupUI()
+        setupLayout()
+    }
+}
+
+// MARK: - 로그인 관련
+extension SignInViewController {
+    // 이메일과 비밀번호 텍스트 필드를 확인하여 로그인 버튼 비활성화
+    @objc func enableSigninButton() {
+        if passwordTextField.text == "" || emailTextField.text == "" {
+            signInButton.backgroundColor = .systemGray
+            signInButton.isUserInteractionEnabled = false
+        } else {
+            signInButton.backgroundColor = .systemBlue
+            signInButton.isUserInteractionEnabled = true
+        }
+    }
+    
+    @objc func signIn() {
+        firebaseAuthVM.signInWithEmail(email: emailTextField.text, password: passwordTextField.text)
+    }
+    
+    @objc func presentSignUpVC() {
+        let signUpVC = SignUpViewController()
+        
+        present(signUpVC, animated: true)
+    
+    }
+    
+    @objc func presentResetPasswordVC() {
+        let resetPasswordVC = ResetPasswordViewController()
+        
+        present(resetPasswordVC, animated: true)
+    }
+    
+    // 구글 로그인
+    @objc func googleSignIn() {
+        firebaseAuthVM.googleSingIn(self)
+    }
+    
+    @objc func kakaoSignIn() {
+        firebaseAuthVM.kakaoSignIn()
+    }
+}
+
+// MARK: - UI 관련
+extension SignInViewController {
+    private func setupUI() {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
-        // 배경 색상 설정
         view.backgroundColor = .white
         
         // 이메일 텍스트 필드 설정
         emailTextField.placeholder = "이메일"
         emailTextField.borderStyle = .roundedRect
         emailTextField.autocapitalizationType = .none
+        emailTextField.clearButtonMode = .whileEditing
+        emailTextField.addTarget(self, action: #selector(enableSigninButton), for: .editingChanged)
         
         // 비밀번호 텍스트 필드 설정
         passwordTextField.placeholder = "비밀번호"
@@ -36,16 +100,51 @@ class SignInViewController: UIViewController {
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textContentType = .password
         passwordTextField.autocapitalizationType = .none
+        passwordTextField.clearButtonMode = .whileEditing
+        passwordTextField.addTarget(self, action: #selector(enableSigninButton), for: .editingChanged)
+        
+        // 로그인 버튼 설정
+        signInButton.setTitle("로그인", for: .normal)
+        signInButton.backgroundColor = .systemGray
+        signInButton.isUserInteractionEnabled = false
+        signInButton.layer.cornerRadius = 5
+        signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
         
         // 회원가입 버튼 설정
-        signUpButton.setTitle("로그인", for: .normal)
-        signUpButton.backgroundColor = .blue
+        signUpButton.setTitle("회원가입", for: .normal)
+        signUpButton.setTitleColor(.systemBlue, for: .normal)
+        signUpButton.backgroundColor = .white
         signUpButton.layer.cornerRadius = 5
-        signUpButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
+        signUpButton.addTarget(self, action: #selector(presentSignUpVC), for: .touchUpInside)
         
+        // 비밀번호 찾기 버튼 설정
+        findMyPassword.setTitle("비밀번호 찾기", for: .normal)
+        findMyPassword.setTitleColor(.systemBlue, for: .normal)
+        findMyPassword.backgroundColor = .white
+        findMyPassword.layer.cornerRadius = 5
+        findMyPassword.addTarget(self, action: #selector(presentResetPasswordVC), for: .touchUpInside)
+        
+        // 구글 로그인 버튼 설정
+        googleSignInButton.addTarget(self, action: #selector(googleSignIn), for: .touchUpInside)
+        
+        // 카카오 로그인 버튼 설정
+        kakaoSignInButton.setImage(UIImage(named: "kakao_login_large_wide (1)"), for: .normal)
+        kakaoSignInButton.imageView?.contentMode = .scaleToFill
+        kakaoSignInButton.addTarget(self, action: #selector(kakaoSignIn), for: .touchUpInside)
+        
+        // 테스트
+        testImageView.image = UIImage(named: "kakao_login_large_wide (1)")
+    }
+
+    private func setupLayout() {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
+        view.addSubview(signInButton)
         view.addSubview(signUpButton)
+        view.addSubview(findMyPassword)
+        view.addSubview(googleSignInButton)
+        view.addSubview(kakaoSignInButton)
+        view.addSubview(testImageView)
         
         emailTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
@@ -59,33 +158,47 @@ class SignInViewController: UIViewController {
             make.trailing.equalTo(emailTextField)
         }
 
-        signUpButton.snp.makeConstraints { make in
+        signInButton.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(20)
             make.leading.equalTo(passwordTextField)
             make.trailing.equalTo(passwordTextField)
             make.height.equalTo(44) // 버튼의 높이 설정
         }
-    }
-
-    @objc func signIn() {
-        // 로그인 버튼이 눌렸을 때의 동작을 구현
-        // 예: Firebase 인증을 사용하여 사용자 로그인 처리
-        if let email = emailTextField.text, let password = passwordTextField.text {
-            FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { (auth, error) in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                
-                if auth != nil {
-                    print("로그인 성공")
-                    let mapViewController = MapViewController() // MyViewController는 대상 뷰 컨트롤러 클래스명
-                    
-                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(mapViewController, animated: false)
-                }
-            }
-            
+        
+        signUpButton.snp.makeConstraints { make in
+            make.top.equalTo(signInButton.snp.bottom).offset(20)
+            make.leading.equalTo(emailTextField)
         }
+        
+        findMyPassword.snp.makeConstraints { make in
+            make.top.equalTo(signInButton.snp.bottom).offset(20)
+            make.trailing.equalTo(emailTextField)
+        }
+        
+        googleSignInButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(50)
+            $0.leading.equalTo(passwordTextField)
+            $0.trailing.equalTo(passwordTextField)
+            $0.height.equalTo(44)
+        }
+        
+        kakaoSignInButton.snp.makeConstraints {
+            $0.bottom.equalTo(googleSignInButton.snp.top).offset(-12)
+            $0.leading.equalTo(passwordTextField)
+            $0.trailing.equalTo(passwordTextField)
+            $0.height.equalTo(44)
+        }
+        
+        kakaoSignInButton.imageView?.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+//        testImageView.snp.makeConstraints {
+//            $0.bottom.equalTo(kakaoSignInButton.snp.top).offset(-12)
+//            $0.leading.equalTo(passwordTextField)
+//            $0.trailing.equalTo(passwordTextField)
+//            $0.height.equalTo(44)
+//        }
     }
 }
 

@@ -7,7 +7,15 @@
 
 import UIKit
 import CoreData
+import Photos
+
 import FirebaseCore
+
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
+
+import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,10 +23,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        KakaoSDK.initSDK(appKey: "e70027f73e54f3565867e5ac2b37fc87")
+        
         FirebaseApp.configure()
         return true
     }
-
+    
+    // 구글 로그인
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            return AuthController.handleOpenUrl(url: url)
+        }
+        
+        if GIDSignIn.sharedInstance.handle(url) {
+            return true
+        }
+        
+        return false
+    }
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

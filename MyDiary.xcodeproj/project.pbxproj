@@ -7,9 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE2F3A0E2AA86F1100F9BF65 /* AddMemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A0D2AA86F1100F9BF65 /* AddMemoViewController.swift */; };
+		BE2F3A102AA8747000F9BF65 /* DiaryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A0F2AA8747000F9BF65 /* DiaryTabBarController.swift */; };
+		BE2F3A122AA8769900F9BF65 /* AddMemoViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A112AA8769900F9BF65 /* AddMemoViewModels.swift */; };
+		BE2F3A152AA9A11200F9BF65 /* PreviewImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */; };
+		BE2F3A172AAEDA1100F9BF65 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */; };
+		BE2F3A192AAF113F00F9BF65 /* DiaryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A182AAF113F00F9BF65 /* DiaryListViewModel.swift */; };
+		BE2F3A1B2AAF167000F9BF65 /* DiaryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A1A2AAF167000F9BF65 /* DiaryItem.swift */; };
+		BE2F3A1F2AB04A9E00F9BF65 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */; };
+		BE2F3A212AB1891900F9BF65 /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A202AB1891900F9BF65 /* DiaryDetailViewController.swift */; };
+		BE2F3A232AB18B8A00F9BF65 /* DiaryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A222AB18B8A00F9BF65 /* DiaryDetailViewModel.swift */; };
+		BE2F3A252AB457F900F9BF65 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A242AB457F900F9BF65 /* MapViewModel.swift */; };
+		BE2F3A272AB49BAD00F9BF65 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A262AB49BAD00F9BF65 /* Address.swift */; };
+		BE2F3A292AB98BD800F9BF65 /* DiaryDetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */; };
+		BE2F3A2B2AC17C9E00F9BF65 /* DiarytListSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */; };
+		BE2F3A2D2AC1A7AA00F9BF65 /* ImageMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */; };
+		BE2F3A332ACD80D600F9BF65 /* MapSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A322ACD80D600F9BF65 /* MapSelectionViewController.swift */; };
+		BE2F3A352ACEE54B00F9BF65 /* DiaryListImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2F3A342ACEE54B00F9BF65 /* DiaryListImageCell.swift */; };
 		BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */; };
 		BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */; };
-		BE407D8D2AA4C49000A9A7A0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */; };
+		BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */; };
+		BE54FCDA2AA5A1C1003716B9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */; };
+		BE8113B22AA5AB1E00C8844E /* FirebaseAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8113B12AA5AB1E00C8844E /* FirebaseAuthViewModel.swift */; };
+		BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */; };
+		BE92C7982ADD12DB003CE796 /* DiaryListFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7972ADD12DB003CE796 /* DiaryListFilterView.swift */; };
+		BE92C79A2ADD5A7E003CE796 /* DropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */; };
+		BE92C79C2ADE5449003CE796 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */; };
+		BE92C79E2ADEBF1B003CE796 /* CategorySingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */; };
+		BE92C7A02AE16BE6003CE796 /* CategoryListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C79F2AE16BE6003CE796 /* CategoryListTableViewCell.swift */; };
+		BE92C7A22AE253B7003CE796 /* CategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7A12AE253B7003CE796 /* CategoryItem.swift */; };
+		BE92C7AA2AF25A21003CE796 /* UIImage+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7A92AF25A21003CE796 /* UIImage+Ex.swift */; };
+		BE92C7AE2AFA907A003CE796 /* DateFormatter+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7AD2AFA907A003CE796 /* DateFormatter+Ex.swift */; };
+		BE92C7B82AFCC0CA003CE796 /* DiaryListImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7B72AFCC0CA003CE796 /* DiaryListImageTableViewCell.swift */; };
+		BE92C7BC2B024271003CE796 /* DiaryListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92C7BB2B024271003CE796 /* DiaryListTableViewCell.swift */; };
 		BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */; };
 		BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */; };
 		BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */; };
@@ -26,9 +56,39 @@
 		041AC04EECDEFACEC76648D0 /* Pods-MyDiary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyDiary.release.xcconfig"; path = "Target Support Files/Pods-MyDiary/Pods-MyDiary.release.xcconfig"; sourceTree = "<group>"; };
 		449B1F775C00E9DAF410925F /* Pods-MyDiary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyDiary.debug.xcconfig"; path = "Target Support Files/Pods-MyDiary/Pods-MyDiary.debug.xcconfig"; sourceTree = "<group>"; };
 		819E7A7437D9E3DE5D9036D0 /* Pods_MyDiary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyDiary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE2F3A0D2AA86F1100F9BF65 /* AddMemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemoViewController.swift; sourceTree = "<group>"; };
+		BE2F3A0F2AA8747000F9BF65 /* DiaryTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryTabBarController.swift; sourceTree = "<group>"; };
+		BE2F3A112AA8769900F9BF65 /* AddMemoViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemoViewModels.swift; sourceTree = "<group>"; };
+		BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImageCell.swift; sourceTree = "<group>"; };
+		BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
+		BE2F3A182AAF113F00F9BF65 /* DiaryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListViewModel.swift; sourceTree = "<group>"; };
+		BE2F3A1A2AAF167000F9BF65 /* DiaryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryItem.swift; sourceTree = "<group>"; };
+		BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
+		BE2F3A202AB1891900F9BF65 /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
+		BE2F3A222AB18B8A00F9BF65 /* DiaryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewModel.swift; sourceTree = "<group>"; };
+		BE2F3A242AB457F900F9BF65 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		BE2F3A262AB49BAD00F9BF65 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailImageCell.swift; sourceTree = "<group>"; };
+		BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarytListSingleton.swift; sourceTree = "<group>"; };
+		BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMarkerView.swift; sourceTree = "<group>"; };
+		BE2F3A322ACD80D600F9BF65 /* MapSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSelectionViewController.swift; sourceTree = "<group>"; };
+		BE2F3A342ACEE54B00F9BF65 /* DiaryListImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListImageCell.swift; sourceTree = "<group>"; };
 		BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListViewController.swift; sourceTree = "<group>"; };
+		BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		BE8113B12AA5AB1E00C8844E /* FirebaseAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthViewModel.swift; sourceTree = "<group>"; };
+		BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		BE92C7972ADD12DB003CE796 /* DiaryListFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListFilterView.swift; sourceTree = "<group>"; };
+		BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownButton.swift; sourceTree = "<group>"; };
+		BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySingleton.swift; sourceTree = "<group>"; };
+		BE92C79F2AE16BE6003CE796 /* CategoryListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListTableViewCell.swift; sourceTree = "<group>"; };
+		BE92C7A12AE253B7003CE796 /* CategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItem.swift; sourceTree = "<group>"; };
+		BE92C7A92AF25A21003CE796 /* UIImage+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ex.swift"; sourceTree = "<group>"; };
+		BE92C7AD2AFA907A003CE796 /* DateFormatter+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Ex.swift"; sourceTree = "<group>"; };
+		BE92C7B72AFCC0CA003CE796 /* DiaryListImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListImageTableViewCell.swift; sourceTree = "<group>"; };
+		BE92C7BB2B024271003CE796 /* DiaryListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListTableViewCell.swift; sourceTree = "<group>"; };
 		BED58F692A9DF0E200B6C6A4 /* MyDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BED58F6C2A9DF0E200B6C6A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BED58F6E2A9DF0E200B6C6A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +122,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BE2F3A132AA9A0FF00F9BF65 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BE2F3A142AA9A11200F9BF65 /* PreviewImageCell.swift */,
+				BE2F3A282AB98BD800F9BF65 /* DiaryDetailImageCell.swift */,
+				BE2F3A2C2AC1A7AA00F9BF65 /* ImageMarkerView.swift */,
+				BE92C7BB2B024271003CE796 /* DiaryListTableViewCell.swift */,
+				BE92C7B72AFCC0CA003CE796 /* DiaryListImageTableViewCell.swift */,
+				BE2F3A342ACEE54B00F9BF65 /* DiaryListImageCell.swift */,
+				BE92C7972ADD12DB003CE796 /* DiaryListFilterView.swift */,
+				BE92C79F2AE16BE6003CE796 /* CategoryListTableViewCell.swift */,
+				BE92C7992ADD5A7E003CE796 /* DropDownButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BE54FCDB2AA5A920003716B9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE2F3A1A2AAF167000F9BF65 /* DiaryItem.swift */,
+				BE2F3A262AB49BAD00F9BF65 /* Address.swift */,
+				BE92C7A12AE253B7003CE796 /* CategoryItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BE54FCDC2AA5A960003716B9 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BE8113B12AA5AB1E00C8844E /* FirebaseAuthViewModel.swift */,
+				BE2F3A112AA8769900F9BF65 /* AddMemoViewModels.swift */,
+				BE2F3A182AAF113F00F9BF65 /* DiaryListViewModel.swift */,
+				BE2F3A222AB18B8A00F9BF65 /* DiaryDetailViewModel.swift */,
+				BE2F3A242AB457F900F9BF65 /* MapViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		BED58F602A9DF0E200B6C6A4 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +182,9 @@
 		BED58F6B2A9DF0E200B6C6A4 /* MyDiary */ = {
 			isa = PBXGroup;
 			children = (
+				BE2F3A132AA9A0FF00F9BF65 /* View */,
+				BE54FCDB2AA5A920003716B9 /* Models */,
+				BE54FCDC2AA5A960003716B9 /* ViewModels */,
 				BED58F852A9F1B9400B6C6A4 /* Shared */,
 				BED58F842A9DF12E00B6C6A4 /* Controllers */,
 				BED58F832A9DF0F300B6C6A4 /* predefined */,
@@ -110,8 +211,15 @@
 			children = (
 				BE407D862AA4B0B500A9A7A0 /* SignUpViewController.swift */,
 				BE407D842AA4B04C00A9A7A0 /* SignInViewController.swift */,
+				BE8113B32AA5CB6800C8844E /* ResetPasswordViewController.swift */,
+				BE407D8C2AA4C49000A9A7A0 /* DiaryListViewController.swift */,
+				BE2F3A202AB1891900F9BF65 /* DiaryDetailViewController.swift */,
+				BE2F3A0D2AA86F1100F9BF65 /* AddMemoViewController.swift */,
+				BE2F3A322ACD80D600F9BF65 /* MapSelectionViewController.swift */,
 				BED58F702A9DF0E200B6C6A4 /* MapViewController.swift */,
-				BE407D8C2AA4C49000A9A7A0 /* MainViewController.swift */,
+				BE54FCD92AA5A1C1003716B9 /* ProfileViewController.swift */,
+				BE92C79B2ADE5449003CE796 /* CategoryViewController.swift */,
+				BE2F3A0F2AA8747000F9BF65 /* DiaryTabBarController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -120,6 +228,12 @@
 			isa = PBXGroup;
 			children = (
 				BED58F862A9F1B9E00B6C6A4 /* Observable.swift */,
+				BE2F3A162AAEDA1100F9BF65 /* LoadingIndicator.swift */,
+				BE2F3A1E2AB04A9E00F9BF65 /* ImageCacheManager.swift */,
+				BE2F3A2A2AC17C9E00F9BF65 /* DiarytListSingleton.swift */,
+				BE92C79D2ADEBF1B003CE796 /* CategorySingleton.swift */,
+				BE92C7A92AF25A21003CE796 /* UIImage+Ex.swift */,
+				BE92C7AD2AFA907A003CE796 /* DateFormatter+Ex.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -135,12 +249,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		BE92C7942AD6972B003CE796 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		BED58F682A9DF0E200B6C6A4 /* MyDiary */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BED58F802A9DF0E300B6C6A4 /* Build configuration list for PBXNativeTarget "MyDiary" */;
 			buildPhases = (
 				8B4052085548853785170884 /* [CP] Check Pods Manifest.lock */,
+				BE92C7942AD6972B003CE796 /* Headers */,
 				BED58F652A9DF0E200B6C6A4 /* Sources */,
 				BED58F662A9DF0E200B6C6A4 /* Frameworks */,
 				BED58F672A9DF0E200B6C6A4 /* Resources */,
@@ -227,7 +352,7 @@
 		};
 		C4808608588E417FFA2CE304 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -249,14 +374,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE2F3A0E2AA86F1100F9BF65 /* AddMemoViewController.swift in Sources */,
+				BE92C7AA2AF25A21003CE796 /* UIImage+Ex.swift in Sources */,
+				BE2F3A1B2AAF167000F9BF65 /* DiaryItem.swift in Sources */,
 				BE407D852AA4B04C00A9A7A0 /* SignInViewController.swift in Sources */,
 				BE407D872AA4B0B500A9A7A0 /* SignUpViewController.swift in Sources */,
+				BE92C7A02AE16BE6003CE796 /* CategoryListTableViewCell.swift in Sources */,
+				BE2F3A2D2AC1A7AA00F9BF65 /* ImageMarkerView.swift in Sources */,
 				BED58F712A9DF0E200B6C6A4 /* MapViewController.swift in Sources */,
+				BE2F3A152AA9A11200F9BF65 /* PreviewImageCell.swift in Sources */,
+				BE92C79E2ADEBF1B003CE796 /* CategorySingleton.swift in Sources */,
+				BE2F3A272AB49BAD00F9BF65 /* Address.swift in Sources */,
+				BE8113B42AA5CB6800C8844E /* ResetPasswordViewController.swift in Sources */,
+				BE92C7BC2B024271003CE796 /* DiaryListTableViewCell.swift in Sources */,
 				BED58F872A9F1B9E00B6C6A4 /* Observable.swift in Sources */,
+				BE2F3A192AAF113F00F9BF65 /* DiaryListViewModel.swift in Sources */,
+				BE2F3A332ACD80D600F9BF65 /* MapSelectionViewController.swift in Sources */,
+				BE2F3A212AB1891900F9BF65 /* DiaryDetailViewController.swift in Sources */,
+				BE92C7AE2AFA907A003CE796 /* DateFormatter+Ex.swift in Sources */,
+				BE2F3A252AB457F900F9BF65 /* MapViewModel.swift in Sources */,
+				BE2F3A102AA8747000F9BF65 /* DiaryTabBarController.swift in Sources */,
+				BE8113B22AA5AB1E00C8844E /* FirebaseAuthViewModel.swift in Sources */,
+				BE2F3A1F2AB04A9E00F9BF65 /* ImageCacheManager.swift in Sources */,
 				BED58F6D2A9DF0E200B6C6A4 /* AppDelegate.swift in Sources */,
-				BE407D8D2AA4C49000A9A7A0 /* MainViewController.swift in Sources */,
+				BE2F3A232AB18B8A00F9BF65 /* DiaryDetailViewModel.swift in Sources */,
+				BE92C7A22AE253B7003CE796 /* CategoryItem.swift in Sources */,
+				BE2F3A2B2AC17C9E00F9BF65 /* DiarytListSingleton.swift in Sources */,
+				BE407D8D2AA4C49000A9A7A0 /* DiaryListViewController.swift in Sources */,
+				BE92C7982ADD12DB003CE796 /* DiaryListFilterView.swift in Sources */,
+				BE2F3A122AA8769900F9BF65 /* AddMemoViewModels.swift in Sources */,
+				BE92C79A2ADD5A7E003CE796 /* DropDownButton.swift in Sources */,
+				BE2F3A172AAEDA1100F9BF65 /* LoadingIndicator.swift in Sources */,
+				BE92C7B82AFCC0CA003CE796 /* DiaryListImageTableViewCell.swift in Sources */,
+				BE54FCDA2AA5A1C1003716B9 /* ProfileViewController.swift in Sources */,
 				BED58F6F2A9DF0E200B6C6A4 /* SceneDelegate.swift in Sources */,
+				BE2F3A292AB98BD800F9BF65 /* DiaryDetailImageCell.swift in Sources */,
 				BED58F772A9DF0E200B6C6A4 /* MyDiary.xcdatamodeld in Sources */,
+				BE92C79C2ADE5449003CE796 /* CategoryViewController.swift in Sources */,
+				BE2F3A352ACEE54B00F9BF65 /* DiaryListImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +562,11 @@
 				DEVELOPMENT_TEAM = 5VQ9DRSPK5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyDiary/predefined/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 접근권한을 허락하시겠습니까?";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자의 위치 정보를 받아오려고 합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "사용자의 위치 정보를 받아오려고 합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치 정보를 받아오려고 합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범 접근권한을 허락하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -437,6 +597,11 @@
 				DEVELOPMENT_TEAM = 5VQ9DRSPK5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyDiary/predefined/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 접근권한을 허락하시겠습니까?";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자의 위치 정보를 받아오려고 합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "사용자의 위치 정보를 받아오려고 합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자의 위치 정보를 받아오려고 합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범 접근권한을 허락하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

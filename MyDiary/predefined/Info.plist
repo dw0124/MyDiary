@@ -2,16 +2,49 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NMFClientId</key>
-    <string>oepugcp8e9</string>
-	<key>CFBundleIdentifier</key>
-	<string></string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>사용자의 위치 정보를 받아오려고 합니다.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>사용자의 위치 정보를 받아오려고 합니다.</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>사용자의 위치 정보를 받아오려고 합니다.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>kakao.co.kr</key>
+        <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
+    <key>VALIDATION_SERVER_URL</key>
+    <string>http://localhost:8000</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.903353098707-t1rp920it067gsqcek3ut5vukejhf39q</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakaoe70027f73e54f3565867e5ac2b37fc87</string>
+			</array>
+		</dict>
+	</array>
+	<key>NMFClientId</key>
+	<string>oepugcp8e9</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

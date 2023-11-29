@@ -11,13 +11,23 @@ import Foundation
 
 class SignUpViewController: UIViewController {
 
+    let firebaseAuthVM = FirebaseAuthViewModel()
+    
     let emailTextField = UITextField()
     let passwordTextField = UITextField()
     let signUpButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupUI()
+        setupLayout()
+    }
+}
 
+// MARK: - UI 관련
+extension SignUpViewController {
+    private func setupUI() {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
@@ -28,6 +38,8 @@ class SignUpViewController: UIViewController {
         emailTextField.placeholder = "이메일"
         emailTextField.borderStyle = .roundedRect
         emailTextField.autocapitalizationType = .none
+        emailTextField.clearButtonMode = .whileEditing
+        emailTextField.addTarget(self, action: #selector(enableSignUpButton), for: .editingChanged)
         
         // 비밀번호 텍스트 필드 설정
         passwordTextField.placeholder = "비밀번호"
@@ -35,13 +47,18 @@ class SignUpViewController: UIViewController {
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textContentType = .password
         passwordTextField.autocapitalizationType = .none
+        passwordTextField.clearButtonMode = .whileEditing
+        passwordTextField.addTarget(self, action: #selector(enableSignUpButton), for: .editingChanged)
         
         // 회원가입 버튼 설정
         signUpButton.setTitle("회원가입", for: .normal)
-        signUpButton.backgroundColor = .green
+        signUpButton.backgroundColor = .systemGray
         signUpButton.layer.cornerRadius = 5
+        signUpButton.isUserInteractionEnabled = false
         signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
-        
+    }
+
+    private func setupLayout() {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(signUpButton)
@@ -65,11 +82,19 @@ class SignUpViewController: UIViewController {
             make.height.equalTo(44) // 버튼의 높이 설정
         }
     }
-
-    @objc func signUp() {
-        // 회원가입 버튼이 눌렸을 때의 동작을 구현
-        // 예: Firebase 인증을 사용하여 사용자 회원가입 처리
-        // 대상 화면의 뷰 컨트롤러를 생성
+    
+    @objc private func signUp() {
+        firebaseAuthVM.signUpWithEmail(email: emailTextField.text, password: passwordTextField.text)
+    }
+    
+    @objc private func enableSignUpButton() {
+        if passwordTextField.text == "" || emailTextField.text == "" {
+            signUpButton.backgroundColor = .systemGray
+            signUpButton.isUserInteractionEnabled = false
+        } else {
+            signUpButton.backgroundColor = .systemBlue
+            signUpButton.isUserInteractionEnabled = true
+        }
     }
 }
 
